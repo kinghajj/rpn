@@ -32,10 +32,12 @@ DISTFILES = \
 	$(LNDIR)/Doxyfile $(LNDIR)/Makefile $(LNDIR)/Makefile.psp $(LNDIR)/EBOOT.PBP
 # Normal header files.
 DISTFILES += \
-	$(LNDIR)/src/calculator.h $(LNDIR)/src/commands.h $(LNDIR)/src/error.h \
-	$(LNDIR)/src/help.h $(LNDIR)/src/operators.h $(LNDIR)/src/parser.h \
-	$(LNDIR)/src/rpn.h $(LNDIR)/src/stack.h $(LNDIR)/src/structs.h \
-	$(LNDIR)/src/tokens.h $(LNDIR)/src/uthash.h $(LNDIR)/src/variables.h
+	$(LNDIR)/src/include/calculator.h $(LNDIR)/src/include/commands.h \
+	$(LNDIR)/src/include/error.h $(LNDIR)/src/include/help.h \
+	$(LNDIR)/src/include/operators.h $(LNDIR)/src/include/parser.h \
+	$(LNDIR)/src/include/rpn.h $(LNDIR)/src/include/stack.h \
+	$(LNDIR)/src/include/structs.h $(LNDIR)/src/include/tokens.h \
+	$(LNDIR)/src/include/uthash.h $(LNDIR)/src/include/variables.h
 # Normal source files.
 DISTFILES += \
 	$(LNDIR)/src/calculator.c $(LNDIR)/src/commands.c $(LNDIR)/src/error.c \
@@ -52,7 +54,7 @@ DISTFILES += \
 INSTALL_DIR = /usr/bin
 
 # Compilation options
-CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Iinclude -o
+CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Isrc/include -o
 LFLAGS = -s -lm -o
 TARGET = rpn
 
