@@ -36,7 +36,7 @@
 //! The calculator should exit without error.
 #define RPN_STATUS_EXIT     0
 
-//! An all-in one structure.
+//! An all-in one structure needed by many functions.
 /**
  * This structure contains a stack, variable table, operator table, command
  * table, and tokens. This structure is needed by many functions.

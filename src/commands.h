@@ -40,13 +40,13 @@ struct RPNCommand {
 	char *cmd;
 	//! The function that performs the command.
 	RPNCommandFunc func;
-	//! A UTHash handle required to make this structure hashable.
+	//! A uthash handle to make this hashable.
 	UT_hash_handle hh;
 };
 
-//! A command table.
+//! Holds a hash table of commands.
 struct RPNCommands {
-	//! The table.
+	//! The command table.
 	RPNCommand *table;
 };
 

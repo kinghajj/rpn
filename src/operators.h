@@ -25,8 +25,7 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * The RPN operator table. Allows for simple but powerful extendability.       *
- * (operators.c)                                                               *
+ * The RPN operator table. (operators.c)                                       *
  ******************************************************************************/
 
 #ifndef RPN_OPERATORS_H
@@ -39,9 +38,9 @@ typedef void (*RPNOperatorFunc)(RPNStack *stack);
 struct RPNOperator {
 	//! The string representation of the operator.
 	char *op;
-	//! The function to perform the operator.
+	//! The function that performs the operator.
 	RPNOperatorFunc func;
-	//! UTHash structure to make this hashable.
+	//! A uthash handle to make this hashable.
 	UT_hash_handle hh;
 };
 

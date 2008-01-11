@@ -37,11 +37,11 @@ struct RPNVariable {
 	char *name;
 	//! The value of the variable.
 	RPNValue value;
-	//! A UTHash structure to make this hashable.
+	//! A uhtash handle to make this hashable.
 	UT_hash_handle hh;
 };
 
-//! A variable hash table.
+//! Holds a hash table of variables.
 struct RPNVariables {
 	//! The variable table.
 	RPNVariable *table;
