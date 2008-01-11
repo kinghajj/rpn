@@ -180,7 +180,13 @@ void RPNPSP_ClearBuffer()
 		RPNPSP_buffer[i] = 0;
 }
 
-// Get one character; map special characters so they can be handled later.
+#endif // DOXYGEN_SKIP
+
+//! Get one character; map special characters so they can be handled later.
+//!
+/**
+ * @return The typed character or 0 if invalid.
+ */
 char RPNPSP_GetCharacter()
 {
 	int buttons = RPNPSP_GetButtonPushes();
@@ -205,10 +211,8 @@ char RPNPSP_GetCharacter()
 	return 0;
 }
 
-#endif // DOXYGEN_SKIP
-
 //! Gets a string of input for the PSP.
-/* @return The string.
+/** @return The string.
  */
 char *RPNPSP_GetString()
 {
