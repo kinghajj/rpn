@@ -23,34 +23,8 @@ SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
 # Files and directories for "make dist"
-TARFILE = rpn-$(VERSION).tar.bz2
-LNDIR = rpn-$(VERSION)
-
-# Normal files.
-DISTFILES = \
-	$(LNDIR)/LICENSE \
-	$(LNDIR)/Doxyfile $(LNDIR)/Makefile $(LNDIR)/Makefile.psp $(LNDIR)/EBOOT.PBP
-# Normal header files.
-DISTFILES += \
-	$(LNDIR)/src/include/arguments.h \
-	$(LNDIR)/src/include/calculator.h $(LNDIR)/src/include/commands.h \
-	$(LNDIR)/src/include/error.h $(LNDIR)/src/include/help.h \
-	$(LNDIR)/src/include/operators.h $(LNDIR)/src/include/parser.h \
-	$(LNDIR)/src/include/rpn.h $(LNDIR)/src/include/stack.h \
-	$(LNDIR)/src/include/structs.h $(LNDIR)/src/include/tokens.h \
-	$(LNDIR)/src/include/uthash.h $(LNDIR)/src/include/variables.h
-# Normal source files.
-DISTFILES += \
-	$(LNDIR)/src/arguments.c \
-	$(LNDIR)/src/calculator.c $(LNDIR)/src/commands.c $(LNDIR)/src/error.c \
-	$(LNDIR)/src/help.c $(LNDIR)/src/operators.c $(LNDIR)/src/parser.c\
-	$(LNDIR)/src/rpn.c $(LNDIR)/src/stack.c $(LNDIR)/src/tokens.c \
-	$(LNDIR)/src/variables.c $(LNDIR)/$(OBJDIR)
-# PSP source/header files and images.
-DISTFILES += \
-	$(LNDIR)/src/psp/error.c $(LNDIR)/src/psp/input.c $(LNDIR)/src/psp/setup.c \
-	$(LNDIR)/src/psp/psp.c $(LNDIR)/src/psp/psp.h \
-	$(LNDIR)/src/psp/psprpn.png $(LNDIR)/src/psp/psprpn3.png
+GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
+	bzip2 >rpn-$(VERSION).tar.bz2
 
 # Installation directory
 INSTALL_DIR = /usr/bin
@@ -88,10 +62,8 @@ install: $(TARGET)
 
 # rule to make tarball for distribution.
 .PHONY: dist
-dist: distclean
-	$(LN) $(LNDIR)
-	$(TAR) $(TARFILE) $(DISTFILES)
-	$(RM) $(LNDIR)
+dist:
+	$(GIT_ARCHIVE)
 
 # rule to make documentation
 .PHONY: doc
