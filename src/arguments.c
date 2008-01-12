@@ -35,7 +35,7 @@
 
 bool RPN_argumentVersion(RPNCalculator *calculator, char **args)
 {
-	RPN_printf("%i.%i.%i.%i\n",
+	RPN_printf("%i.%i.%i.%i",
 		__RPN_MAJOR__,
 		__RPN_MINOR__,
 		__RPN_REVIS__,
