@@ -1,6 +1,8 @@
 # Makefile for the PSP.
 # Based on examples at psp-programming.com
 
+CP = cp
+
 VERSION = $(shell cat VERSION)
 TARGET = psprpn
 
@@ -28,4 +30,4 @@ include $(PSPSDK)/lib/build.mak
 INSTALL_DIR = /media/disk/PSP/GAME/psprpn
 .PHONY: install
 install: EBOOT.PBP
-	cp EBOOT.PBP $(INSTALL_DIR)
+	$(CP) $(EXTRA_TARGETS) $(INSTALL_DIR)
