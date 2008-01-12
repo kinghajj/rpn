@@ -45,16 +45,6 @@
 
 #ifndef DOXYGEN_SKIP
 
-void RPN_printVersion()
-{
-	printf("%i.%i.%i.%i\n",
-		__RPN_MAJOR__,
-		__RPN_MINOR__,
-		__RPN_REVIS__,
-		__RPN_BUILD__);
-	exit(0);
-}
-
 int main(int argc, char *argv[])
 {
 	RPNCalculator *calculator = RPN_newCalculator();
