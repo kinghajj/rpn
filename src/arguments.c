@@ -71,13 +71,20 @@ RPNArgument RPN_arguments[] =
 	{0},
 };
 
+inline bool RPN_argumentNotNull(RPNArgument *arg)
+{
+	if(arg->short_name && arg->long_name && arg->func)
+		return true;
+	return false;
+}
+
 RPNArgument *RPN_findArgument(char *name)
 {
 	int i;
 	RPNArgument *argument;
 
 	for(i = 0, argument = &RPN_arguments[i];
-		argument->long_name;
+		RPN_argumentNotNull(argument);
 		i++, argument = &RPN_arguments[i])
 	{
 		if(!strcmp(argument->short_name, name) ||
