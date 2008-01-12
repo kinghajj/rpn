@@ -22,7 +22,7 @@ SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
 		  src/tokens.c src/variables.c
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
-# Files and directories for "make dist"
+# Git command to make a distribution tarball.
 GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
 	bzip2 >rpn-$(VERSION).tar.bz2
 
@@ -34,6 +34,7 @@ CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Isrc/include -o
 LFLAGS = -s -lm -o
 TARGET = rpn
 
+# General rule for compiling.
 obj/%.o: src/%.c
 	$(CC) $< $(CFLAGS) $@
 
@@ -50,10 +51,6 @@ all: $(TARGET)
 clean:
 	$(RM) $(OBJECTS)
 	$(RM) $(TARGET)
-
-.PHONY: distclean
-distclean: clean
-	$(RM) $(TARFILE)
 
 # rule to install program
 .PHONY: install
