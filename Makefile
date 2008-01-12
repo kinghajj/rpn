@@ -17,9 +17,9 @@ MKDIR = mkdir -p
 # object code
 SRCDIR = src/
 OBJDIR = obj/
-SOURCES = src/calculator.c src/commands.c src/error.c src/help.c \
-          src/operators.c src/parser.c src/rpn.c src/stack.c src/tokens.c \
-		  src/variables.c
+SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
+		  src/help.c src/operators.c src/parser.c src/rpn.c src/stack.c \
+		  src/tokens.c src/variables.c
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
 # Files and directories for "make dist"
@@ -32,6 +32,7 @@ DISTFILES = \
 	$(LNDIR)/Doxyfile $(LNDIR)/Makefile $(LNDIR)/Makefile.psp $(LNDIR)/EBOOT.PBP
 # Normal header files.
 DISTFILES += \
+	$(LNDIR)/src/include/arguments.h \
 	$(LNDIR)/src/include/calculator.h $(LNDIR)/src/include/commands.h \
 	$(LNDIR)/src/include/error.h $(LNDIR)/src/include/help.h \
 	$(LNDIR)/src/include/operators.h $(LNDIR)/src/include/parser.h \
@@ -40,6 +41,7 @@ DISTFILES += \
 	$(LNDIR)/src/include/uthash.h $(LNDIR)/src/include/variables.h
 # Normal source files.
 DISTFILES += \
+	$(LNDIR)/src/arguments.c \
 	$(LNDIR)/src/calculator.c $(LNDIR)/src/commands.c $(LNDIR)/src/error.c \
 	$(LNDIR)/src/help.c $(LNDIR)/src/operators.c $(LNDIR)/src/parser.c\
 	$(LNDIR)/src/rpn.c $(LNDIR)/src/stack.c $(LNDIR)/src/tokens.c \

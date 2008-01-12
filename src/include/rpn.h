@@ -70,6 +70,7 @@ typedef double RPNValue;
 #include "structs.h"
 
 // headers for structures and their methods.
+#include "arguments.h"
 #include "calculator.h"
 #include "commands.h"
 #include "error.h"

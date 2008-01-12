@@ -55,44 +55,12 @@ void RPN_printVersion()
 	exit(0);
 }
 
-int RPN_processArguments(int argc, char *argv[], RPNCalculator *calculator)
-{
-	int ret = 0;
-
-	if(argc > 1)
-	{
-		if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))
-		{
-			RPN_printHelp();
-			ret = 1;
-		}
-		if(!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version"))
-		{
-			RPN_printVersion();
-			ret = 1;
-		}
-		if((!strcmp(argv[1], "-e") || !strcmp(argv[1], "--exec")) &&
-			argc > 2)
-		{
-			RPN_eval(argv[2], calculator);
-			calculator->status = RPN_STATUS_EXIT;
-#ifdef RPN_LONG_DOUBLE
-			printf("%Lf", RPN_peek(calculator->stack));
-#elif  RPN_DOUBLE
-			printf("%f", RPN_peek(calculator->stack));
-#endif
-		}
-	}
-
-	return ret;
-}
-
 int main(int argc, char *argv[])
 {
 	RPNCalculator *calculator = RPN_newCalculator();
 	char input[1024];
 
-	RPN_processArguments(argc, argv, calculator);
+	RPN_processArguments(calculator, argc, argv);
 
 	while(calculator->status == RPN_STATUS_CONTINUE)
 	{

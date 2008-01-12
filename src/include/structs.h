@@ -61,4 +61,7 @@ typedef struct RPNCalculator RPNCalculator;
 struct RPNTokens;
 typedef struct RPNTokens RPNTokens;
 
+struct RPNArgument;
+typedef struct RPNArgument RPNArgument;
+
 #endif // RPN_STRUCTS_H
