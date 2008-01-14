@@ -44,7 +44,7 @@ RPNStack *RPN_newStack()
 		RPN_error("could not allocate memory for the stack.");
 	// this is the hidden node, always lurking at the bottom...
 	stack->first = RPN_newNode(0.0, NULL);
-	RPN_dprintf("creating stack %x", stack);
+	RPN_dprintf("created stack %x", stack);
 	return stack;
 }
 
@@ -62,7 +62,7 @@ RPNNode *RPN_newNode(RPNValue value, RPNNode *next)
 		RPN_error("could not allocate memory for a stack node.");
 	node->value = value;
 	node->next = next;
-	RPN_dprintf("creating node at %x to %x", node, next);
+	RPN_dprintf("created node at %x to %x", node, next);
 	return node;
 }
 
@@ -101,7 +101,7 @@ RPNValue RPN_pop(RPNStack *stack)
 	stack->first = popped->next;
 	// free node
 	free(popped);
-	RPN_dprintf("poping %x from stack", popped);
+	RPN_dprintf("poped %x from stack", popped);
 	return value;
 }
 
@@ -131,12 +131,12 @@ void RPN_free(RPNStack *stack)
 		temp = node;
 		node = node->next;
 		free(temp);
-		RPN_dprintf("freeing node %x", temp);
+		RPN_dprintf("freeed node %x", temp);
 	}
 
 	// free the stack
 	free(stack);
-	RPN_dprintf("freeing stack %x", stack);
+	RPN_dprintf("freed stack %x", stack);
 }
 
 /**

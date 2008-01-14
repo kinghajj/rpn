@@ -66,7 +66,9 @@ void RPNPSP_clearOutputBuffer()
 /**
  * The PSP, as far as I can tell, cannot use normal printf()-family functions.
  * So, this uses vsprintf to print to a buffer first. This could potentially be
- * dangerous, so the buffer is fairly large (1024 bytes) to prevent errors.
+ * dangerous, so the buffer is fairly large (1024 bytes) to prevent errors. As
+ * long as you don't print anything longer than 1024 characters long, everything
+ * should be fine.
  *
  * @param fmt The formatting string.
  */

@@ -71,6 +71,7 @@ RPNArgument RPN_arguments[] =
 	{0},
 };
 
+// tests if an argument is "null" or not.
 inline bool RPN_argumentNotNull(RPNArgument *arg)
 {
 	if(arg->short_name && arg->long_name && arg->func)
@@ -109,6 +110,12 @@ void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[])
 	int cont = 1;
 	RPNArgument *argument;
 
+	/* Go through the arguments:
+	 *
+	 *   -Find if the argument is defined.
+	 *   -If found and there are enough arguments, executed and stop iterating
+	 *    through the arguments.
+	 */
 	for(i = 0; i < argc && cont; i++)
 	{
 		argument = RPN_findArgument(argv[i]);

@@ -96,7 +96,7 @@ RPNCommands *RPN_newCommands()
 		RPN_error("could not allocate memory for command table.");
 	// uthash requires that an empty table be set to NULL.
 	commands->table = NULL;
-	RPN_dprintf("creating commands table %x", commands);
+	RPN_dprintf("created commands table %x", commands);
 	return commands;
 }
 
@@ -113,7 +113,7 @@ RPNCommand *RPN_newCommand(char *cmd, RPNCommandFunc func)
 		RPN_error("could not allocate memory for command.");
 	command->cmd = cmd;
 	command->func = func;
-	RPN_dprintf("creating command %x", command);
+	RPN_dprintf("created command %x", command);
 	return command;
 }
 
@@ -127,7 +127,7 @@ void RPN_freeCommand(RPNCommand *command)
 		RPN_error("attempted to free a NULL command.");
 	free(command->cmd);
 	free(command);
-	RPN_dprintf("freeing command %x", command);
+	RPN_dprintf("freed command %x", command);
 }
 
 //! Removes a command from a command table, then frees it.
@@ -143,7 +143,7 @@ void RPN_removeCommand(RPNCommands *commands, RPNCommand *command)
 		RPN_error("attempted to remove a NULL command.");
 	HASH_DEL( commands->table, command );
 	RPN_freeCommand(command);
-	RPN_dprintf("removing command %x from table %x", command, commands);
+	RPN_dprintf("removed command %x from table %x", command, commands);
 }
 
 //! Frees a command table and all if its commands.
@@ -159,7 +159,7 @@ void RPN_freeCommands(RPNCommands *commands)
 		RPN_removeCommand(commands, command);
 
 	free(commands);
-	RPN_dprintf("freeing command table %x", commands);
+	RPN_dprintf("freed command table %x", commands);
 }
 
 //! Adds a command to a command table.
@@ -175,7 +175,7 @@ bool RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func)
 	if(!commands)
 		RPN_error("tried to add command to NULL command table.");
 	HASH_ADD_KEYPTR( hh, commands->table, cmd, strlen(cmd), command );
-	RPN_dprintf("adding command %x to table %x", command, commands);
+	RPN_dprintf("added command %x to table %x", command, commands);
 	return true;
 }
 
@@ -203,7 +203,6 @@ RPNCommands *RPN_defaultCommands()
 {
 	RPNCommands *commands = RPN_newCommands();
 
-	RPN_dprintf("creating default command table");
 	RPN_addCommand(commands, strdup("dup"),  RPN_commandDup);
 	RPN_addCommand(commands, strdup("pop"),  RPN_commandPop);
 	RPN_addCommand(commands, strdup("ps"),   RPN_commandPrint);
@@ -213,6 +212,7 @@ RPNCommands *RPN_defaultCommands()
 		RPN_commandPrintVariablesDetailed);
 	RPN_addCommand(commands, strdup("help"), RPN_commandPrintHelp);
 	RPN_addCommand(commands, strdup("x"),    RPN_commandExit);
+	RPN_dprintf("created default command table");
 
 	return commands;
 }

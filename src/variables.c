@@ -44,7 +44,7 @@ RPNVariables *RPN_newVariables()
 		RPN_error("could not allocate memory for a variables table.");
 	// uthash.h requires that an empty table hash be set to NULL.
 	variables->table = NULL;
-	RPN_dprintf("creating variable table %x", variables);
+	RPN_dprintf("created variable table %x", variables);
 	return variables;
 }
 
@@ -61,7 +61,7 @@ RPNVariable *RPN_newVariable(char *name, RPNValue value)
 		RPN_error("could not allocate memory for a variable.");
 	var->name = name;
 	var->value = value;
-	RPN_dprintf("creating variable %x", var);
+	RPN_dprintf("created variable %x", var);
 	return var;
 }
 
@@ -82,7 +82,7 @@ bool RPN_addVariable(RPNVariables *variables, char *name, RPNValue value)
 	// name of hash header, name of hash table, name of key, length of key,
 	// structure to add
 	HASH_ADD_KEYPTR( hh, variables->table, name, strlen(name), var );
-	RPN_dprintf("adding variable %x to table %x", var, variables);
+	RPN_dprintf("added variable %x to table %x", var, variables);
 	return true;
 }
 
@@ -138,7 +138,7 @@ void RPN_freeVariables(RPNVariables *variables)
 
 	// free the variables structure
 	free(variables);
-	RPN_dprintf("freeing variable table %x", variables);
+	RPN_dprintf("freed variable table %x", variables);
 }
 
 //! Prints the variables of a variable table.
