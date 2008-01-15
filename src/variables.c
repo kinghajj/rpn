@@ -190,16 +190,16 @@ RPNVariables *RPN_defaultVariables()
 	RPNVariables *variables = RPN_newVariables();
 
 	// Computer sizes.
-	RPN_addVariable(variables, strdup("KB"), 1000);
-	RPN_addVariable(variables, strdup("MB"), 1000 * 1000);
-	RPN_addVariable(variables, strdup("GB"), 1000 * 1000 * 1000);
+	RPN_addVariable(variables, strdup("KB"),  1000);
+	RPN_addVariable(variables, strdup("MB"),  1000 * 1000);
+	RPN_addVariable(variables, strdup("GB"),  1000 * 1000 * 1000);
 	RPN_addVariable(variables, strdup("KiB"), 1024);
 	RPN_addVariable(variables, strdup("MiB"), 1024 * 1024);
 	RPN_addVariable(variables, strdup("GiB"), 1024 * 1024 * 1024);
 
 	// Mathematical numbers.
 	RPN_addVariable(variables, strdup("PI"), 3.1415926535897932385);
-	RPN_addVariable(variables, strdup("E"), 2.72828182845904523536);
+	RPN_addVariable(variables, strdup("E"),  2.72828182845904523536);
 
 	return variables;
 }

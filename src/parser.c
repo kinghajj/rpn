@@ -56,7 +56,7 @@ bool RPN_isNumber(char *s)
  */
 RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 {
-	int i;
+	size_t i;
 
 	calculator->tokens = RPN_splitString(s);
 

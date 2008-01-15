@@ -58,8 +58,8 @@ RPNCalculator *RPN_newCalculator()
 	calculator->tokens    = NULL;
 
 	// Check for correct allocation.
-	if(!calculator->stack || !calculator->operators || !calculator->variables
-	   || !calculator->commands)
+	if(!calculator->stack || !calculator->operators || !calculator->variables ||
+	   !calculator->commands)
 		RPN_error("could not allocate memory for calculator members.");
 
 	return calculator;

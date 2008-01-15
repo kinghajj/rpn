@@ -49,21 +49,21 @@ static RPNCommandHelpItem options_help[] =
 
 static RPNCommandHelpItem operators_help[] = {
 	{"+, -, *, /, **, sqrt, =", "Normal math operators."},
-	{"%, ^, &, |", "Modulo and bitwise operators."},
+	{"%, ^, &, |",              "Modulo and bitwise operators."},
 	{NULL},
 };
 
 static RPNCommandHelpItem commands_help[] = {
-	{"dup", "Pushes topmost value to the stack."},
-	{"pop", "Removes the topmost value of the stack."},
-	{"ps",  "Prints the stack. Doesn't print anything if empty."},
-	{"psd", "Prints the stack in detail. Doesn't print anything if"
-			"\n\t\tempty."},
-	{"psv", "Prints the variable table. Doesn't print anything if"
-			"\n\t\tempty."},
-	{"psvd","Prints the variable table in detail. Doesn't print"
-			"\n\t\tanything if empty."},
-	{"x",   "Exits the program."},
+	{"dup",  "Pushes topmost value to the stack."},
+	{"pop",  "Removes the topmost value of the stack."},
+	{"ps",   "Prints the stack. Doesn't print anything if empty."},
+	{"psd",  "Prints the stack in detail. Doesn't print anything if"
+	         "\n\t\tempty."},
+	{"psv",  "Prints the variable table. Doesn't print anything if"
+	         "\n\t\tempty."},
+	{"psvd", "Prints the variable table in detail. Doesn't print"
+	         "\n\t\tanything if empty."},
+	{"x",    "Exits the program."},
 	{NULL},
 };
 
@@ -101,10 +101,10 @@ void RPN_printCommandsHelp()
 void RPN_printHelp()
 {
 	RPN_printf("rpn v. %i.%i.%i.%i -- a Reverse Polish Notation calculator\n",
-		__RPN_MAJOR__,
-		__RPN_MINOR__,
-		__RPN_REVIS__,
-		__RPN_BUILD__);
+	           __RPN_MAJOR__,
+	           __RPN_MINOR__,
+	           __RPN_REVIS__,
+	           __RPN_BUILD__);
 	RPN_printf("By Sam Fredrickson <kinghajj@gmail.com>\n\n");
 
 	RPN_printOptionsHelp();

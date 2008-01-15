@@ -232,8 +232,8 @@ void RPN_freeOperators(RPNOperators *operators)
 
 	// go through all operators and remove/free them.
 	for(operator = operators->table;
-		operator != NULL;
-		operator = operator->hh.next)
+	    operator != NULL;
+	    operator = operator->hh.next)
 	{
 		RPN_removeOperator(operators, operator);
 	}

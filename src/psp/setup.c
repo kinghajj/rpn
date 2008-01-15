@@ -56,7 +56,7 @@ int RPNPSP_SetupCallbacks()
 	int thid;
 
 	thid = sceKernelCreateThread("update_thread", RPNPSP_CallbackThread,
-		0x11, 0xFA0, 0, 0);
+	                             0x11, 0xFA0, 0, 0);
 	if(thid >= 0)
 		sceKernelStartThread(thid, 0, 0);
 	
