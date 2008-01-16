@@ -51,7 +51,7 @@ struct RPNCommands {
 };
 
 void RPN_freeCommands(RPNCommands *commands);
-bool RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func);
+void RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func);
 bool RPN_executeCommand(RPNCalculator *calculator, char *cmd);
 RPNCommands *RPN_defaultCommands();
 

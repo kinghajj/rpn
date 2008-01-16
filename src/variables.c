@@ -113,7 +113,7 @@ RPNValue RPN_getVariableValue(RPNVariables *variables, char *name)
 {
 	RPNVariable *var = RPN_findVariable(variables, name);
 	if(!variables)
-		RPN_error("tried to find variable in NULL stack.");
+		RPN_error("tried to find variable in a NULL variable table.");
 	if(!var) return 0;
 	return var->value;
 }
@@ -125,6 +125,9 @@ RPNValue RPN_getVariableValue(RPNVariables *variables, char *name)
 void RPN_freeVariables(RPNVariables *variables)
 {
 	RPNVariable *var, *temp;
+
+	if(!variables)
+		RPN_error("tried to free a NULL variable table.");
 
 	// go through each variable and free it.
 	for(var = variables->table; var != NULL;)

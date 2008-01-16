@@ -50,18 +50,13 @@ RPNCalculator *RPN_newCalculator()
 
 	// Allocate the members.
 	RPN_dprintf("allocating calculator members");
-	calculator->stack     = RPN_newStack();
 	calculator->commands  = RPN_defaultCommands();
-	calculator->operators = RPN_defaultOperators();
-	calculator->variables = RPN_defaultVariables();
-	calculator->status    = RPN_STATUS_CONTINUE;
-	calculator->tokens    = NULL;
 	calculator->functions = RPN_newFunctions();
-
-	// Check for correct allocation.
-	if(!calculator->stack || !calculator->operators || !calculator->variables ||
-	   !calculator->commands)
-		RPN_error("could not allocate memory for calculator members.");
+	calculator->operators = RPN_defaultOperators();
+	calculator->stack     = RPN_newStack();
+	calculator->status    = RPN_STATUS_CONTINUE;
+	calculator->variables = RPN_defaultVariables();
+	calculator->tokens    = NULL;
 
 	return calculator;
 }

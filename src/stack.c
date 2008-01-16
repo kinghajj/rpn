@@ -113,6 +113,11 @@ RPNValue RPN_pop(RPNStack *stack)
  */
 RPNValue RPN_peek(RPNStack *stack)
 {
+	if(!stack)
+		RPN_error("attempted to peek a NULL stack.");
+	if(!stack->first)
+		return 0;
+
 	return stack->first->value;
 }
 

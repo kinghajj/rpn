@@ -169,14 +169,13 @@ void RPN_freeCommands(RPNCommands *commands)
  * @param func The function that performs the command.
  * @return true if succeeds.
  */
-bool RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func)
+void RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func)
 {
 	RPNCommand *command = RPN_newCommand(cmd, func);
 	if(!commands)
 		RPN_error("tried to add command to NULL command table.");
 	HASH_ADD_KEYPTR( hh, commands->table, cmd, strlen(cmd), command );
 	RPN_dprintf("added command %x to table %x", command, commands);
-	return true;
 }
 
 //! Finds and executes a command based on its string representation.

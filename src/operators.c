@@ -214,7 +214,7 @@ void RPN_removeOperator(RPNOperators *operators, RPNOperator *operator)
 {
 	if(!operators)
 		RPN_error("attempted to remove an operator from a NULL operator"
-		" table.");
+		          " table.");
 	if(!operator)
 		RPN_error("attempted to remove a NULL operator.");
 	HASH_DEL( operators->table, operator );
@@ -234,9 +234,7 @@ void RPN_freeOperators(RPNOperators *operators)
 	for(operator = operators->table;
 	    operator != NULL;
 	    operator = operator->hh.next)
-	{
 		RPN_removeOperator(operators, operator);
-	}
 
 	free(operators);
 	RPN_dprintf("freed operator table %x", operators);
@@ -297,8 +295,9 @@ void RPN_normalMode(RPNCalculator *calculator, char *op)
 			RPN_push(calculator->stack, var->value);
 			free(name);
 		}
-		else // THIS IS SPARTAAA!
+		else
 		{
+			// THIS IS SPARTAAA!!!
 			// add a new variable to the variables table.
 			RPN_addVariable(calculator->variables, name,
 				RPN_peek(calculator->stack));

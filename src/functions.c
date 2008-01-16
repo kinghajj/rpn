@@ -44,3 +44,48 @@ RPNFunctions *RPN_newFunctions()
 	RPN_dprintf("created function table %x", functions);
 	return functions;
 }
+
+//! Creates a new function.
+/* @param name The name of the function.
+ * @param arg_names A pointer to an array of strings of the argument names.
+ * @param arg_size The size of arg_names.
+ * @param code The code of the function.
+ */
+RPNFunction *RPN_newFunction(char *name, char **arg_names, size_t arg_size,
+                             char *code)
+{
+	RPNFunction *function = new(RPNFunction);
+	if(!function)
+		RPN_error("could not allocate memory for function.");
+	
+	if(!name)
+		RPN_error("attempted to give new function a NULL name.");
+	else if(!arg_names)
+		RPN_error("attempted to give new function NULL argument names.");
+	else if(!code)
+		RPN_error("attempted to give new function NULL code.");
+	
+	function->name = name;
+	function->arg_names = arg_names;
+	function->arg_size = arg_size;
+	function->code = code;
+
+	return function;
+}
+
+//! Adds a new function to a function table.
+/* @param functions The function table.
+ * @param name The name of the function.
+ * @param arg_names A pointer to an array of strings of the argument names.
+ * @param arg_size The size of arg_names.
+ * @param code The code of the function.
+ */
+void RPN_addFunction(RPNFunctions *functions, char *name, char **arg_names,
+                     size_t arg_size, char *code)
+{
+	RPNFunction *function = RPN_newFunction(name, arg_names, arg_size, code);
+	if(!functions)
+		RPN_error("tried to add function to NULL function table.");
+	HASH_ADD_KEYPTR( hh, functions->table, name, strlen(name), function );
+	RPN_dprintf("added function %x to table %x", function, functions);
+}

@@ -81,6 +81,11 @@ RPNTokens *RPN_newTokens()
  */
 void RPN_addToken(RPNTokens *tokens, char *token)
 {
+	if(!tokens)
+		RPN_error("attempted to add token to a NULL token array.");
+	if(!token)
+		RPN_error("attempted to add a NULL token to token array.");
+	
 	// Check the tokens array.
 	if(tokens->size >= tokens->alloc_size)
 	{
