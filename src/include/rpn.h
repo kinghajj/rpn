@@ -52,7 +52,7 @@
 //! The revision version number.
 #define __RPN_REVIS__ 2
 //! The build version number.
-#define __RPN_BUILD__ 0
+#define __RPN_BUILD__ 1
 
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)malloc(sizeof(x))
@@ -74,6 +74,7 @@ typedef double RPNValue;
 #include "calculator.h"
 #include "commands.h"
 #include "error.h"
+#include "functions.h"
 #include "help.h"
 #include "operators.h"
 #include "parser.h"

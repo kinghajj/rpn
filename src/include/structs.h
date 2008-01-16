@@ -31,17 +31,26 @@
 #ifndef RPN_STRUCTS_H
 #define RPN_STRUCTS_H
 
+struct RPNArgument;
+typedef struct RPNArgument RPNArgument;
+
+struct RPNCalculator;
+typedef struct RPNCalculator RPNCalculator;
+
+struct RPNCommands;
+typedef struct RPNCommands RPNCommands;
+
+struct RPNCommand;
+typedef struct RPNCommand RPNCommand;
+
+struct RPNFunction;
+typedef struct RPNFunction RPNFunction;
+
+struct RPNFunctions;
+typedef struct RPNFunctions RPNFunctions;
+
 struct RPNNode;
 typedef struct RPNNode RPNNode;
-
-struct RPNStack;
-typedef struct RPNStack RPNStack;
-
-struct RPNVariable;
-typedef struct RPNVariable RPNVariable;
-
-struct RPNVariables;
-typedef struct RPNVariables RPNVariables;
 
 struct RPNOperator;
 typedef struct RPNOperator RPNOperator;
@@ -49,19 +58,16 @@ typedef struct RPNOperator RPNOperator;
 struct RPNOperators;
 typedef struct RPNOperators RPNOperators;
 
-struct RPNCommand;
-typedef struct RPNCommand RPNCommand;
-
-struct RPNCommands;
-typedef struct RPNCommands RPNCommands;
-
-struct RPNCalculator;
-typedef struct RPNCalculator RPNCalculator;
+struct RPNStack;
+typedef struct RPNStack RPNStack;
 
 struct RPNTokens;
 typedef struct RPNTokens RPNTokens;
 
-struct RPNArgument;
-typedef struct RPNArgument RPNArgument;
+struct RPNVariable;
+typedef struct RPNVariable RPNVariable;
+
+struct RPNVariables;
+typedef struct RPNVariables RPNVariables;
 
 #endif // RPN_STRUCTS_H

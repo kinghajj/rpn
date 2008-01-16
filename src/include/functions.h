@@ -25,66 +25,36 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * calculator.c - an all-in-one structure that has a stack, operators,         *
- * commands and variables.                                                     *
+ * functions.c -- processes user-defined functions.                            *
  ******************************************************************************/
 
-#include "rpn.h"
+#ifndef RPN_FUNCTIONS_H
+#define RPN_FUNCTIONS_H
+
 #include <stdlib.h>
 
-//! Creates a new calculator that has a stack, default commands, default
-//! operators, default variables, and an empty list of tokens.
-/**
- * It is recomended that you use this function to create a calculator rather
- * than creating a the stack and tables on your own, unless you have some
- * special need.
- *
- * @return A new RPNCalculator structure.
- */
-RPNCalculator *RPN_newCalculator()
+//! Holds a user-defined function.
+struct RPNFunction
 {
-	RPNCalculator *calculator = new(RPNCalculator);
+	//! The name of the function.
+	char *name;
+	//! The names of the arguments to the function.
+	char **arg_names;
+	//! The number of arguments to the function.
+	size_t arg_size;
+	//! The RPN code to executed when the function is called.
+	char *code;
+	//! A uthash handle to make this hashable.
+	UT_hash_handle hh;
+};
 
-	if(!calculator)
-		RPN_error("could not allocate memory for calculator.");
-
-	// Allocate the members.
-	RPN_dprintf("allocating calculator members");
-	calculator->stack     = RPN_newStack();
-	calculator->commands  = RPN_defaultCommands();
-	calculator->operators = RPN_defaultOperators();
-	calculator->variables = RPN_defaultVariables();
-	calculator->status    = RPN_STATUS_CONTINUE;
-	calculator->tokens    = NULL;
-	calculator->functions = RPN_newFunctions();
-
-	// Check for correct allocation.
-	if(!calculator->stack || !calculator->operators || !calculator->variables ||
-	   !calculator->commands)
-		RPN_error("could not allocate memory for calculator members.");
-
-	return calculator;
-}
-
-//! Frees a calculator and all of its members, such as the stack, commands,
-//! operators, variables, and the token list.
-/**
- * @param calculator A pointer to the calculator to free.
- */
-void RPN_freeCalculator(RPNCalculator *calculator)
+//! Holds a hash table of functions.
+struct RPNFunctions
 {
-	if(!calculator)
-		RPN_error("tried to free a NULL calculator.");
+	//! The function table.
+	RPNFunction *table;
+};
 
-	// Free every member, then the calculator itself.
-	RPN_dprintf("freeing calculator stack");
-	RPN_free(calculator->stack);
-	RPN_dprintf("freeing calculator variables");
-	RPN_freeVariables(calculator->variables);
-	RPN_dprintf("freeing calculator operators");
-	RPN_freeOperators(calculator->operators);
-	RPN_dprintf("freeing calculator commands");
-	RPN_freeCommands(calculator->commands);
-	RPN_dprintf("freeing calculator");
-	free(calculator);
-}
+RPNFunctions *RPN_newFunctions();
+
+#endif // RPN_FUNCTIONS_H

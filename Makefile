@@ -18,8 +18,8 @@ MKDIR = mkdir -p
 SRCDIR = src/
 OBJDIR = obj/
 SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
-		  src/help.c src/operators.c src/parser.c src/rpn.c src/stack.c \
-		  src/tokens.c src/variables.c
+		  src/functions.c src/help.c src/operators.c src/parser.c \
+		  src/rpn.c src/stack.c src/tokens.c src/variables.c
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
 # Git command to make a distribution tarball.

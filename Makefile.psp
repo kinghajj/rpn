@@ -7,9 +7,9 @@ VERSION = $(shell cat VERSION)
 TARGET = psprpn
 
 OBJS = \
-	src/calculator.o src/commands.o src/help.o src/operators.o src/parser.o \
-	src/stack.o src/tokens.o src/variables.o \
-	src/psp/psp.o src/psp/error.o src/psp/input.o src/psp/setup.o
+	src/calculator.o src/commands.o src/functions.o src/help.o src/operators.o \
+	src/parser.o src/stack.o src/tokens.o src/variables.o src/psp/psp.o \
+	src/psp/error.o src/psp/input.o src/psp/setup.o
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
 CFLAGS = -O2 -G0 -Wall -DRPN_DOUBLE -DRPN_PSP -Isrc/include -Isrc
