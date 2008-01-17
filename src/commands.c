@@ -79,6 +79,20 @@ void RPN_commandDup(RPNCalculator *calculator)
 		RPN_push(calculator->stack, RPN_peek(calculator->stack));
 }
 
+void RPN_commandIf(RPNCalculator *calculator)
+{
+	if(!RPN_canOperate(calculator->stack, 3)) return;
+
+	RPNValue test, truev, falsev;
+
+	falsev = RPN_pop(calculator->stack);
+	truev  = RPN_pop(calculator->stack);
+	test   = RPN_pop(calculator->stack);
+
+	if(test) RPN_push(calculator->stack, truev);
+	else     RPN_push(calculator->stack, falsev);
+}
+
 #endif // DOXYGEN_SKIP
 
 /*******************************************************************************
@@ -211,6 +225,7 @@ RPNCommands *RPN_defaultCommands()
 		RPN_commandPrintVariablesDetailed);
 	RPN_addCommand(commands, strdup("help"), RPN_commandPrintHelp);
 	RPN_addCommand(commands, strdup("x"),    RPN_commandExit);
+	RPN_addCommand(commands, strdup("if"),   RPN_commandIf);
 	RPN_dprintf("created default command table");
 
 	return commands;
