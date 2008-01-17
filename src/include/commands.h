@@ -32,7 +32,7 @@
 #define RPN_COMMANDS_H
 
 //! Command callback type.
-typedef void (*RPNCommandFunc)(RPNCalculator *calculator);
+typedef void (*RPNCommandFunc)(RPNCalculator *calculator, char **args);
 
 //! Holds a command.
 struct RPNCommand {
@@ -40,6 +40,8 @@ struct RPNCommand {
 	char *cmd;
 	//! The function that performs the command.
 	RPNCommandFunc func;
+	//! The number of arguments the argument takes.
+	size_t nargs;
 	//! A uthash handle to make this hashable.
 	UT_hash_handle hh;
 };
@@ -51,7 +53,8 @@ struct RPNCommands {
 };
 
 void RPN_freeCommands(RPNCommands *commands);
-void RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func);
+void RPN_addCommand(RPNCommands *commands, char *cmd, size_t nargs,
+                    RPNCommandFunc func);
 bool RPN_executeCommand(RPNCalculator *calculator, char *cmd);
 RPNCommands *RPN_defaultCommands();
 

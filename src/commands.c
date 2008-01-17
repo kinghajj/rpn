@@ -38,59 +38,45 @@
 // Don't look at these, Doxygen.
 #ifndef DOXYGEN_SKIP
 
-void RPN_commandPrint(RPNCalculator *calculator)
+void RPN_commandPrint(RPNCalculator *calculator, char **args)
 {
 	RPN_printStack(calculator->stack);
 }
 
-void RPN_commandPrintDetailed(RPNCalculator *calculator)
+void RPN_commandPrintDetailed(RPNCalculator *calculator, char **args)
 {
 	RPN_printDetailed(calculator->stack);
 }
 
-void RPN_commandPrintVariables(RPNCalculator *calculator)
+void RPN_commandPrintVariables(RPNCalculator *calculator, char **args)
 {
 	RPN_printVariables(calculator->variables);
 }
 
-void RPN_commandPrintVariablesDetailed(RPNCalculator *calculator)
+void RPN_commandPrintVariablesDetailed(RPNCalculator *calculator, char **args)
 {
 	RPN_printVariablesDetailed(calculator->variables);
 }
 
-void RPN_commandPrintHelp(RPNCalculator *calculator)
+void RPN_commandPrintHelp(RPNCalculator *calculator, char **args)
 {
 	RPN_printHelp();
 }
 
-void RPN_commandExit(RPNCalculator *calculator)
+void RPN_commandExit(RPNCalculator *calculator, char **args)
 {
 	calculator->status = RPN_STATUS_EXIT;
 }
 
-void RPN_commandPop(RPNCalculator *calculator)
+void RPN_commandPop(RPNCalculator *calculator, char **args)
 {
 	RPN_pop(calculator->stack);
 }
 
-void RPN_commandDup(RPNCalculator *calculator)
+void RPN_commandDup(RPNCalculator *calculator, char **args)
 {
 	if(RPN_canOperate(calculator->stack, 1))
 		RPN_push(calculator->stack, RPN_peek(calculator->stack));
-}
-
-void RPN_commandIf(RPNCalculator *calculator)
-{
-	if(!RPN_canOperate(calculator->stack, 3)) return;
-
-	RPNValue test, truev, falsev;
-
-	falsev = RPN_pop(calculator->stack);
-	truev  = RPN_pop(calculator->stack);
-	test   = RPN_pop(calculator->stack);
-
-	if(test) RPN_push(calculator->stack, truev);
-	else     RPN_push(calculator->stack, falsev);
 }
 
 #endif // DOXYGEN_SKIP
@@ -120,12 +106,13 @@ RPNCommands *RPN_newCommands()
  * @param func The function that performs the command.
  * @return A new command.
  */
-RPNCommand *RPN_newCommand(char *cmd, RPNCommandFunc func)
+RPNCommand *RPN_newCommand(char *cmd, size_t nargs, RPNCommandFunc func)
 {
 	RPNCommand *command = new(RPNCommand);
 	if(!command)
 		RPN_error("could not allocate memory for command.");
 	command->cmd = cmd;
+	command->nargs = nargs;
 	command->func = func;
 	RPN_dprintf("created command %x", command);
 	return command;
@@ -183,9 +170,10 @@ void RPN_freeCommands(RPNCommands *commands)
  * @param func The function that performs the command.
  * @return true if succeeds.
  */
-void RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func)
+void RPN_addCommand(RPNCommands *commands, char *cmd, size_t nargs,
+                    RPNCommandFunc func)
 {
-	RPNCommand *command = RPN_newCommand(cmd, func);
+	RPNCommand *command = RPN_newCommand(cmd, nargs, func);
 	if(!commands)
 		RPN_error("tried to add command to NULL command table.");
 	HASH_ADD_KEYPTR( hh, commands->table, cmd, strlen(cmd), command );
@@ -201,10 +189,12 @@ void RPN_addCommand(RPNCommands *commands, char *cmd, RPNCommandFunc func)
 bool RPN_executeCommand(RPNCalculator *calculator, char *cmd)
 {
 	RPNCommand *command;
+	RPNTokens *tokens = calculator->tokens;
 
 	HASH_FIND_STR( calculator->commands->table, cmd, command );
 	if(!command) return false;
-	command->func(calculator);
+	if(tokens->size - tokens->pos + 1 >= command->nargs)
+		command->func(calculator, &tokens->tokens[tokens->pos + 1]);
 	return true;
 }
 
@@ -216,16 +206,15 @@ RPNCommands *RPN_defaultCommands()
 {
 	RPNCommands *commands = RPN_newCommands();
 
-	RPN_addCommand(commands, strdup("dup"),  RPN_commandDup);
-	RPN_addCommand(commands, strdup("pop"),  RPN_commandPop);
-	RPN_addCommand(commands, strdup("ps"),   RPN_commandPrint);
-	RPN_addCommand(commands, strdup("psd"),  RPN_commandPrintDetailed);
-	RPN_addCommand(commands, strdup("psv"),  RPN_commandPrintVariables);
-	RPN_addCommand(commands, strdup("psvd"),
+	RPN_addCommand(commands, strdup("dup"),  0, RPN_commandDup);
+	RPN_addCommand(commands, strdup("pop"),  0, RPN_commandPop);
+	RPN_addCommand(commands, strdup("ps"),   0, RPN_commandPrint);
+	RPN_addCommand(commands, strdup("psd"),  0, RPN_commandPrintDetailed);
+	RPN_addCommand(commands, strdup("psv"),  0, RPN_commandPrintVariables);
+	RPN_addCommand(commands, strdup("psvd"), 0,
 		RPN_commandPrintVariablesDetailed);
-	RPN_addCommand(commands, strdup("help"), RPN_commandPrintHelp);
-	RPN_addCommand(commands, strdup("x"),    RPN_commandExit);
-	RPN_addCommand(commands, strdup("if"),   RPN_commandIf);
+	RPN_addCommand(commands, strdup("help"), 0, RPN_commandPrintHelp);
+	RPN_addCommand(commands, strdup("x"),    0, RPN_commandExit);
 	RPN_dprintf("created default command table");
 
 	return commands;

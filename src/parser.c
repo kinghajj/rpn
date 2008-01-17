@@ -56,25 +56,28 @@ bool RPN_isNumber(char *s)
  */
 RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 {
-	size_t i;
+	RPNTokens *tokens;
 
 	calculator->tokens = RPN_splitString(s);
+	tokens = calculator->tokens;
 
-	for(i = 0; i < calculator->tokens->size; i++)
+	for(tokens->pos = 0;
+	    tokens->pos < tokens->size;
+	    tokens->pos++)
 	{
-		if(RPN_isNumber(calculator->tokens->tokens[i]))
+		if(RPN_isNumber(tokens->tokens[tokens->pos]))
 #ifdef RPN_DOUBLE
 			RPN_push(calculator->stack,
-				strtod(calculator->tokens->tokens[i], NULL));
+			    strtod(tokens->tokens[tokens->pos], NULL));
 #elif RPN_LONG_DOUBLE
 			RPN_push(calculator->stack,
-				strtold(calculator->tokens->tokens[i], NULL));
+			    strtold(tokens->tokens[tokens->pos], NULL));
 #endif
 		else
-			RPN_executeOperator(calculator, calculator->tokens->tokens[i]);
+			RPN_executeOperator(calculator, tokens->tokens[tokens->pos]);
 	}
 
-	RPN_freeTokens(calculator->tokens);
+	RPN_freeTokens(tokens);
 	calculator->tokens = NULL;
 
 	return RPN_peek(calculator->stack);

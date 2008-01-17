@@ -42,6 +42,8 @@ struct RPNTokens
 	size_t size;
 	//! How large the array is in memory.
 	size_t alloc_size;
+	//! Current position in the tokens array, for iterating.
+	size_t pos;
 };
 
 RPNTokens *RPN_splitString(char *s);

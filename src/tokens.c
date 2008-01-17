@@ -69,6 +69,7 @@ RPNTokens *RPN_newTokens()
 	tokens->tokens = malloc(tokens->alloc_size * sizeof(char**));
 	if(!tokens->tokens) RPN_error("could not allocate memory for tokens");
 	tokens->size = 0;
+	tokens->pos = 0;
 	return tokens;
 }
 
