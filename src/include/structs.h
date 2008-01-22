@@ -43,12 +43,6 @@ typedef struct RPNCommands RPNCommands;
 struct RPNCommand;
 typedef struct RPNCommand RPNCommand;
 
-struct RPNFunction;
-typedef struct RPNFunction RPNFunction;
-
-struct RPNFunctions;
-typedef struct RPNFunctions RPNFunctions;
-
 struct RPNNode;
 typedef struct RPNNode RPNNode;
 

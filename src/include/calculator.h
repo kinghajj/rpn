@@ -44,7 +44,6 @@
 struct RPNCalculator
 {
 	RPNCommands *commands;
-	RPNFunctions *functions;
 	RPNOperators *operators;
 	RPNStack *stack;
 	RPNTokens *tokens;

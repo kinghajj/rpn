@@ -74,7 +74,6 @@ typedef double RPNValue;
 #include "calculator.h"
 #include "commands.h"
 #include "error.h"
-#include "functions.h"
 #include "help.h"
 #include "operators.h"
 #include "parser.h"
