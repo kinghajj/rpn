@@ -44,7 +44,6 @@ struct RPNArgument
 	RPNArgumentFunc func;
 };
 
-void RPN_processArguments(RPNCalculator *calculator, int argc,
-	char *argv[]);
+void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[]);
 
 #endif // RPN_ARGUMENTS_H
