@@ -52,7 +52,7 @@ struct RPNOperators {
 
 void RPN_freeOperators(RPNOperators *operators);
 bool RPN_addOperator(RPNOperators *operators, char *op, RPNOperatorFunc func);
-void RPN_executeOperator(RPNCalculator *calculator, char *op);
+bool RPN_executeOperator(RPNCalculator *calculator, char *op);
 RPNOperators *RPN_defaultOperators();
 
 #endif // RPN_OPERATORS_H

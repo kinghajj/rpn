@@ -48,6 +48,48 @@ bool RPN_isNumber(char *s)
 	return true;
 }
 
+//! Evaluates a token on the calculator.
+/**
+ * @param calculator The calculator.
+ * @param tok The token.
+ */
+void RPN_evalToken(RPNCalculator *calculator, char *tok)
+{
+	RPNVariable *var;
+	char *name;
+	bool everExecutedOp;
+	bool everExecutedCmd;
+
+	// try to execute an operator
+	everExecutedOp = RPN_executeOperator(calculator, tok);
+
+	// no? try to execute a command, then.
+	if(!everExecutedOp)
+		everExecutedCmd = RPN_executeCommand(calculator, tok);
+
+	// still no? then treat this as a variable name.
+	if(!everExecutedOp && !everExecutedCmd)
+	{
+		// copy variable name
+		name = strdup(tok);
+
+		// find variable with this name
+		var = RPN_findVariable(calculator->variables, name);
+		if(var) 
+		{
+			// push it's value to the stack, free the name.
+			RPN_push(calculator->stack, var->value);
+			free(name);
+		}
+		// add a new variable to the variables table.
+		else
+		{
+			RPN_addVariable(calculator->variables, name,
+				RPN_peek(calculator->stack));
+		}
+	}
+}
+
 //! Evaluates a string on a calculator.
 /**
  * @param s The string to evaluate.
@@ -74,7 +116,7 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 			    strtold(tokens->tokens[tokens->pos], NULL));
 #endif
 		else
-			RPN_executeOperator(calculator, tokens->tokens[tokens->pos]);
+			RPN_evalToken(calculator, tokens->tokens[tokens->pos]);
 	}
 
 	RPN_freeTokens(tokens);

@@ -31,6 +31,7 @@
 #ifndef RPN_PARSER_H
 #define RPN_PARSER_H
 
+void RPN_evalToken(RPNCalculator *calculator, char *tok);
 RPNValue RPN_eval(char *s, RPNCalculator *calculator);
 
 #endif // RPN_PARSER_H

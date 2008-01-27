@@ -257,72 +257,47 @@ bool RPN_addOperator(RPNOperators *operators, char *op, RPNOperatorFunc func)
 	return true;
 }
 
-#ifndef DOXYGEN_SKIP
-
-// this is the normal evaluation mode. an operator is only called once when it
-// is received.
-void RPN_normalMode(RPNCalculator *calculator, char *op)
+//! Finds an operator in an operator table by name.
+/**
+ * @param operators The operator table.
+ * @param op The name of the operator to find.
+ * @return The operator if found, else NULL.
+ */
+RPNOperator *RPN_findOperator(RPNOperators *operators, char *op)
 {
 	RPNOperator *operator;
-	RPNVariable *var;
-	char *name;
-	bool everExecutedOp = false;
-	bool everExecutedCmd = false;
 
-	// try to find an operator
-	HASH_FIND_STR( calculator->operators->table, op, operator );
-	if(operator)
-	{
-		operator->func(calculator->stack);
-		everExecutedOp = true;
-	}
-
-	// no? try to execute a command, then.
-	if(!everExecutedOp)
-		everExecutedCmd = RPN_executeCommand(calculator, op);
-
-	// still no? then set this to a variable.
-	if(!everExecutedOp && !everExecutedCmd)
-	{
-		// copy variable name
-		name = strdup(op);
-
-		// find variable with this name
-		var = RPN_findVariable(calculator->variables, name);
-		if(var) 
-		{
-			// push it's value to the stack, free the name.
-			RPN_push(calculator->stack, var->value);
-			free(name);
-		}
-		else
-		{
-			// THIS IS SPARTAAA!!!
-			// add a new variable to the variables table.
-			RPN_addVariable(calculator->variables, name,
-				RPN_peek(calculator->stack));
-		}
-	}
+	HASH_FIND_STR( operators->table, op, operator );
+	
+	return operator;
 }
-
-#endif // DOXYGEN_SKIP
 
 //! Finds and executes and operator.
 /**
  * @param calculator The calculator.
  * @param op The string representation of the operator.
  */
-void RPN_executeOperator(RPNCalculator *calculator, char *op)
+bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 {
+	RPNOperator *operator;
+
 	if(!calculator)
 		RPN_error("tried to execute an operator on a NULL table.");
-	if(!op) return;
+	if(!op) return false;
 
-	RPN_normalMode(calculator, op);
+	// find the operator.
+	operator = RPN_findOperator(calculator->operators, op);
+	// execute it, return.
+	if(operator)
+	{
+		operator->func(calculator->stack);
+		return true;
+	}
 
-	return;
+	// not an operator?
+	return false;
 }
-
+// THIS IS SPARTAAA!!!
 //! Returns an operator table with default operators.
 /**
  * @return The default operator table.
