@@ -75,14 +75,13 @@ void RPNPSP_clearOutputBuffer()
 int RPN_printf(char *fmt, ...)
 {
 	va_list args;
-	char buf[1024];
 
 	// Always make sure to clear the buffer!
 	RPNPSP_clearOutputBuffer();
 
 	va_start(args, fmt);
-	vsprintf(buf, fmt, args);
-	kprintf("%s", buf);
+	vsprintf(RPNPSP_output_buffer, fmt, args);
+	kprintf("%s", RPNPSP_output_buffer);
 	return 0;
 }
 
@@ -91,14 +90,13 @@ int RPN_printf(char *fmt, ...)
 int RPN_dprintff(char *func, char *fmt, ...)
 {
 	va_list args;
-	char buf[1024];
 
 	// Always make sure to clear the buffer!
 	RPNPSP_clearOutputBuffer();
 
 	va_start(args, fmt);
-	vsprintf(buf, fmt, args);
-	kprintf("%s: %s\n", func, buf);
+	vsprintf(RPNPSP_output_buffer, fmt, args);
+	kprintf("%s: %s\n", func, RPNPSP_output_buffer);
 	return 0;
 }
 #endif
