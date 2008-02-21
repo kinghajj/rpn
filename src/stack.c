@@ -126,7 +126,7 @@ RPNValue RPN_peek(RPNStack *stack)
  *
  * @param stack The stack to free.
  */
-void RPN_free(RPNStack *stack)
+void RPN_freeStack(RPNStack *stack)
 {
 	RPNNode *node, *temp;
 
@@ -192,7 +192,7 @@ void RPN_printStack(RPNStack *stack)
  *
  * @param stack The stack.
  */
-void RPN_printDetailed(RPNStack *stack)
+void RPN_printStackDetailed(RPNStack *stack)
 {
 	RPNNode *node;
 

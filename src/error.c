@@ -83,7 +83,7 @@ void RPN_error(char *msg)
 //! Prints formatted output to stdout.
 /**
  * This is used because some systems, such as the PlayStation Portable, require
- * special attential when printing. In the PSP sources, this function is defined
+ * special attention when printing. In the PSP sources, this function is defined
  * differently than in the normal sources, but the rest of the code doesn't know
  * that because they both have the same signature. Use this function to print
  * instead of printf() to ensure that your message is seen on all systems.
@@ -100,7 +100,9 @@ int RPN_printf(char *fmt, ...)
 
 #ifdef RPN_DEBUG
 //! Only prints debug information if compiled to do so. If not, then the macro
-//! RPN_dprintf is set to nothing, so this function isn't needed.
+//! RPN_dprintf is set to nothing, so this function isn't needed, and the
+//! strings passed to it are not included in the executable, so there is no harm
+//! in liberally using this function :)
 int RPN_dprintff(char *func, char *fmt, ...)
 {
 	va_list args;

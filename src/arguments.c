@@ -88,6 +88,7 @@ RPNArgument *RPN_findArgument(char *name)
 	    RPN_argumentNotNull(argument);
 	    i++, argument = &RPN_arguments[i])
 	{
+		// check if the wanted name matches the short or long names.
 		if(!strcmp(argument->short_name, name) ||
 		   !strcmp(argument->long_name, name))
 			return argument;

@@ -45,7 +45,7 @@ void RPN_commandPrint(RPNCalculator *calculator, char **args)
 
 void RPN_commandPrintDetailed(RPNCalculator *calculator, char **args)
 {
-	RPN_printDetailed(calculator->stack);
+	RPN_printStackDetailed(calculator->stack);
 }
 
 void RPN_commandPrintVariables(RPNCalculator *calculator, char **args)
