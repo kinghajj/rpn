@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	// cleanup.
 	RPN_freeCalculator(calculator);
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 #endif // DOXYGEN_SKIP
