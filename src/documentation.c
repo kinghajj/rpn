@@ -9,7 +9,7 @@
  * Even though I've never released it before, it's already up to version 1.2;
  * at 1.0, this was a fully-function plain calculator, with not many bells and
  * whistles. In 1.1, I added variables, and in 1.2 I ported this to the
- * PlayStation portable. In this release, 1.2.1.1, I've changed the parser a bit
+ * PlayStation portable. In this release, 1.2.2.3, I've changed the parser a bit
  * (in preparation for future features), and have begun documenting the code
  * with Doxygen.
  *
@@ -66,9 +66,8 @@
  * [0]>
  * \endcode
  *
- * The number in barckets is the topmost item of the stack. (The start value of
- * the stack is hidden when you add numbers to it.) To push a number to it, just
- * type it in and press enter.
+ * The number in barckets is the topmost item of the stack. To push a number to
+ * it, just type it in and press enter.
  *
  * \code
  * [0]> PI
@@ -141,7 +140,7 @@
  *
  * Because not many people have a PSP toolchain on hand, I've included a
  * pre-built EBOOT.PBP. Though compiled for firmware 1.50, I have successfully
- * run it under 3.71 M33-4. To install it, simply copy EBOOT.PBP to
+ * run it under 3.80 M33-5. To install it, simply copy EBOOT.PBP to
  * ms0:/PSP/GAME/PSPRPN .
  *
  * \section psp-type How to Type on the PSP
@@ -415,18 +414,19 @@
  * After this, a loop is entered that is controlled by the calculator's status.
  * As long as the status equals RPN_STATUS_CONTINUE, the loop executes. Commands
  * should exit the program by setting the status to RPN_STATUS_EXIT, unless some
- * severe error occurs.
+ * severe error occurs, in which case one should use exit() or a similar
+ * function.
  *
  * In the loop, the user is presented with a peek at the stack and a prompt to
  * evaluate a string. Upon pressing Enter, the string is sent to RPN_eval, which
  * uses RPN_splitString to get a list of tokens. It then iterates through the
  * tokens, pushing numeric ones to the stack and delegating others to
- * RPN_executeOperator.
+ * RPN_evalToken.
  *
- * RPN_executeOperator tries to find an operator equal to the token; if it
- * can't, it sends the token to RPN_executeCommand, and if that cannot, the
- * token is added to the variable table and its value set to the value of the
- * topmost stack item.
+ * RPN_evalToken tries to find an operator equal to the token; if it can't, it
+ * sends the token to RPN_executeCommand, and if that cannot, the token is added
+ * to the variable table and its value set to the value of the topmost stack
+ * item.
  *
  * \section structs Structures
  *
@@ -434,11 +434,6 @@
  * My stack is RPNStack, which holds only a pointer to the first node of the
  * stack. The node structure, RPNNode, holds the value of the node and a pointer
  * to the next node in the stack.
- *
- * When a stack is created, it has an initial, hidden node whose value is zero.
- * This node cannot be popped. It is not displayed when printing the stack. I'm
- * not exactly sure anymore why I decided to do this, but there must have been a
- * reason. I'll remove this later, perhaps.
  *
  * An RPNOperator holds the name and function of an operator. A callback
  * function for an operator looks like this:

@@ -42,8 +42,6 @@ RPNStack *RPN_newStack()
 	RPNStack *stack = new(RPNStack);
 	if(!stack)
 		RPN_error("could not allocate memory for the stack.");
-	// this is the hidden node, always lurking at the bottom...
-	stack->first = RPN_newNode(0.0, NULL);
 	RPN_dprintf("created stack %x", stack);
 	return stack;
 }
@@ -93,7 +91,8 @@ RPNValue RPN_pop(RPNStack *stack)
 {
 	if(!stack)
 		RPN_error("tried to pop from a NULL stack.");
-	if(!stack->first->next) return 0;
+	if(!RPN_canOperate(stack, 1)) return 0;
+
 	// get node to pop
 	RPNNode *popped = stack->first;
 	RPNValue value = popped->value;
@@ -115,7 +114,7 @@ RPNValue RPN_peek(RPNStack *stack)
 {
 	if(!stack)
 		RPN_error("attempted to peek a NULL stack.");
-	if(!stack->first)
+	if(!RPN_canOperate(stack, 1))
 		return 0;
 
 	return stack->first->value;
@@ -161,9 +160,8 @@ bool RPN_canOperate(RPNStack *stack, unsigned int nargs)
 
 	for(nnodes = 0, node = stack->first; node; node = node->next, nnodes++);
 
-	// can only operate if there are three nodes in the stack
-	// (the third node is never used, but is the hidden bottom of the stack.)
-	return (nnodes-1) >= nargs ? true : false;
+	// can only operate if there are enough items in the stack
+	return nnodes >= nargs ? true : false;
 }
 
 /**
@@ -176,7 +174,7 @@ void RPN_printStack(RPNStack *stack)
 	RPNNode *node;
 
 	RPN_printf("[ ");
-	for(node = stack->first; node->next; node = node->next)
+	for(node = stack->first; node; node = node->next)
 	{
 #ifdef RPN_LONG_DOUBLE
 		RPN_printf("%Lg, ", node->value);
@@ -197,7 +195,7 @@ void RPN_printStackDetailed(RPNStack *stack)
 	RPNNode *node;
 
 	RPN_printf("[ ");
-	for(node = stack->first; node->next; node = node->next)
+	for(node = stack->first; node; node = node->next)
 	{
 #ifdef RPN_LONG_DOUBLE
 		RPN_dprintf("printing node %x", node);
