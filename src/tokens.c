@@ -1,9 +1,41 @@
+/*******************************************************************************
+ * Reverse Polish Notation calculator.                                         *
+ * Copyright (c) 2007, Samuel Fredrickson <kinghajj@gmail.com>                 *
+ * All rights reserved.                                                        *
+ *                                                                             *
+ * Redistribution and use in source and binary forms, with or without          *
+ * modification, are permitted provided that the following conditions are met: *
+ *     * Redistributions of source code must retain the above copyright        *
+ *       notice, this list of conditions and the following disclaimer.         *
+ *     * Redistributions in binary form must reproduce the above copyright     *
+ *       notice, this list of conditions and the following disclaimer in the   *
+ *       documentation and/or other materials provided with the distribution.  *
+ *                                                                             *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER ``AS IS'' AND ANY EXPRESS *
+ * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED           *
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE      *
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY        *
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES  *
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR          *
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER  *
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          *
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY   *
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH *
+ * DAMAGE.                                                                     *
+ ******************************************************************************/
+
+/*******************************************************************************
+ * tokens.c -- splits a string into tokens.                                    *
+ ******************************************************************************/
+
 #include <ctype.h>
 #include "rpn.h"
 #include <stdlib.h>
 #include <string.h>
 
 #ifndef DOXYGEN_SKIP
+
+char *RPN_NULL_TOKEN = "(NULL_TOKEN)";
 
 size_t RPN_findNextToken(size_t cur_pos, char *s, size_t len)
 {
@@ -36,6 +68,9 @@ char *RPN_getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 	*pos = RPN_findNextToken(*pos, str, len);
 	*end = RPN_findTokenEnd(*pos, str, len);
 	size = *end - *pos + 1;
+
+	// no real token? then return NULL. handle it later.
+	if(size == 1) return RPN_NULL_TOKEN;
 
 	// allocate space for it
 	s = malloc(size);
@@ -86,7 +121,9 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 		RPN_error("attempted to add token to a NULL token array.");
 	if(!token)
 		RPN_error("attempted to add a NULL token to token array.");
-	
+	if(token == RPN_NULL_TOKEN)
+		return;
+
 	// Check the tokens array.
 	if(tokens->size >= tokens->alloc_size)
 	{
@@ -122,7 +159,7 @@ RPNTokens *RPN_splitString(char *str)
 	// resize array
 	tokens->tokens = realloc(tokens->tokens, tokens->size * sizeof(char**));
 	if(!tokens->tokens) RPN_error("could not resize tokens");
-
+ 
 	return tokens;
 }
 
