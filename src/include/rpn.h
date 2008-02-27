@@ -50,9 +50,9 @@
 //! The minor version number.
 #define __RPN_MINOR__ 2
 //! The revision version number.
-#define __RPN_REVIS__ 2
+#define __RPN_REVIS__ 3
 //! The build version number.
-#define __RPN_BUILD__ 4
+#define __RPN_BUILD__ 1
 
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)malloc(sizeof(x))
@@ -60,8 +60,14 @@
 // setup the type of RPNValue
 #ifdef RPN_LONG_DOUBLE
 typedef long double RPNValue;
+#define RPN_VALUE_LONG_FORMAT  "%Lf"
+#define RPN_VALUE_SHORT_FORMAT "%Lg"
+#define RPN_strtod strtold
 #elif  RPN_DOUBLE
 typedef double RPNValue;
+#define RPN_VALUE_LONG_FORMAT  "%f"
+#define RPN_VALUE_SHORT_FORMAT "%g"
+#define RPN_strtod strtod
 #else
 #error Please define either RPN_LONG_DOUBLE or RPN_DOUBLE.
 #endif

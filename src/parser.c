@@ -108,13 +108,8 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	    tokens->pos++)
 	{
 		if(RPN_isNumber(tokens->tokens[tokens->pos]))
-#ifdef RPN_DOUBLE
 			RPN_push(calculator->stack,
-			    strtod(tokens->tokens[tokens->pos], NULL));
-#elif RPN_LONG_DOUBLE
-			RPN_push(calculator->stack,
-			    strtold(tokens->tokens[tokens->pos], NULL));
-#endif
+				RPN_strtod(tokens->tokens[tokens->pos], NULL));
 		else
 			RPN_evalToken(calculator, tokens->tokens[tokens->pos]);
 	}

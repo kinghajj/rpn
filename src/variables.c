@@ -154,13 +154,7 @@ void RPN_printVariables(RPNVariables *variables)
 
 	RPN_printf("[ ");
 	for(var = variables->table; var != NULL; var = var->hh.next)
-	{
-#ifdef RPN_LONG_DOUBLE
-		RPN_printf("%s = %Lg, ", var->name, var->value);
-#elif  RPN_DOUBLE
-		RPN_printf("%s = %g, ", var->name, var->value);
-#endif
-	}
+		RPN_printf("%s = " RPN_VALUE_SHORT_FORMAT ", ", var->name, var->value);
 	RPN_printf("]\n");
 }
 
@@ -174,13 +168,7 @@ void RPN_printVariablesDetailed(RPNVariables *variables)
 
 	RPN_printf("[ ");
 	for(var = variables->table; var != NULL; var = var->hh.next)
-	{
-#ifdef RPN_LONG_DOUBLE
-		RPN_printf("%s = %Lf, ", var->name, var->value);
-#elif  RPN_DOUBLE
-		RPN_printf("%s = %f, ", var->name, var->value);
-#endif
-	}
+		RPN_printf("%s = " RPN_VALUE_LONG_FORMAT ", ", var->name, var->value);
 	RPN_printf("]\n");
 }
 

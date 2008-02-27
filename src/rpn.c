@@ -54,11 +54,7 @@ int main(int argc, char *argv[])
 
 	while(calculator->status == RPN_STATUS_CONTINUE)
 	{
-#ifdef RPN_LONG_DOUBLE
-		printf("[%Lg]> ", RPN_peek(calculator->stack));
-#elif  RPN_DOUBLE
-		printf("[%g]> ", RPN_peek(calculator->stack));
-#endif
+		printf("[" RPN_VALUE_SHORT_FORMAT "]> ", RPN_peek(calculator->stack));
 		fgets(input, 1024, stdin);
 		if(feof(stdin)) break;
 		RPN_eval(input, calculator);

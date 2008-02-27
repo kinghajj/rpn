@@ -54,11 +54,8 @@ bool RPN_argumentHelp(RPNCalculator *calculator, char **args)
 bool RPN_argumentExec(RPNCalculator *calculator, char **args)
 {
 	RPN_eval(args[0], calculator);
-#ifdef RPN_LONG_DOUBLE
-	RPN_printf("%Lf", RPN_peek(calculator->stack));
-#elif  RPN_DOUBLE
-	RPN_printf("%f", RPN_peek(calculator->stack));
-#endif
+	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(calculator->stack));
+
 	calculator->status = RPN_STATUS_EXIT;
 	return true;
 }

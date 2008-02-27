@@ -175,13 +175,7 @@ void RPN_printStack(RPNStack *stack)
 
 	RPN_printf("[ ");
 	for(node = stack->first; node; node = node->next)
-	{
-#ifdef RPN_LONG_DOUBLE
-		RPN_printf("%Lg, ", node->value);
-#elif  RPN_DOUBLE
-		RPN_printf("%g, ", node->value);
-#endif
-	}
+		RPN_printf(RPN_VALUE_SHORT_FORMAT ", ", node->value);
 	RPN_printf("]\n");
 }
 
@@ -196,13 +190,6 @@ void RPN_printStackDetailed(RPNStack *stack)
 
 	RPN_printf("[ ");
 	for(node = stack->first; node; node = node->next)
-	{
-#ifdef RPN_LONG_DOUBLE
-		RPN_dprintf("printing node %x", node);
-		RPN_printf("%Lf, ", node->value);
-#elif  RPN_DOUBLE
-		RPN_printf("%f, ", node->value);
-#endif
-	}
+		RPN_printf(RPN_VALUE_LONG_FORMAT ", ", node->value);
 	RPN_printf("]\n");
 }
