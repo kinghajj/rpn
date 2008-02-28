@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Reverse Polish Notation calculator.                                         *
- * Copyright (c) 2007, Samuel Fredrickson <kinghajj@gmail.com>                 *
+ * Copyright (c) 2007-2008, Samuel Fredrickson <kinghajj@gmail.com>            *
  * All rights reserved.                                                        *
  *                                                                             *
  * Redistribution and use in source and binary forms, with or without          *

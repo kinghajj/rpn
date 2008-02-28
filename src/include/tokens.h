@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Reverse Polish Notation calculator.                                         *
- * Copyright (c) 2007, Samuel Fredrickson <kinghajj@gmail.com>                 *
+ * Copyright (c) 2007-2008, Samuel Fredrickson <kinghajj@gmail.com>            *
  * All rights reserved.                                                        *
  *                                                                             *
  * Redistribution and use in source and binary forms, with or without          *
@@ -31,6 +31,8 @@
 #ifndef RPN_TOKENS_H
 #define RPN_TOKENS_H
 
+// When a token array is first allocated, it can hold up to 10 items before it
+// is reallocated. At the end, it is reallocated to hold only what it needs.
 #define RPN_TOKENS_ALLOC_SIZE 10
 
 //! Holds an array of tokens and the number of items in that array.
