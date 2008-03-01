@@ -127,6 +127,11 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 	// Check the tokens array.
 	if(tokens->size >= tokens->alloc_size)
 	{
+		RPN_dprintf("tokens->size: %u", tokens->size);
+		RPN_dprintf("tokens->alloc_size: %u", tokens->alloc_size);
+		RPN_dprintf("tokens->tokens: %p", tokens->tokens);
+		RPN_dprintf("token: \"%s\" (%u)", token, strlen(token));
+
 		tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
 		tokens->tokens = realloc(tokens->tokens,
 			tokens->alloc_size * sizeof(char**));
@@ -157,7 +162,11 @@ RPNTokens *RPN_splitString(char *str)
 		RPN_addToken(tokens, RPN_getNextToken(str, len, &pos, &end));
 
 	// resize array
-	tokens->tokens = realloc(tokens->tokens, tokens->size * sizeof(char**));
+	RPN_dprintf("tokens->size: %u", tokens->size);
+	RPN_dprintf("tokens->tokens: %p", tokens->tokens);
+	// don't try to resize the tokens to null.
+	if(tokens->size)
+		tokens->tokens = realloc(tokens->tokens, tokens->size * sizeof(char**));
 	if(!tokens->tokens) RPN_error("could not resize tokens");
  
 	return tokens;
