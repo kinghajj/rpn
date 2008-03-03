@@ -37,8 +37,8 @@
 
 #include <stdbool.h>
 
-/* This wonderful header provides hashing for C structures. I use it to hash
- * variables to implement a hash table to store and find variables.
+/* This wonderful header provides hashing for C structures. I use it to
+ * implement a hash table to store and find variables, commands, and operators.
  *
  * No library is needed; it is implemented entirely as C macros in the header.
  */

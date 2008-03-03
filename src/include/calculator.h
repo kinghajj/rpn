@@ -43,10 +43,15 @@
  */
 struct RPNCalculator
 {
+	//! The calculator's available commands.
 	RPNCommands *commands;
+	//! The calculator's available operators.
 	RPNOperators *operators;
+	//! The calculator's stack.
 	RPNStack *stack;
+	//! The calculator's tokens.
 	RPNTokens *tokens;
+	//! The calcalator's variables.
 	RPNVariables *variables;
 	//! Holds the status of the calculator.
 	int status;
