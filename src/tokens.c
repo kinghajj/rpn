@@ -73,7 +73,7 @@ char *RPN_getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 	if(size == 1) return RPN_NULL_TOKEN;
 
 	// allocate space for it
-	s = malloc(size);
+	s = RPN_malloc(size);
 
 	// copy it from the source string
 	memcpy(s, &str[*pos], size);
@@ -101,7 +101,7 @@ RPNTokens *RPN_newTokens()
 	tokens = new(RPNTokens);
 	if(!tokens) RPN_error("could not allocate memory for tokens");
 	tokens->alloc_size = RPN_TOKENS_ALLOC_SIZE;
-	tokens->tokens = malloc(tokens->alloc_size * sizeof(char**));
+	tokens->tokens = RPN_malloc(tokens->alloc_size * sizeof(char**));
 	if(!tokens->tokens) RPN_error("could not allocate memory for tokens");
 	tokens->size = 0;
 	tokens->pos = 0;
@@ -186,8 +186,8 @@ void RPN_freeTokens(RPNTokens *tokens)
 
 	for(i = 0; i < tokens->size; i++)
 		if(!tokens->tokens[i]) RPN_error("tried to free a null token");
-		else free(tokens->tokens[i]);
+		else RPN_free(tokens->tokens[i]);
 	
-	free(tokens->tokens);
-	free(tokens);
+	RPN_free(tokens->tokens);
+	RPN_free(tokens);
 }

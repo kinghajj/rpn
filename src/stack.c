@@ -99,7 +99,7 @@ RPNValue RPN_pop(RPNStack *stack)
 	// re-wire stack
 	stack->first = popped->next;
 	// free node
-	free(popped);
+	RPN_free(popped);
 	RPN_dprintf("poped %x from stack", popped);
 	return value;
 }
@@ -134,12 +134,12 @@ void RPN_freeStack(RPNStack *stack)
 	{
 		temp = node;
 		node = node->next;
-		free(temp);
+		RPN_free(temp);
 		RPN_dprintf("freeed node %x", temp);
 	}
 
 	// free the stack
-	free(stack);
+	RPN_free(stack);
 	RPN_dprintf("freed stack %x", stack);
 }
 

@@ -55,7 +55,7 @@
 #define __RPN_BUILD__ 1
 
 //! Handy-dandy macro for allocating structures
-#define new(x) (x*)malloc(sizeof(x))
+#define new(x) (x*)RPN_malloc(sizeof(x))
 
 // setup the type of RPNValue
 #ifdef RPN_LONG_DOUBLE

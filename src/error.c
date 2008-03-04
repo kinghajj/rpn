@@ -36,7 +36,6 @@
 #include <time.h>
 #include <unistd.h>
 
-
 #ifndef DOXYGEN_SKIP
 
 // returns a number from 1 to 50.
@@ -108,9 +107,22 @@ int RPN_dprintff(char *func, char *fmt, ...)
 	va_list args;
 
 	va_start(args, fmt);
-	printf("%s: ", func);
-	vprintf(fmt, args);
-	printf("\n");
+	fprintf(stderr, "%s: ", func);
+	vfprintf(stderr, fmt, args);
+	fprintf(stderr, "\n");
 	return 0;
+}
+
+void *RPN_malloc(size_t n)
+{
+	void *ptr = malloc(n);
+	if(ptr) RPN_dprintf("allocated %p", ptr);
+	return ptr;
+}
+
+void RPN_free(void *ptr)
+{
+	if(ptr) RPN_dprintf("freed %p", ptr);
+	free(ptr);
 }
 #endif // RPN_DEBUG

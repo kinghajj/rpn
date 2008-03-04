@@ -79,7 +79,7 @@ void RPN_evalToken(RPNCalculator *calculator, char *tok)
 		{
 			// push it's value to the stack, free the name.
 			RPN_push(calculator->stack, var->value);
-			free(name);
+			RPN_free(name);
 		}
 		// add a new variable to the variables table.
 		else

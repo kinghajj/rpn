@@ -200,8 +200,8 @@ void RPN_freeOperator(RPNOperator *operator)
 {
 	if(!operator || !operator->op)
 		RPN_error("attempted to free a NULL operator.");
-	free(operator->op);
-	free(operator);
+	RPN_free(operator->op);
+	RPN_free(operator);
 	RPN_dprintf("freed operator %x", operator);
 }
 
@@ -236,7 +236,7 @@ void RPN_freeOperators(RPNOperators *operators)
 	    operator = operator->hh.next)
 		RPN_removeOperator(operators, operator);
 
-	free(operators);
+	RPN_free(operators);
 	RPN_dprintf("freed operator table %x", operators);
 }
 

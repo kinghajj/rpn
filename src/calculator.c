@@ -80,5 +80,5 @@ void RPN_freeCalculator(RPNCalculator *calculator)
 	RPN_dprintf("freeing calculator commands");
 	RPN_freeCommands(calculator->commands);
 	RPN_dprintf("freeing calculator");
-	free(calculator);
+	RPN_free(calculator);
 }

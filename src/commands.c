@@ -126,8 +126,8 @@ void RPN_freeCommand(RPNCommand *command)
 {
 	if(!command || !command->cmd)
 		RPN_error("attempted to free a NULL command.");
-	free(command->cmd);
-	free(command);
+	RPN_free(command->cmd);
+	RPN_free(command);
 	RPN_dprintf("freed command %x", command);
 }
 
@@ -159,7 +159,7 @@ void RPN_freeCommands(RPNCommands *commands)
 	for(command = commands->table; command != NULL; command = command->hh.next)
 		RPN_removeCommand(commands, command);
 
-	free(commands);
+	RPN_free(commands);
 	RPN_dprintf("freed command table %x", commands);
 }
 

@@ -134,13 +134,13 @@ void RPN_freeVariables(RPNVariables *variables)
 	{
 		temp = var;
 		var = var->hh.next;
-		free(temp->name);
-		free(temp);
+		RPN_free(temp->name);
+		RPN_free(temp);
 		RPN_dprintf("freeing variable %x", temp);
 	}
 
 	// free the variables structure
-	free(variables);
+	RPN_free(variables);
 	RPN_dprintf("freed variable table %x", variables);
 }
 

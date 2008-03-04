@@ -41,8 +41,12 @@ int RPN_dprintff(char *func, char *fmt, ...);
 //! won't be any performance impact unless you compile for debugging.
 #define RPN_dprintf(fmt, ...) \
 	RPN_dprintff ((char*)__FUNCTION__, fmt, ## __VA_ARGS__)
+void *RPN_malloc(size_t n);
+void RPN_free(void *ptr);
 #else
 #define RPN_dprintf(fmt, ...) ;
+#define RPN_malloc malloc
+#define RPN_free free
 #endif
 
 #endif // RPN_ERROR_H
