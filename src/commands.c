@@ -38,42 +38,43 @@
 // Don't look at these, Doxygen.
 #ifndef DOXYGEN_SKIP
 
-void RPN_commandPrint(RPNCalculator *calculator, char **args)
+static void commandPrint(RPNCalculator *calculator, char **args)
 {
 	RPN_printStack(calculator->stack);
 }
 
-void RPN_commandPrintDetailed(RPNCalculator *calculator, char **args)
+static void commandPrintDetailed(RPNCalculator *calculator, char **args)
 {
 	RPN_printStackDetailed(calculator->stack);
 }
 
-void RPN_commandPrintVariables(RPNCalculator *calculator, char **args)
+static void commandPrintVariables(RPNCalculator *calculator, char **args)
 {
 	RPN_printVariables(calculator->variables);
 }
 
-void RPN_commandPrintVariablesDetailed(RPNCalculator *calculator, char **args)
+static void commandPrintVariablesDetailed(RPNCalculator *calculator,
+                                          char **args)
 {
 	RPN_printVariablesDetailed(calculator->variables);
 }
 
-void RPN_commandPrintHelp(RPNCalculator *calculator, char **args)
+static void commandPrintHelp(RPNCalculator *calculator, char **args)
 {
 	RPN_printHelp();
 }
 
-void RPN_commandExit(RPNCalculator *calculator, char **args)
+static void commandExit(RPNCalculator *calculator, char **args)
 {
 	calculator->status = RPN_STATUS_EXIT;
 }
 
-void RPN_commandPop(RPNCalculator *calculator, char **args)
+static void commandPop(RPNCalculator *calculator, char **args)
 {
 	RPN_pop(calculator->stack);
 }
 
-void RPN_commandDup(RPNCalculator *calculator, char **args)
+static void commandDup(RPNCalculator *calculator, char **args)
 {
 	if(RPN_canOperate(calculator->stack, 1))
 		RPN_push(calculator->stack, RPN_peek(calculator->stack));
@@ -206,15 +207,14 @@ RPNCommands *RPN_defaultCommands()
 {
 	RPNCommands *commands = RPN_newCommands();
 
-	RPN_addCommand(commands, strdup("dup"),  0, RPN_commandDup);
-	RPN_addCommand(commands, strdup("pop"),  0, RPN_commandPop);
-	RPN_addCommand(commands, strdup("ps"),   0, RPN_commandPrint);
-	RPN_addCommand(commands, strdup("psd"),  0, RPN_commandPrintDetailed);
-	RPN_addCommand(commands, strdup("psv"),  0, RPN_commandPrintVariables);
-	RPN_addCommand(commands, strdup("psvd"), 0,
-		RPN_commandPrintVariablesDetailed);
-	RPN_addCommand(commands, strdup("help"), 0, RPN_commandPrintHelp);
-	RPN_addCommand(commands, strdup("x"),    0, RPN_commandExit);
+	RPN_addCommand(commands, strdup("dup"),  0, commandDup);
+	RPN_addCommand(commands, strdup("pop"),  0, commandPop);
+	RPN_addCommand(commands, strdup("ps"),   0, commandPrint);
+	RPN_addCommand(commands, strdup("psd"),  0, commandPrintDetailed);
+	RPN_addCommand(commands, strdup("psv"),  0, commandPrintVariables);
+	RPN_addCommand(commands, strdup("psvd"), 0, commandPrintVariablesDetailed);
+	RPN_addCommand(commands, strdup("help"), 0, commandPrintHelp);
+	RPN_addCommand(commands, strdup("x"),    0, commandExit);
 	RPN_dprintf("created default command table");
 
 	return commands;

@@ -37,7 +37,7 @@
 
 char *RPN_NULL_TOKEN = "(NULL_TOKEN)";
 
-size_t RPN_findNextToken(size_t cur_pos, char *s, size_t len)
+static size_t findNextToken(size_t cur_pos, char *s, size_t len)
 {
 	size_t pos = cur_pos;
 
@@ -48,7 +48,7 @@ size_t RPN_findNextToken(size_t cur_pos, char *s, size_t len)
 	return pos;
 }
 
-size_t RPN_findTokenEnd(size_t cur_pos, char *s, size_t len)
+static size_t findTokenEnd(size_t cur_pos, char *s, size_t len)
 {
 	size_t pos = cur_pos;
 
@@ -59,14 +59,14 @@ size_t RPN_findTokenEnd(size_t cur_pos, char *s, size_t len)
 	return pos;
 }
 
-char *RPN_getNextToken(char *str, size_t len, size_t *pos, size_t *end)
+static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 {
 	size_t size;
 	char *s;
 
 	// find the size of the token
-	*pos = RPN_findNextToken(*pos, str, len);
-	*end = RPN_findTokenEnd(*pos, str, len);
+	*pos = findNextToken(*pos, str, len);
+	*end = findTokenEnd(*pos, str, len);
 	size = *end - *pos + 1;
 
 	// no real token? then return NULL. handle it later.
@@ -159,7 +159,7 @@ RPNTokens *RPN_splitString(char *str)
 
 	// Add tokens until we run out.
 	while(pos < len)
-		RPN_addToken(tokens, RPN_getNextToken(str, len, &pos, &end));
+		RPN_addToken(tokens, getNextToken(str, len, &pos, &end));
 
 	// resize array
 	RPN_dprintf("tokens->size: %u", tokens->size);

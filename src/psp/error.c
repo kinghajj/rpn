@@ -51,7 +51,7 @@ void RPN_error(char *msg)
 #define RPNPSP_OUTBUF_SIZE 1024
 char RPNPSP_output_buffer[RPNPSP_OUTBUF_SIZE];
 
-void RPNPSP_clearOutputBuffer()
+static void clearOutputBuffer()
 {
 	int i;
 
@@ -77,7 +77,7 @@ int RPN_printf(char *fmt, ...)
 	va_list args;
 
 	// Always make sure to clear the buffer!
-	RPNPSP_clearOutputBuffer();
+	clearOutputBuffer();
 
 	va_start(args, fmt);
 	vsprintf(RPNPSP_output_buffer, fmt, args);

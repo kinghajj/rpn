@@ -42,7 +42,7 @@ struct RPNPSPKey
 typedef struct RPNPSPKey RPNPSPKey;
 
 // The master key map.
-RPNPSPKey RPNPSP_KeyMap[] =
+static RPNPSPKey KeyMap[] =
 {
 	// Numbers
 	{PSP_CTRL_CROSS,                  '0', '0'},
@@ -120,7 +120,7 @@ RPNPSPKey RPNPSP_KeyMap[] =
  *
  * @return An integer with button press flags.
  */
-int RPNPSP_GetButtonPushes()
+static int GetButtonPushes()
 {
 	int buttons;
 	SceCtrlData pad;
@@ -148,36 +148,36 @@ int RPNPSP_GetButtonPushes()
 #ifndef DOXYGEN_SKIP
 
 // Returns a key that matches the given buttons. Simple but fast on a small map.
-RPNPSPKey *RPNPSP_FindKey(int buttons)
+static RPNPSPKey *FindKey(int buttons)
 {
 	int i;
 
-	for(i = 0; RPNPSP_KeyMap[i].buttons; i++)
-		if(RPNPSP_KeyMap[i].buttons == buttons)
-			return &RPNPSP_KeyMap[i];
+	for(i = 0; KeyMap[i].buttons; i++)
+		if(KeyMap[i].buttons == buttons)
+			return &KeyMap[i];
 
 	return NULL;
 }
 
 // 64 characters is a reasonable limit for the buffer.
 #define RPN_BUF_SIZE 64
-char RPNPSP_buffer[RPN_BUF_SIZE];
+static char buffer[RPN_BUF_SIZE];
 // To press "enter", press the triggers simultaneously.
-int RPNPSP_enter = PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER;
+static int enter = PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER;
 // To cancel input, press the left trigger.
-int RPNPSP_cancel = PSP_CTRL_LTRIGGER;
+static int cancel = PSP_CTRL_LTRIGGER;
 // To switch to alternate characters, press the right trigger.
-int RPNPSP_alternate = PSP_CTRL_RTRIGGER;
+static int alternate = PSP_CTRL_RTRIGGER;
 // Don't start in alternate mode.
-int alternate = false;
+bool alternateMode = false;
 
 // Clear the buffer to remove previous inputs.
-void RPNPSP_ClearBuffer()
+static void clearInputBuffer()
 {
 	int i;
 
 	for(i = 0; i < RPN_BUF_SIZE; i++)
-		RPNPSP_buffer[i] = 0;
+		buffer[i] = 0;
 }
 
 #endif // DOXYGEN_SKIP
@@ -187,25 +187,25 @@ void RPNPSP_ClearBuffer()
 /**
  * @return The typed character or 0 if invalid.
  */
-char RPNPSP_GetCharacter()
+static char GetCharacter()
 {
-	int buttons = RPNPSP_GetButtonPushes();
-	RPNPSPKey *key = RPNPSP_FindKey(buttons);
+	int buttons = GetButtonPushes();
+	RPNPSPKey *key = FindKey(buttons);
 
 	// Was a valid combination pressed? The print the character, then return it.
 	if(key)
 	{
-		kprintf("%c", alternate ? key->alt_chr : key->chr);
+		kprintf("%c", alternateMode ? key->alt_chr : key->chr);
 		return alternate ? key->alt_chr : key->chr;
 	}
 	// Enter?
-	else if(buttons == RPNPSP_enter)
+	else if(buttons == enter)
 		return '\n';
 	// Cancel?
-	else if(buttons == RPNPSP_cancel)
+	else if(buttons == cancel)
 		return '\b';
 	// Switch to alternate?
-	else if(buttons == RPNPSP_alternate)
+	else if(buttons == alternate)
 		alternate = alternate ? false : true;
 	// What happened?
 	return 0;
@@ -219,12 +219,12 @@ char *RPNPSP_GetString()
 	int i, c = 0;
 
 	// Clear the previous buffer before filling it.
-	RPNPSP_ClearBuffer();
+	clearInputBuffer();
 
 	// Go until the buffer is filled or a newline is returned.
 	for(i = 0; i < RPN_BUF_SIZE && c != '\n'; i++)
 	{
-		c = RPNPSP_GetCharacter();
+		c = GetCharacter();
 		// Backspace?
 		if(c == '\b')
 		{
@@ -233,12 +233,12 @@ char *RPNPSP_GetString()
 		}
 		// Real character?
 		else if(c)
-			RPNPSP_buffer[i] = c;
+			buffer[i] = c;
 		// No; stay back.
 		else
 			i--;
 	}
 
 	kprintf("\n");
-	return RPNPSP_buffer;
+	return buffer;
 }

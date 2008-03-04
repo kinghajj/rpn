@@ -38,7 +38,7 @@
  * @param s The string to test.
  * @return true or false.
  */
-bool RPN_isNumber(char *s)
+static bool isNumber(char *s)
 {
 	size_t i, len = strlen(s);
 
@@ -53,7 +53,7 @@ bool RPN_isNumber(char *s)
  * @param calculator The calculator.
  * @param tok The token.
  */
-void RPN_evalToken(RPNCalculator *calculator, char *tok)
+static void evalToken(RPNCalculator *calculator, char *tok)
 {
 	RPNVariable *var;
 	char *name;
@@ -107,11 +107,11 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	    tokens->pos < tokens->size;
 	    tokens->pos++)
 	{
-		if(RPN_isNumber(tokens->tokens[tokens->pos]))
+		if(isNumber(tokens->tokens[tokens->pos]))
 			RPN_push(calculator->stack,
 				RPN_strtod(tokens->tokens[tokens->pos], NULL));
 		else
-			RPN_evalToken(calculator, tokens->tokens[tokens->pos]);
+			evalToken(calculator, tokens->tokens[tokens->pos]);
 	}
 
 	RPN_freeTokens(tokens);

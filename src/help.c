@@ -69,7 +69,7 @@ static RPNCommandHelpItem commands_help[] = {
 
 /* This prints an array of CommandHelpItems, like those found just above.
  */
-void RPN_printCommandHelpItemArray(char *title, RPNCommandHelpItem *items)
+static void printCommandHelpItemArray(char *title, RPNCommandHelpItem *items)
 {
 	RPNCommandHelpItem item;
 	int i;
@@ -83,19 +83,19 @@ void RPN_printCommandHelpItemArray(char *title, RPNCommandHelpItem *items)
 	}
 }
 
-void RPN_printOptionsHelp()
+static void printOptionsHelp()
 {
-	RPN_printCommandHelpItemArray("Options", options_help);
+	printCommandHelpItemArray("Options", options_help);
 }
 
-void RPN_printOperatorsHelp()
+static void printOperatorsHelp()
 {
-	RPN_printCommandHelpItemArray("Operators", operators_help);
+	printCommandHelpItemArray("Operators", operators_help);
 }
 
-void RPN_printCommandsHelp()
+static void printCommandsHelp()
 {
-	RPN_printCommandHelpItemArray("Commands", commands_help);
+	printCommandHelpItemArray("Commands", commands_help);
 }
 
 void RPN_printHelp()
@@ -107,9 +107,9 @@ void RPN_printHelp()
 	           __RPN_BUILD__);
 	RPN_printf("By Sam Fredrickson <kinghajj@gmail.com>\n\n");
 
-	RPN_printOptionsHelp();
-	RPN_printOperatorsHelp();
-	RPN_printCommandsHelp();
+	printOptionsHelp();
+	printOperatorsHelp();
+	printCommandsHelp();
 }
 
 #endif // DOXYGEN_SKIP

@@ -43,7 +43,7 @@
 #ifndef DOXYGEN_SKIP
 
 // Basic math operators.
-void RPN_operatorAdd(RPNStack *stack)
+static void operatorAdd(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -52,7 +52,7 @@ void RPN_operatorAdd(RPNStack *stack)
 	RPN_push(stack, a + b);
 }
 
-void RPN_operatorSubtract(RPNStack *stack)
+static void operatorSubtract(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -61,7 +61,7 @@ void RPN_operatorSubtract(RPNStack *stack)
 	RPN_push(stack, a - b);
 }
 
-void RPN_operatorMultiply(RPNStack *stack)
+static void operatorMultiply(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -70,7 +70,7 @@ void RPN_operatorMultiply(RPNStack *stack)
 	RPN_push(stack, a * b);
 }
 
-void RPN_operatorDivide(RPNStack *stack)
+static void operatorDivide(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -79,7 +79,7 @@ void RPN_operatorDivide(RPNStack *stack)
 	RPN_push(stack, a / b);
 }
 
-void RPN_operatorPower(RPNStack *stack)
+static void operatorPower(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -92,7 +92,7 @@ void RPN_operatorPower(RPNStack *stack)
 #endif
 }
 
-void RPN_operatorSqrt(RPNStack *stack)
+static void operatorSqrt(RPNStack *stack)
 {
 	RPNValue a;
 	if(!RPN_canOperate(stack, 1)) return;
@@ -104,7 +104,7 @@ void RPN_operatorSqrt(RPNStack *stack)
 #endif
 }
 
-void RPN_operatorEquals(RPNStack *stack)
+static void operatorEquals(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack,2)) return;
@@ -118,7 +118,7 @@ void RPN_operatorEquals(RPNStack *stack)
 
 // Modulo and bitwise operators. These are converted to integers, so they lose
 // data.
-void RPN_operatorModulo(RPNStack *stack)
+static void operatorModulo(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -127,7 +127,7 @@ void RPN_operatorModulo(RPNStack *stack)
 	RPN_push(stack, (int)a % (int)b);
 }
 
-void RPN_operatorXor(RPNStack *stack)
+static void operatorXor(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -136,7 +136,7 @@ void RPN_operatorXor(RPNStack *stack)
 	RPN_push(stack, (int)a ^ (int)b);
 }
 
-void RPN_operatorAnd(RPNStack *stack)
+static void operatorAnd(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -145,7 +145,7 @@ void RPN_operatorAnd(RPNStack *stack)
 	RPN_push(stack, (int)a & (int)b);
 }
 
-void RPN_operatorOr(RPNStack *stack)
+static void operatorOr(RPNStack *stack)
 {
 	RPNValue a, b;
 	if(!RPN_canOperate(stack, 2)) return;
@@ -306,18 +306,18 @@ RPNOperators *RPN_defaultOperators()
 {
 	RPNOperators *operators = RPN_newOperators();
 
-	RPN_addOperator(operators, strdup("+"),    RPN_operatorAdd);
-	RPN_addOperator(operators, strdup("-"),    RPN_operatorSubtract);
-	RPN_addOperator(operators, strdup("*"),    RPN_operatorMultiply);
-	RPN_addOperator(operators, strdup("/"),    RPN_operatorDivide);
-	RPN_addOperator(operators, strdup("**"),   RPN_operatorPower);
-	RPN_addOperator(operators, strdup("sqrt"), RPN_operatorSqrt);
-	RPN_addOperator(operators, strdup("="),    RPN_operatorEquals);
+	RPN_addOperator(operators, strdup("+"),    operatorAdd);
+	RPN_addOperator(operators, strdup("-"),    operatorSubtract);
+	RPN_addOperator(operators, strdup("*"),    operatorMultiply);
+	RPN_addOperator(operators, strdup("/"),    operatorDivide);
+	RPN_addOperator(operators, strdup("**"),   operatorPower);
+	RPN_addOperator(operators, strdup("sqrt"), operatorSqrt);
+	RPN_addOperator(operators, strdup("="),    operatorEquals);
 
-	RPN_addOperator(operators, strdup("%"), RPN_operatorModulo);
-	RPN_addOperator(operators, strdup("^"), RPN_operatorXor);
-	RPN_addOperator(operators, strdup("&"), RPN_operatorAnd);
-	RPN_addOperator(operators, strdup("|"), RPN_operatorOr);
+	RPN_addOperator(operators, strdup("%"), operatorModulo);
+	RPN_addOperator(operators, strdup("^"), operatorXor);
+	RPN_addOperator(operators, strdup("&"), operatorAnd);
+	RPN_addOperator(operators, strdup("|"), operatorOr);
 
 	return operators;
 }

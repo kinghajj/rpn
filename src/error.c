@@ -39,13 +39,13 @@
 #ifndef DOXYGEN_SKIP
 
 // returns a number from 1 to 50.
-int lotto()
+static int lotto()
 {
 	return (rand() % 49) + 1;
 }
 
 // prints a lotto number then waits one second.
-void printLotto()
+static void printLotto()
 {
 	printf("%i ", lotto());
 	fflush(stdout);

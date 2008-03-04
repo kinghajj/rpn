@@ -32,18 +32,18 @@
 #ifndef DOXYGEN_SKIP
 
 // Executed on exit; used for cleanup.
-int RPNPSP_exit_callback(int arg1, int arg2, void *common)
+static int ExitCallback(int arg1, int arg2, void *common)
 {
 	sceKernelExitGame();
 	return 0;
 }
 
 // Thread to create and register callbacks.
-int RPNPSP_CallbackThread(SceSize args, void *argp)
+static int CallbackThread(SceSize args, void *argp)
 {
 	int cbid;
 
-	cbid = sceKernelCreateCallback("Exit Callback", RPNPSP_exit_callback, NULL);
+	cbid = sceKernelCreateCallback("Exit Callback", ExitCallback, NULL);
 	sceKernelRegisterExitCallback(cbid);
 	sceKernelSleepThreadCB();
 
@@ -51,12 +51,12 @@ int RPNPSP_CallbackThread(SceSize args, void *argp)
 }
 
 // Starts thread to create callbacks.
-int RPNPSP_SetupCallbacks()
+static int SetupCallbacks()
 {
 	int thid;
 
-	thid = sceKernelCreateThread("update_thread", RPNPSP_CallbackThread,
-	                             0x11, 0xFA0, 0, 0);
+	thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11, 0xFA0,
+	                             0, 0);
 	if(thid >= 0)
 		sceKernelStartThread(thid, 0, 0);
 	
@@ -66,7 +66,7 @@ int RPNPSP_SetupCallbacks()
 void RPNPSP_Setup()
 {
 	pspDebugScreenInit();
-	RPNPSP_SetupCallbacks();
+	SetupCallbacks();
 }
 
 #endif // DOXYGEN_SKIP

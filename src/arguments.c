@@ -33,7 +33,7 @@
 
 #ifndef DOXYGEN_SKIP
 
-bool RPN_argumentVersion(RPNCalculator *calculator, char **args)
+static bool argumentVersion(RPNCalculator *calculator, char **args)
 {
 	RPN_printf("%i.%i.%i.%i",
 	           __RPN_MAJOR__,
@@ -45,13 +45,13 @@ bool RPN_argumentVersion(RPNCalculator *calculator, char **args)
 	return false;
 }
 
-bool RPN_argumentHelp(RPNCalculator *calculator, char **args)
+static bool argumentHelp(RPNCalculator *calculator, char **args)
 {
 	RPN_printHelp();
 	return false;
 }
 
-bool RPN_argumentExec(RPNCalculator *calculator, char **args)
+static bool argumentExec(RPNCalculator *calculator, char **args)
 {
 	RPN_eval(args[0], calculator);
 	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(calculator->stack));
@@ -60,30 +60,30 @@ bool RPN_argumentExec(RPNCalculator *calculator, char **args)
 	return true;
 }
 
-RPNArgument RPN_arguments[] =
+static RPNArgument arguments[] =
 {
-	{"-v", "--version", 0, RPN_argumentVersion},
-	{"-h", "--help",    0, RPN_argumentHelp},
-	{"-e", "--exec",    1, RPN_argumentExec},
+	{"-v", "--version", 0, argumentVersion},
+	{"-h", "--help",    0, argumentHelp},
+	{"-e", "--exec",    1, argumentExec},
 	{0},
 };
 
 // tests if an argument is "null" or not.
-inline bool RPN_argumentNotNull(RPNArgument *arg)
+static inline bool argumentNotNull(RPNArgument *arg)
 {
 	if(arg->short_name && arg->long_name && arg->func)
 		return true;
 	return false;
 }
 
-RPNArgument *RPN_findArgument(char *name)
+static RPNArgument *findArgument(char *name)
 {
 	int i;
 	RPNArgument *argument;
 
-	for(i = 0, argument = &RPN_arguments[i];
-	    RPN_argumentNotNull(argument);
-	    i++, argument = &RPN_arguments[i])
+	for(i = 0, argument = &arguments[i];
+	    argumentNotNull(argument);
+	    i++, argument = &arguments[i])
 	{
 		// check if the wanted name matches the short or long names.
 		if(!strcmp(argument->short_name, name) ||
@@ -116,7 +116,7 @@ void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[])
 	 */
 	for(i = 0; i < argc && cont; i++)
 	{
-		argument = RPN_findArgument(argv[i]);
+		argument = findArgument(argv[i]);
 		if(argument && argc - i >= argument->nargs)
 			if(!argument->func(calculator, &argv[i+1])) cont = 0;
 	}
