@@ -41,13 +41,6 @@ struct RPNCommandHelpItem {
 };
 typedef struct RPNCommandHelpItem RPNCommandHelpItem;
 
-// This prints an array of CommandHelpItems, like those found in help.c.
-void RPN_printCommandHelpItemArray(char *title, RPNCommandHelpItem *items);
-
-// Print functions for various types of help items.
-void RPN_printOptionsHelp();
-void RPN_printOperatorsHelp();
-void RPN_printCommandsHelp();
 void RPN_printHelp();
 
 #endif // DOXYGEN_SKIP
