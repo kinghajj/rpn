@@ -16,7 +16,7 @@ MKDIR = mkdir -p
 
 # object code
 SRCDIR = src/
-OBJDIR = obj/
+OBJDIR = obj/generic/
 SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
 		  src/help.c src/operators.c src/parser.c src/rpn.c src/stack.c \
 		  src/tokens.c src/variables.c
@@ -35,7 +35,7 @@ LFLAGS = -s -lm -o
 TARGET = rpn
 
 # General rule for compiling.
-obj/%.o: src/%.c
+$(OBJDIR)%.o: $(SRCDIR)%.c
 	$(CC) $< $(CFLAGS) $@
 
 # rule to make the program

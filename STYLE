@@ -57,7 +57,7 @@ int RPN_hereIsALongFunctionWithManyLongParameters(int firstParam,
 ------------------
 
 	I write my code to follow the 80-column limit, but I realize that that limit
-	can be reached sooner by those who view code with and 8 width tab, or later
+	can be reached sooner by those who view code with an 8 width tab, or later
 	by those who use a 2 width tab, so the limit does not need to be followed.
 	Try to stay below 120 columns, though; your code should never need to get
 	that wide.
