@@ -35,7 +35,7 @@
 
 #ifndef DOXYGEN_SKIP
 
-char *RPN_NULL_TOKEN = "(NULL_TOKEN)";
+static char *NULL_TOKEN = "(NULL_TOKEN)";
 
 static size_t findNextToken(size_t cur_pos, char *s, size_t len)
 {
@@ -70,7 +70,7 @@ static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 	size = *end - *pos + 1;
 
 	// no real token? then return NULL. handle it later.
-	if(size == 1) return RPN_NULL_TOKEN;
+	if(size == 1) return NULL_TOKEN;
 
 	// allocate space for it
 	s = RPN_malloc(size);
@@ -121,7 +121,7 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 		RPN_error("attempted to add token to a NULL token array.");
 	if(!token)
 		RPN_error("attempted to add a NULL token to token array.");
-	if(token == RPN_NULL_TOKEN)
+	if(token == NULL_TOKEN)
 		return;
 
 	// Check the tokens array.
