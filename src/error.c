@@ -87,7 +87,7 @@ void RPN_error(char *msg)
  * that because they both have the same signature. Use this function to print
  * instead of printf() to ensure that your message is seen on all systems.
  *
- * @param fmt The formamming string.
+ * @param fmt The formatting string.
  */
 int RPN_printf(char *fmt, ...)
 {
