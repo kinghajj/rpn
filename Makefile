@@ -29,10 +29,12 @@ GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
 # Installation directory
 INSTALL_DIR = /usr/bin
 
+BIN_DIR = bin/generic
+
 # Compilation options
 CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Isrc/include -o
 LFLAGS = -s -lm -o
-TARGET = rpn
+TARGET = $(BIN_DIR)/rpn
 
 # General rule for compiling.
 $(OBJDIR)%.o: $(SRCDIR)%.c

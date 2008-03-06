@@ -14,9 +14,10 @@ MYOBJS = \
 OBJS = $(subst src/,obj/psp/,$(MYOBJS))
 
 OBJDIR = obj/psp
-SRCDIR = src/
+SRCDIR = src
+BINDIR = bin/psp
 
-$(OBJDIR)/%.o: $(SRCDIR)%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
@@ -37,5 +38,5 @@ include $(PSPSDK)/lib/build.mak
 
 INSTALL_DIR = /media/disk/PSP/GAME/psprpn
 .PHONY: install
-install: EBOOT.PBP
+install: $(EXTRA_TARGETS)
 	$(CP) $(EXTRA_TARGETS) $(INSTALL_DIR)
