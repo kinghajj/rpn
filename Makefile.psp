@@ -4,7 +4,9 @@
 CP = cp
 
 VERSION = $(shell cat VERSION)
-TARGET = psprpn
+TARGET = bin/psp/psprpn
+PSP_EBOOT = bin/psp/EBOOT.PBP
+PSP_EBOOT_SFO = bin/psp/PARAM.SFO
 
 MYOBJS = \
 	src/calculator.o src/commands.o src/help.o src/operators.o src/parser.o \
@@ -29,7 +31,7 @@ LIBDIR =
 LIBS = -lm
 LDFLAGS = 
 
-EXTRA_TARGETS = EBOOT.PBP
+EXTRA_TARGETS = $(PSP_EBOOT)
 PSP_EBOOT_TITLE = PSPRPN v. $(VERSION)
 PSP_EBOOT_ICON = src/psp/psprpn3.png
 
