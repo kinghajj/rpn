@@ -296,8 +296,8 @@
  *     <TD>F</TD>
  *   </TR>
  *   <TR>
- *     <TD>LT () Up</TD> <!-- This is SPARTAAA!!! -->
- *     <TD>g</TD>
+ *     <TD>LT () Up</TD>
+ *     <TD>g</TD> <!-- This is SPARTAAA!!! -->
  *     <TD>G</TD>
  *   </TR>
  *   <TR>
