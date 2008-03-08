@@ -95,7 +95,7 @@ static void commandSqrt(RPNCalculator *calculator, char **args)
 
 static void commandUnset(RPNCalculator *calculator, char **args)
 {
-	char *varname = args[1];
+	char *varname = args[0];
 	RPNVariable *variable = RPN_findVariable(calculator->variables, varname);
 	if(variable)
 		RPN_removeVariable(calculator->variables, variable);
