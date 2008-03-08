@@ -28,6 +28,7 @@
  * commands.c - implements the commands table.                                 *
  ******************************************************************************/
 
+#include <math.h>
 #include "rpn.h"
 #include <stdlib.h>
 
@@ -78,6 +79,26 @@ static void commandDup(RPNCalculator *calculator, char **args)
 {
 	if(RPN_canOperate(calculator->stack, 1))
 		RPN_push(calculator->stack, RPN_peek(calculator->stack));
+}
+
+static void commandSqrt(RPNCalculator *calculator, char **args)
+{
+	RPNValue a;
+	if(!RPN_canOperate(calculator->stack, 1)) return;
+	a = RPN_pop(calculator->stack);
+#ifdef RPN_LONG_DOUBLE
+	RPN_push(calculator->stack, sqrtl(a));
+#elif RPN_DOUBLE
+	RPN_push(calculator->stack, sqrt(a));
+#endif
+}
+
+static void commandUnset(RPNCalculator *calculator, char **args)
+{
+	char *varname = args[1];
+	RPNVariable *variable = RPN_findVariable(calculator->variables, varname);
+	if(variable)
+		RPN_removeVariable(calculator->variables, variable);
 }
 
 #endif // DOXYGEN_SKIP
@@ -181,6 +202,19 @@ void RPN_addCommand(RPNCommands *commands, char *cmd, size_t nargs,
 	RPN_dprintf("added command %x to table %x", command, commands);
 }
 
+//! Finds a command based on its string representation.
+/**
+ * @param commands The commands table to search.
+ * @param cmd The string representation of the command.
+ * @return A pointer to the command.
+ */
+RPNCommand *RPN_findCommand(RPNCommands *commands, char *cmd)
+{
+	RPNCommand *command;
+	HASH_FIND_STR( commands->table, cmd, command );
+	return command;
+}
+
 //! Finds and executes a command based on its string representation.
 /**
  * @param calculator The calculator on which to execute the command.
@@ -192,10 +226,13 @@ bool RPN_executeCommand(RPNCalculator *calculator, char *cmd)
 	RPNCommand *command;
 	RPNTokens *tokens = calculator->tokens;
 
-	HASH_FIND_STR( calculator->commands->table, cmd, command );
+	command = RPN_findCommand(calculator->commands, cmd);
 	if(!command) return false;
 	if(tokens->size - tokens->pos + 1 >= command->nargs)
 		command->func(calculator, &tokens->tokens[tokens->pos + 1]);
+	// skip the arguments
+	tokens->pos += command->nargs;
+
 	return true;
 }
 
@@ -207,14 +244,16 @@ RPNCommands *RPN_defaultCommands()
 {
 	RPNCommands *commands = RPN_newCommands();
 
-	RPN_addCommand(commands, strdup("dup"),  0, commandDup);
-	RPN_addCommand(commands, strdup("pop"),  0, commandPop);
-	RPN_addCommand(commands, strdup("ps"),   0, commandPrint);
-	RPN_addCommand(commands, strdup("psd"),  0, commandPrintDetailed);
-	RPN_addCommand(commands, strdup("psv"),  0, commandPrintVariables);
-	RPN_addCommand(commands, strdup("psvd"), 0, commandPrintVariablesDetailed);
-	RPN_addCommand(commands, strdup("help"), 0, commandPrintHelp);
-	RPN_addCommand(commands, strdup("x"),    0, commandExit);
+	RPN_addCommand(commands, strdup("dup"),   0, commandDup);
+	RPN_addCommand(commands, strdup("pop"),   0, commandPop);
+	RPN_addCommand(commands, strdup("ps"),    0, commandPrint);
+	RPN_addCommand(commands, strdup("psd"),   0, commandPrintDetailed);
+	RPN_addCommand(commands, strdup("psv"),   0, commandPrintVariables);
+	RPN_addCommand(commands, strdup("psvd"),  0, commandPrintVariablesDetailed);
+	RPN_addCommand(commands, strdup("help"),  0, commandPrintHelp);
+	RPN_addCommand(commands, strdup("x"),     0, commandExit);
+	RPN_addCommand(commands, strdup("sqrt"),  0, commandSqrt);
+	RPN_addCommand(commands, strdup("unset"), 1, commandUnset);
 	RPN_dprintf("created default command table");
 
 	return commands;

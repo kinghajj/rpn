@@ -51,6 +51,7 @@ RPNVariables *RPN_newVariables();
 RPNVariable *RPN_newVariable(char *name, RPNValue value);
 bool RPN_addVariable(RPNVariables *variables, char *name, RPNValue value);
 RPNVariable *RPN_findVariable(RPNVariables *variables, char *name);
+void RPN_removeVariable(RPNVariables *variables, RPNVariable *variable);
 void RPN_freeVariables(RPNVariables *variables);
 void RPN_printVariables(RPNVariables *variables);
 void RPN_printVariablesDetailed(RPNVariables *variables);

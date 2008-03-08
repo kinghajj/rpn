@@ -32,7 +32,7 @@
 #define RPN_OPERATORS_H
 
 //! Operator callback type.
-typedef void (*RPNOperatorFunc)(RPNStack *stack);
+typedef RPNValue (*RPNOperatorFunc)(RPNValue a, RPNValue b);
 
 //! Holds an operator.
 struct RPNOperator {

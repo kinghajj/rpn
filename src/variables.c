@@ -118,29 +118,50 @@ RPNValue RPN_getVariableValue(RPNVariables *variables, char *name)
 	return var->value;
 }
 
+//! Frees a variable and its string representation.
+/**
+ * @param variable The variable to free.
+ */
+void RPN_freeVariable(RPNVariable *variable)
+{
+	if(!variable || !variable->name)
+		RPN_error("attempted to free a NULL variable.");
+	RPN_free(variable->name);
+	RPN_free(variable);
+	RPN_dprintf("freed variable %x", variable);
+}
+
+//! Removes a variable from a variable table, then frees it.
+/**
+ * @param variables The variable table.
+ * @param variable The variable to remove.
+ */
+void RPN_removeVariable(RPNVariables *variables, RPNVariable *variable)
+{
+	if(!variables)
+		RPN_error("attempted to remove a variable from a NULL variable table.");
+	if(!variable)
+		RPN_error("attempted to remove a NULL variable.");
+	HASH_DEL( variables->table, variable );
+	RPN_freeVariable(variable);
+	RPN_dprintf("removed variable %x from table %x", variable, variables);
+}
+
 //! Frees a variable table and all its variables.
 /**
  * @param variables The variable table to free.
  */
 void RPN_freeVariables(RPNVariables *variables)
 {
-	RPNVariable *var, *temp;
+	RPNVariable *variable;
 
-	if(!variables)
-		RPN_error("tried to free a NULL variable table.");
+	// go through every command and remove/free it.
+	for(variable = variables->table;
+	    variable != NULL;
+	    variable = variable->hh.next)
+		RPN_removeVariable(variables, variable);
 
-	// go through each variable and free it.
-	for(var = variables->table; var != NULL;)
-	{
-		temp = var;
-		var = var->hh.next;
-		RPN_free(temp->name);
-		RPN_free(temp);
-		RPN_dprintf("freeing variable %x", temp);
-	}
-
-	// free the variables structure
-	RPN_free(variables);
+	RPN_free(variable);
 	RPN_dprintf("freed variable table %x", variables);
 }
 

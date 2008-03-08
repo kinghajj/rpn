@@ -43,115 +43,62 @@
 #ifndef DOXYGEN_SKIP
 
 // Basic math operators.
-static void operatorAdd(RPNStack *stack)
+static RPNValue operatorAdd(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, a + b);
+	return a + b;
 }
 
-static void operatorSubtract(RPNStack *stack)
+static RPNValue operatorSubtract(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, a - b);
+	return a - b;
 }
 
-static void operatorMultiply(RPNStack *stack)
+static RPNValue operatorMultiply(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, a * b);
+	return a * b;
 }
 
-static void operatorDivide(RPNStack *stack)
+static RPNValue operatorDivide(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, a / b);
+	return a / b;
 }
 
-static void operatorPower(RPNStack *stack)
+static RPNValue operatorPower(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
 #ifdef RPN_LONG_DOUBLE
-	RPN_push(stack, powl(a, b));
+	return powl(a, b);
 #elif  RPN_DOUBLE
-	RPN_push(stack, pow(a, b));
+	return pow(a, b);
 #endif
 }
 
-static void operatorSqrt(RPNStack *stack)
+static RPNValue operatorEquals(RPNValue a, RPNValue b)
 {
-	RPNValue a;
-	if(!RPN_canOperate(stack, 1)) return;
-	a = RPN_pop(stack);
-#ifdef RPN_LONG_DOUBLE
-	RPN_push(stack, sqrtl(a));
-#elif RPN_DOUBLE
-	RPN_push(stack, sqrt(a));
-#endif
-}
-
-static void operatorEquals(RPNStack *stack)
-{
-	RPNValue a, b;
-	if(!RPN_canOperate(stack,2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
 	if(a == b)
-		RPN_push(stack, (RPNValue)1);
-	else
-		RPN_push(stack, (RPNValue)0);
+		return 1;
+	return 0;
 }
 
 // Modulo and bitwise operators. These are converted to integers, so they lose
 // data.
-static void operatorModulo(RPNStack *stack)
+static RPNValue operatorModulo(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, (int)a % (int)b);
+	return (int)a % (int)b;
 }
 
-static void operatorXor(RPNStack *stack)
+static RPNValue operatorXor(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, (int)a ^ (int)b);
+	return (int)a ^ (int)b;
 }
 
-static void operatorAnd(RPNStack *stack)
+static RPNValue operatorAnd(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, (int)a & (int)b);
+	return (int)a & (int)b;
 }
 
-static void operatorOr(RPNStack *stack)
+static RPNValue operatorOr(RPNValue a, RPNValue b)
 {
-	RPNValue a, b;
-	if(!RPN_canOperate(stack, 2)) return;
-	b = RPN_pop(stack);
-	a = RPN_pop(stack);
-	RPN_push(stack, (int)a | (int)b);
+	return (int)a | (int)b;
 }
 
 #endif // DOXYGEN_SKIP
@@ -280,6 +227,7 @@ RPNOperator *RPN_findOperator(RPNOperators *operators, char *op)
 bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 {
 	RPNOperator *operator;
+	RPNValue a, b;
 
 	if(!calculator)
 		RPN_error("tried to execute an operator on a NULL table.");
@@ -288,16 +236,18 @@ bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 	// find the operator.
 	operator = RPN_findOperator(calculator->operators, op);
 	// execute it, return.
-	if(operator)
+	if(operator && RPN_canOperate(calculator->stack, 2))
 	{
-		operator->func(calculator->stack);
+		b = RPN_pop(calculator->stack);
+		a = RPN_pop(calculator->stack);
+		RPN_push(calculator->stack, operator->func(a, b));
 		return true;
 	}
 
 	// not an operator?
 	return false;
 }
-// THIS IS SPARTAAA!!!
+
 //! Returns an operator table with default operators.
 /**
  * @return The default operator table.
@@ -311,7 +261,6 @@ RPNOperators *RPN_defaultOperators()
 	RPN_addOperator(operators, strdup("*"),    operatorMultiply);
 	RPN_addOperator(operators, strdup("/"),    operatorDivide);
 	RPN_addOperator(operators, strdup("**"),   operatorPower);
-	RPN_addOperator(operators, strdup("sqrt"), operatorSqrt);
 	RPN_addOperator(operators, strdup("="),    operatorEquals);
 
 	RPN_addOperator(operators, strdup("%"), operatorModulo);
