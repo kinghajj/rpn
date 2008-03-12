@@ -2,6 +2,13 @@
 # Should be fairly portable for the various *nix systems. The rules
 # themselves shouldn't need to be changed; only the variables may need to
 # change.
+
+# Automatically default to a release build.
+ifndef DEBUG
+RELEASE = 1
+endif
+
+# Version
 VERSION = $(shell cat VERSION)
 
 # Programs
@@ -32,7 +39,13 @@ INSTALL_DIR = /usr/bin
 BIN_DIR = bin/generic
 
 # Compilation options
+ifdef RELEASE
 CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Isrc/include -o
+endif
+ifdef DEBUG
+CFLAGS = -c -Wall -g -DRPN_LONG_DOUBLE -D_GNU_SOURCE -DRPN_DEBUG \
+	-Isrc/include -o
+endif
 LFLAGS = -s -lm -o
 TARGET = $(BIN_DIR)/rpn
 

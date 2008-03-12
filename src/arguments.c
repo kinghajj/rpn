@@ -40,6 +40,9 @@ static bool argumentVersion(RPNCalculator *calculator, char **args)
 	           __RPN_MINOR__,
 	           __RPN_REVIS__,
 	           __RPN_BUILD__);
+#ifdef RPN_DEBUG
+		RPN_printf("-debug");
+#endif
 
 	calculator->status = RPN_STATUS_EXIT;
 	return false;
