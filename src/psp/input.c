@@ -196,7 +196,7 @@ static char GetCharacter()
 	if(key)
 	{
 		kprintf("%c", alternateMode ? key->alt_chr : key->chr);
-		return alternate ? key->alt_chr : key->chr;
+		return alternateMode ? key->alt_chr : key->chr;
 	}
 	// Enter?
 	else if(buttons == enter)
@@ -206,7 +206,7 @@ static char GetCharacter()
 		return '\b';
 	// Switch to alternate?
 	else if(buttons == alternate)
-		alternate = alternate ? false : true;
+		alternateMode = alternateMode ? false : true;
 	// What happened?
 	return 0;
 }
