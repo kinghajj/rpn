@@ -29,6 +29,8 @@
 
 #include <stdlib.h>
 
+//! Callback for arguments. A callback returns true if the program continue to
+//! look for other arguments, or just stop and exit after the callback returns.
 typedef bool (*RPNArgumentFunc)(RPNCalculator *calculator, char **args);
 
 //! Holds an argument option.

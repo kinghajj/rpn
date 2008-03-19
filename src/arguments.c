@@ -63,13 +63,6 @@ static bool argumentExec(RPNCalculator *calculator, char **args)
 	return true;
 }
 
-static RPNArgument arguments[] =
-{
-	{"-v", "--version", 0, argumentVersion},
-	{"-h", "--help",    0, argumentHelp},
-	{"-e", "--exec",    1, argumentExec},
-	{0},
-};
 
 // tests if an argument is "null" or not.
 static inline bool argumentNotNull(RPNArgument *arg)
@@ -82,16 +75,21 @@ static inline bool argumentNotNull(RPNArgument *arg)
 static RPNArgument *findArgument(char *name)
 {
 	int i;
-	RPNArgument *argument;
+	static RPNArgument arguments[] =
+	{
+	//   short form  long form     #args  callback
+		{"-v",       "--version",  0,     argumentVersion},
+		{"-h",       "--help",     0,     argumentHelp},
+		{"-e",       "--exec",     1,     argumentExec},
+		{0},
+	};
 
-	for(i = 0, argument = &arguments[i];
-	    argumentNotNull(argument);
-	    i++, argument = &arguments[i])
+	for(i = 0; argumentNotNull(&arguments[i]); i++)
 	{
 		// check if the wanted name matches the short or long names.
-		if(!strcmp(argument->short_name, name) ||
-		   !strcmp(argument->long_name, name))
-			return argument;
+		if(!strcmp(arguments[i].short_name, name) ||
+		   !strcmp(arguments[i].long_name, name))
+			return &arguments[i];
 	}
 
 	return NULL;

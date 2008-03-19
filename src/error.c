@@ -76,7 +76,7 @@ void RPN_error(char *msg)
 	fputc('\n', stdout);
 
 	// ok, exit
-	exit(-1);
+	exit(EXIT_FAILURE);
 }
 
 //! Prints formatted output to stdout.
@@ -113,6 +113,9 @@ int RPN_dprintff(char *func, char *fmt, ...)
 	return 0;
 }
 
+//! A simple wrapper around the malloc function, so that allocations can be
+//! logged. When building a release, RPN_malloc is defined as a macro in the
+//! header so there is no performance loss.
 void *RPN_malloc(size_t n)
 {
 	void *ptr = malloc(n);
@@ -120,6 +123,9 @@ void *RPN_malloc(size_t n)
 	return ptr;
 }
 
+//! A simple wrapper around the free function, so that deallocations can be
+//! logged. When building a release, RPN_fre is defined as a macro in the header
+//! so there is no performance loss.
 void RPN_free(void *ptr)
 {
 	if(ptr) RPN_dprintf("freed %p", ptr);
