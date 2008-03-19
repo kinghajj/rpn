@@ -57,8 +57,7 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 {
 	RPNVariable *var;
 	char *name;
-	bool everExecutedOp;
-	bool everExecutedCmd;
+	bool everExecutedOp, everExecutedCmd;
 
 	// try to execute an operator
 	everExecutedOp = RPN_executeOperator(calculator, tok);
@@ -83,10 +82,8 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 		}
 		// add a new variable to the variables table.
 		else
-		{
 			RPN_addVariable(calculator->variables, name,
-				RPN_peek(calculator->stack));
-		}
+			                RPN_peek(calculator->stack));
 	}
 }
 
@@ -103,9 +100,7 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	calculator->tokens = RPN_splitString(s);
 	tokens = calculator->tokens;
 
-	for(tokens->pos = 0;
-	    tokens->pos < tokens->size;
-	    tokens->pos++)
+	for(tokens->pos = 0; tokens->pos < tokens->size; tokens->pos++)
 	{
 		if(isNumber(tokens->tokens[tokens->pos]))
 			RPN_push(calculator->stack,
