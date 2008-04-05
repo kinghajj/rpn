@@ -225,15 +225,19 @@ bool RPN_executeCommand(RPNCalculator *calculator, char *cmd)
 {
 	RPNCommand *command;
 	RPNTokens *tokens = calculator->tokens;
+	bool executed = false;
 
 	command = RPN_findCommand(calculator->commands, cmd);
-	if(!command) return false;
-	if(tokens->size - tokens->pos + 1 >= command->nargs)
-		command->func(calculator, &tokens->tokens[tokens->pos + 1]);
-	// skip the arguments
-	tokens->pos += command->nargs;
+	if(command)
+	{
+		if(tokens->size - tokens->pos + 1 >= command->nargs)
+			command->func(calculator, &tokens->tokens[tokens->pos + 1]);
+		// skip the arguments
+		tokens->pos += command->nargs;
+		executed = true;
+	}
 
-	return true;
+	return executed;
 }
 
 //! Returns a command table with default commands.

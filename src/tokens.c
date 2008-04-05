@@ -41,9 +41,10 @@ static size_t findNextToken(size_t cur_pos, char *s, size_t len)
 {
 	size_t pos = cur_pos;
 
-	if(!s || !len) return 0;
-
-	while(pos < len && isspace(s[pos])) pos++;
+	if(s && len)
+		while(pos < len && isspace(s[pos])) pos++;
+	else
+		pos = 0;
 
 	return pos;
 }
@@ -52,9 +53,10 @@ static size_t findTokenEnd(size_t cur_pos, char *s, size_t len)
 {
 	size_t pos = cur_pos;
 
-	if(!s || !len) return 0;
-
-	while(pos < len && !isspace(s[pos])) pos++;
+	if(s && len)
+		while(pos < len && !isspace(s[pos])) pos++;
+	else
+		pos = 0;
 
 	return pos;
 }
@@ -70,19 +72,22 @@ static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 	size = *end - *pos + 1;
 
 	// no real token? then return NULL. handle it later.
-	if(size == 1) return NULL_TOKEN;
+	if(size == 1)
+		s = NULL_TOKEN;
+	else
+	{
+		// allocate space for it
+		s = RPN_malloc(size);
 
-	// allocate space for it
-	s = RPN_malloc(size);
+		// copy it from the source string
+		memcpy(s, &str[*pos], size);
 
-	// copy it from the source string
-	memcpy(s, &str[*pos], size);
+		// make sure that it's null-terminated
+		s[size - 1] = 0;
 
-	// make sure that it's null-terminated
-	s[size - 1] = 0;
-
-	// update the position to be after the end of the token
-	*pos = *end + 1;
+		// update the position to be after the end of the token
+		*pos = *end + 1;
+	}
 
 	return s;
 }
@@ -121,25 +126,25 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 		RPN_error("attempted to add token to a NULL token array.");
 	if(!token)
 		RPN_error("attempted to add a NULL token to token array.");
-	if(token == NULL_TOKEN)
-		return;
-
-	// Check the tokens array.
-	if(tokens->size >= tokens->alloc_size)
+	if(token != NULL_TOKEN)
 	{
-		RPN_dprintf("tokens->size: %u", tokens->size);
-		RPN_dprintf("tokens->alloc_size: %u", tokens->alloc_size);
-		RPN_dprintf("tokens->tokens: %p", tokens->tokens);
-		RPN_dprintf("token: \"%s\" (%u)", token, strlen(token));
+		// Check the tokens array.
+		if(tokens->size >= tokens->alloc_size)
+		{
+			RPN_dprintf("tokens->size: %u", tokens->size);
+			RPN_dprintf("tokens->alloc_size: %u", tokens->alloc_size);
+			RPN_dprintf("tokens->tokens: %p", tokens->tokens);
+			RPN_dprintf("token: \"%s\" (%u)", token, strlen(token));
 
-		tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
-		tokens->tokens = realloc(tokens->tokens,
-			tokens->alloc_size * sizeof(char**));
-		if(!tokens->tokens) RPN_error("could not resize tokens");
+			tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
+			tokens->tokens = realloc(tokens->tokens,
+				tokens->alloc_size * sizeof(char**));
+			if(!tokens->tokens) RPN_error("could not resize tokens");
+		}
+
+		// store token in token structure
+		tokens->tokens[tokens->size++] = token;
 	}
-
-	// store token in token structure
-	tokens->tokens[tokens->size++] = token;
 }
 
 /**

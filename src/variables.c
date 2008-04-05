@@ -112,10 +112,14 @@ RPNVariable *RPN_findVariable(RPNVariables *variables, char *name)
 RPNValue RPN_getVariableValue(RPNVariables *variables, char *name)
 {
 	RPNVariable *var = RPN_findVariable(variables, name);
+	RPNValue value = 0;
+
 	if(!variables)
 		RPN_error("tried to find variable in a NULL variable table.");
-	if(!var) return 0;
-	return var->value;
+	if(var)
+		value = var->value;
+
+	return value;
 }
 
 //! Frees a variable and its string representation.

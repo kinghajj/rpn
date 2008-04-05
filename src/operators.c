@@ -228,24 +228,26 @@ bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 {
 	RPNOperator *operator;
 	RPNValue a, b;
+	bool executed = false;
 
 	if(!calculator)
 		RPN_error("tried to execute an operator on a NULL table.");
-	if(!op) return false;
-
-	// find the operator.
-	operator = RPN_findOperator(calculator->operators, op);
-	// execute it, return.
-	if(operator && RPN_canOperate(calculator->stack, 2))
+	
+	if(op)
 	{
-		b = RPN_pop(calculator->stack);
-		a = RPN_pop(calculator->stack);
-		RPN_push(calculator->stack, operator->func(a, b));
-		return true;
+		// find the operator.
+		operator = RPN_findOperator(calculator->operators, op);
+		// execute it, return.
+		if(operator && RPN_canOperate(calculator->stack, 2))
+		{
+			b = RPN_pop(calculator->stack);
+			a = RPN_pop(calculator->stack);
+			RPN_push(calculator->stack, operator->func(a, b));
+			executed = true;
+		}
 	}
 
-	// not an operator?
-	return false;
+	return executed;
 }
 
 //! Returns an operator table with default operators.

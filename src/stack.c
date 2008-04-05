@@ -89,18 +89,23 @@ bool RPN_push(RPNStack *stack, RPNValue value)
  */
 RPNValue RPN_pop(RPNStack *stack)
 {
+	RPNNode *popped;
+	RPNValue value = 0;
+
 	if(!stack)
 		RPN_error("tried to pop from a NULL stack.");
-	if(!RPN_canOperate(stack, 1)) return 0;
+	if(RPN_canOperate(stack, 1))
+	{
+		// get node to pop
+		popped = stack->first;
+		value = popped->value;
+		// re-wire stack
+		stack->first = popped->next;
+		// free node
+		RPN_free(popped);
+		RPN_dprintf("poped %x from stack", popped);
+	}
 
-	// get node to pop
-	RPNNode *popped = stack->first;
-	RPNValue value = popped->value;
-	// re-wire stack
-	stack->first = popped->next;
-	// free node
-	RPN_free(popped);
-	RPN_dprintf("poped %x from stack", popped);
 	return value;
 }
 
@@ -112,12 +117,15 @@ RPNValue RPN_pop(RPNStack *stack)
  */
 RPNValue RPN_peek(RPNStack *stack)
 {
+	RPNValue value = 0;
+
 	if(!stack)
 		RPN_error("attempted to peek a NULL stack.");
-	if(!RPN_canOperate(stack, 1))
-		return 0;
 
-	return stack->first->value;
+	if(RPN_canOperate(stack, 1))
+		value = stack->first->value;
+
+	return value;
 }
 
 /**

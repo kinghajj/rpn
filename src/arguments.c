@@ -63,7 +63,6 @@ static bool argumentExec(RPNCalculator *calculator, char **args)
 	return true;
 }
 
-
 // tests if an argument is "null" or not.
 static inline bool argumentNotNull(RPNArgument *arg)
 {

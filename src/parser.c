@@ -41,11 +41,12 @@
 static bool isNumber(char *s)
 {
 	size_t i, len = strlen(s);
+	bool isnum = true;
 
-	for(i = 0; i < len; i++)
-		if(!isdigit(s[i]) && s[i] != '.') return false;
+	for(i = 0; isnum && i < len; i++)
+		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
 	
-	return true;
+	return isnum;
 }
 
 //! Evaluates a token on the calculator.
