@@ -52,7 +52,7 @@
 //! The revision version number.
 #define __RPN_REVIS__ 3
 //! The build version number.
-#define __RPN_BUILD__ 4
+#define __RPN_BUILD__ 5
 
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)RPN_malloc(sizeof(x))
