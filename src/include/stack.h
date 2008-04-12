@@ -43,6 +43,8 @@ struct RPNNode {
 struct RPNStack {
 	//! The first item in the stack.
 	RPNNode *first;
+	//! The number of items in the stack.
+	size_t len;
 };
 
 RPNStack *RPN_newStack();

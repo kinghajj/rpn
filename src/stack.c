@@ -42,6 +42,8 @@ RPNStack *RPN_newStack()
 	RPNStack *stack = new(RPNStack);
 	if(!stack)
 		RPN_error("could not allocate memory for the stack.");
+	stack->first = NULL;
+	stack->len   = 0;
 	RPN_dprintf("created stack %x", stack);
 	return stack;
 }
@@ -59,7 +61,7 @@ RPNNode *RPN_newNode(RPNValue value, RPNNode *next)
 	if(!node)
 		RPN_error("could not allocate memory for a stack node.");
 	node->value = value;
-	node->next = next;
+	node->next  = next;
 	RPN_dprintf("created node at %x to %x", node, next);
 	return node;
 }
@@ -77,6 +79,7 @@ bool RPN_push(RPNStack *stack, RPNValue value)
 		RPN_error("tried to push to a NULL stack.");
 	RPNNode *node = RPN_newNode(value, stack->first);
 	stack->first = node;
+	stack->len++;
 	RPN_dprintf("pushed to stack");
 	return true;
 }
@@ -103,6 +106,7 @@ RPNValue RPN_pop(RPNStack *stack)
 		stack->first = popped->next;
 		// free node
 		RPN_free(popped);
+		stack->len--;
 		RPN_dprintf("poped %x from stack", popped);
 	}
 
@@ -160,16 +164,11 @@ void RPN_freeStack(RPNStack *stack)
  */
 bool RPN_canOperate(RPNStack *stack, unsigned int nargs)
 {
-	unsigned int nnodes;
-	RPNNode *node;
-
 	if(!stack)
 		RPN_error("tried to probe a NULL stack.");
 
-	for(nnodes = 0, node = stack->first; node; node = node->next, nnodes++);
-
 	// can only operate if there are enough items in the stack
-	return nnodes >= nargs ? true : false;
+	return stack->len >= nargs ? true : false;
 }
 
 /**
