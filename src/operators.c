@@ -118,7 +118,7 @@ RPNOperators *RPN_newOperators()
 		RPN_error("could not allocate memory for operator table.");
 	// uthash requires that an empty hash be set to NULL.
 	operators->table = NULL;
-	RPN_dprintf("created operator table %x", operators);
+	RPN_dprintf("allocated operator table %p", operators);
 	return operators;
 }
 
@@ -135,7 +135,7 @@ RPNOperator *RPN_newOperator(char *op, RPNOperatorFunc func)
 		RPN_error("could not allocate memory for operator.");
 	operator->op = op;
 	operator->func = func;
-	RPN_dprintf("created operator %x", operator);
+	RPN_dprintf("allocated operator %p", operator);
 	return operator;
 }
 
@@ -149,7 +149,7 @@ void RPN_freeOperator(RPNOperator *operator)
 		RPN_error("attempted to free a NULL operator.");
 	RPN_free(operator->op);
 	RPN_free(operator);
-	RPN_dprintf("freed operator %x", operator);
+	RPN_dprintf("freed operator %p", operator);
 }
 
 //! Removes an operator from an operator table, then frees it.
@@ -166,7 +166,7 @@ void RPN_removeOperator(RPNOperators *operators, RPNOperator *operator)
 		RPN_error("attempted to remove a NULL operator.");
 	HASH_DEL( operators->table, operator );
 	RPN_freeOperator(operator);
-	RPN_dprintf("removed operator %x from table %x", operator, operators);
+	RPN_dprintf("removed operator %p from table %p", operator, operators);
 }
 
 //! Frees an operator table and all of its operators.
@@ -184,7 +184,7 @@ void RPN_freeOperators(RPNOperators *operators)
 		RPN_removeOperator(operators, operator);
 
 	RPN_free(operators);
-	RPN_dprintf("freed operator table %x", operators);
+	RPN_dprintf("freed operator table %p", operators);
 }
 
 //! Adds an operator to an operator table.
@@ -200,7 +200,7 @@ bool RPN_addOperator(RPNOperators *operators, char *op, RPNOperatorFunc func)
 	if(!operators)
 		RPN_error("tried to add operator to NULL operator table.");
 	HASH_ADD_KEYPTR( hh, operators->table, op, strlen(op), operator );
-	RPN_dprintf("added operator %x to table %x", operator, operators);
+	RPN_dprintf("added operator %p to table %p", operator, operators);
 	return true;
 }
 

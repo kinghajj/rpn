@@ -78,9 +78,7 @@ static void printCommandHelpItemArray(char *title, RPNCommandHelpItem *items)
 
 	// print every help item.
 	for(i = 0, item = items[i]; item.command; i++, item = items[i])
-    {
 		RPN_printf("\t%s\n\t\t%s\n", item.command, item.help);
-	}
 }
 
 static void printOptionsHelp()

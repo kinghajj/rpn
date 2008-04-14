@@ -110,6 +110,7 @@ RPNTokens *RPN_newTokens()
 	if(!tokens->tokens) RPN_error("could not allocate memory for tokens");
 	tokens->size = 0;
 	tokens->pos = 0;
+	RPN_dprintf("allocated tokens %p", tokens);
 	return tokens;
 }
 

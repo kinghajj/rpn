@@ -44,7 +44,7 @@ RPNVariables *RPN_newVariables()
 		RPN_error("could not allocate memory for a variables table.");
 	// uthash.h requires that an empty table hash be set to NULL.
 	variables->table = NULL;
-	RPN_dprintf("created variable table %x", variables);
+	RPN_dprintf("allocated variable table %p", variables);
 	return variables;
 }
 
@@ -61,7 +61,7 @@ RPNVariable *RPN_newVariable(char *name, RPNValue value)
 		RPN_error("could not allocate memory for a variable.");
 	var->name = name;
 	var->value = value;
-	RPN_dprintf("created variable %x", var);
+	RPN_dprintf("allocated variable %p", var);
 	return var;
 }
 
@@ -82,7 +82,7 @@ bool RPN_addVariable(RPNVariables *variables, char *name, RPNValue value)
 	// name of hash header, name of hash table, name of key, length of key,
 	// structure to add
 	HASH_ADD_KEYPTR( hh, variables->table, name, strlen(name), var );
-	RPN_dprintf("added variable %x to table %x", var, variables);
+	RPN_dprintf("added variable %p to table %p", var, variables);
 	return true;
 }
 
@@ -132,7 +132,7 @@ void RPN_freeVariable(RPNVariable *variable)
 		RPN_error("attempted to free a NULL variable.");
 	RPN_free(variable->name);
 	RPN_free(variable);
-	RPN_dprintf("freed variable %x", variable);
+	RPN_dprintf("freed variable %p", variable);
 }
 
 //! Removes a variable from a variable table, then frees it.
@@ -148,7 +148,7 @@ void RPN_removeVariable(RPNVariables *variables, RPNVariable *variable)
 		RPN_error("attempted to remove a NULL variable.");
 	HASH_DEL( variables->table, variable );
 	RPN_freeVariable(variable);
-	RPN_dprintf("removed variable %x from table %x", variable, variables);
+	RPN_dprintf("removed variable %p from table %p", variable, variables);
 }
 
 //! Frees a variable table and all its variables.
@@ -166,7 +166,7 @@ void RPN_freeVariables(RPNVariables *variables)
 		RPN_removeVariable(variables, variable);
 
 	RPN_free(variable);
-	RPN_dprintf("freed variable table %x", variables);
+	RPN_dprintf("freed variable table %p", variables);
 }
 
 //! Prints the variables of a variable table.

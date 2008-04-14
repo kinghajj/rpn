@@ -44,7 +44,7 @@ RPNStack *RPN_newStack()
 		RPN_error("could not allocate memory for the stack.");
 	stack->first = NULL;
 	stack->len   = 0;
-	RPN_dprintf("created stack %x", stack);
+	RPN_dprintf("allocated stack %p", stack);
 	return stack;
 }
 
@@ -62,7 +62,7 @@ RPNNode *RPN_newNode(RPNValue value, RPNNode *next)
 		RPN_error("could not allocate memory for a stack node.");
 	node->value = value;
 	node->next  = next;
-	RPN_dprintf("created node at %x to %x", node, next);
+	RPN_dprintf("allocated node at %p to %p", node, next);
 	return node;
 }
 
@@ -80,7 +80,7 @@ bool RPN_push(RPNStack *stack, RPNValue value)
 	RPNNode *node = RPN_newNode(value, stack->first);
 	stack->first = node;
 	stack->len++;
-	RPN_dprintf("pushed to stack");
+	RPN_dprintf("pushed " RPN_VALUE_SHORT_FORMAT  " to stack", value);
 	return true;
 }
 
@@ -147,12 +147,12 @@ void RPN_freeStack(RPNStack *stack)
 		temp = node;
 		node = node->next;
 		RPN_free(temp);
-		RPN_dprintf("freeed node %x", temp);
+		RPN_dprintf("freed node %p", temp);
 	}
 
 	// free the stack
 	RPN_free(stack);
-	RPN_dprintf("freed stack %x", stack);
+	RPN_dprintf("freed stack %p", stack);
 }
 
 /**

@@ -49,6 +49,7 @@ RPNCalculator *RPN_newCalculator()
 		RPN_error("could not allocate memory for calculator.");
 
 	// Allocate the members.
+	RPN_dprintf("allocated calculator");
 	RPN_dprintf("allocating calculator members");
 	calculator->commands  = RPN_defaultCommands();
 	calculator->operators = RPN_defaultOperators();
@@ -71,13 +72,10 @@ void RPN_freeCalculator(RPNCalculator *calculator)
 		RPN_error("tried to free a NULL calculator.");
 
 	// Free every member, then the calculator itself.
-	RPN_dprintf("freeing calculator stack");
+	RPN_dprintf("freeing calculator members");
 	RPN_freeStack(calculator->stack);
-	RPN_dprintf("freeing calculator variables");
 	RPN_freeVariables(calculator->variables);
-	RPN_dprintf("freeing calculator operators");
 	RPN_freeOperators(calculator->operators);
-	RPN_dprintf("freeing calculator commands");
 	RPN_freeCommands(calculator->commands);
 	RPN_dprintf("freeing calculator");
 	RPN_free(calculator);

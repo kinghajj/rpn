@@ -9,7 +9,7 @@
  * Even though I've never released it before, it's already up to version 1.2;
  * at 1.0, this was a fully-function plain calculator, with not many bells and
  * whistles. In 1.1, I added variables, and in 1.2 I ported this to the
- * PlayStation portable. In this release, 1.2.3.3, I've changed the parser a bit
+ * PlayStation portable. In this release, 1.2.3.5, I've changed the parser a bit
  * (in preparation for future features), and have begun documenting the code
  * with Doxygen.
  *

@@ -118,7 +118,7 @@ RPNCommands *RPN_newCommands()
 		RPN_error("could not allocate memory for command table.");
 	// uthash requires that an empty table be set to NULL.
 	commands->table = NULL;
-	RPN_dprintf("created commands table %x", commands);
+	RPN_dprintf("allocated commands table %p", commands);
 	return commands;
 }
 
@@ -136,7 +136,7 @@ RPNCommand *RPN_newCommand(char *cmd, size_t nargs, RPNCommandFunc func)
 	command->cmd = cmd;
 	command->nargs = nargs;
 	command->func = func;
-	RPN_dprintf("created command %x", command);
+	RPN_dprintf("allocated command %p", command);
 	return command;
 }
 
@@ -150,7 +150,7 @@ void RPN_freeCommand(RPNCommand *command)
 		RPN_error("attempted to free a NULL command.");
 	RPN_free(command->cmd);
 	RPN_free(command);
-	RPN_dprintf("freed command %x", command);
+	RPN_dprintf("freed command %p", command);
 }
 
 //! Removes a command from a command table, then frees it.
@@ -166,7 +166,7 @@ void RPN_removeCommand(RPNCommands *commands, RPNCommand *command)
 		RPN_error("attempted to remove a NULL command.");
 	HASH_DEL( commands->table, command );
 	RPN_freeCommand(command);
-	RPN_dprintf("removed command %x from table %x", command, commands);
+	RPN_dprintf("removed command %p from table %p", command, commands);
 }
 
 //! Frees a command table and all if its commands.
@@ -182,7 +182,7 @@ void RPN_freeCommands(RPNCommands *commands)
 		RPN_removeCommand(commands, command);
 
 	RPN_free(commands);
-	RPN_dprintf("freed command table %x", commands);
+	RPN_dprintf("freed command table %p", commands);
 }
 
 //! Adds a command to a command table.
@@ -199,7 +199,7 @@ void RPN_addCommand(RPNCommands *commands, char *cmd, size_t nargs,
 	if(!commands)
 		RPN_error("tried to add command to NULL command table.");
 	HASH_ADD_KEYPTR( hh, commands->table, cmd, strlen(cmd), command );
-	RPN_dprintf("added command %x to table %x", command, commands);
+	RPN_dprintf("added command %p to table %p", command, commands);
 }
 
 //! Finds a command based on its string representation.

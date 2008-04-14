@@ -31,8 +31,8 @@
 
 #ifndef DOXYGEN_SKIP
 
-// Holds information on how a certain button press on the PSP maps to
-// characters. The alternate form is accessed by pressing the right trigger.
+//! Holds information on how a certain button press on the PSP maps to
+//! characters. The alternate form is accessed by pressing the right trigger.
 struct RPNPSPKey
 {
 	int buttons;
