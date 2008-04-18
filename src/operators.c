@@ -232,7 +232,7 @@ bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 
 	if(!calculator)
 		RPN_error("tried to execute an operator on a NULL table.");
-	
+
 	if(op)
 	{
 		// find the operator.

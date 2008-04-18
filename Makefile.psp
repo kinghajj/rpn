@@ -23,7 +23,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
-CFLAGS = -O2 -G0 -Wall -DRPN_DOUBLE -DRPN_PSP -Isrc/include -Isrc
+CFLAGS = -O2 -G0 -Wall -DRPN_DOUBLE -DRPN_CONSOLE -DRPN_PSP -Isrc/include -Isrc
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
