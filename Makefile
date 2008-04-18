@@ -16,10 +16,6 @@ MKF = make -f
 CC = gcc
 RM = rm -f
 CP = cp
-TAR = tar cjf 
-LN = ln -s . 
-BZ = bzip2
-MKDIR = mkdir -p
 
 # object code
 SRCDIR = src/
@@ -36,6 +32,7 @@ GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
 # Installation directory
 INSTALL_DIR = /usr/bin
 
+# Executable generation directory
 BIN_DIR = bin/generic
 
 # Compilation options
