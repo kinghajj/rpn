@@ -9,9 +9,9 @@ PSP_EBOOT = bin/psp/EBOOT.PBP
 PSP_EBOOT_SFO = bin/psp/PARAM.SFO
 
 MYOBJS = \
-	src/calculator.o src/commands.o src/help.o src/operators.o src/parser.o \
-	src/stack.o src/tokens.o src/variables.o src/psp/psp.o src/psp/error.o \
-	src/psp/input.o src/psp/setup.o
+	src/calculator.o src/commands.o src/console/help.o src/operators.o \
+	src/parser.o src/stack.o src/tokens.o src/variables.o src/psp/psp.o \
+	src/psp/error.o src/psp/input.o src/psp/setup.o
 
 OBJS = $(subst src/,obj/psp/,$(MYOBJS))
 
