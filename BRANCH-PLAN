@@ -1,0 +1,13 @@
+The idea of this branch is to separate the console-related modules so that,
+perhaps, a GUI could be more easily added.
+
+Files that should definitely move to a console/ directory:
+
+	arguments.c
+	error.c
+	help.c
+	rpn.c
+
+Even though some files, like commands.c and operators.c, are rather console-
+oriented, a GUI could just use RPN_eval() to interact with these in response to
+user input.	
