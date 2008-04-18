@@ -75,12 +75,15 @@ typedef double RPNValue;
 // header for circular-dependency of structures.
 #include "structs.h"
 
+#ifdef RPN_CONSOLE
+#include "console/arguments.h"
+#include "console/error.h"
+#include "console/help.h"
+#endif
+
 // headers for structures and their methods.
-#include "arguments.h"
 #include "calculator.h"
 #include "commands.h"
-#include "error.h"
-#include "help.h"
 #include "operators.h"
 #include "parser.h"
 #include "stack.h"

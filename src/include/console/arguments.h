@@ -24,41 +24,11 @@
  * DAMAGE.                                                                     *
  ******************************************************************************/
 
-/*******************************************************************************
- *  Forward declarations of structures to help with circular dependency woes.  *
- ******************************************************************************/
+#ifndef RPN_ARGUMENTS_H
+#define RPN_ARGUMENTS_H
 
-#ifndef RPN_STRUCTS_H
-#define RPN_STRUCTS_H
+#include <stdlib.h>
 
-struct RPNCalculator;
-typedef struct RPNCalculator RPNCalculator;
+void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[]);
 
-struct RPNCommands;
-typedef struct RPNCommands RPNCommands;
-
-struct RPNCommand;
-typedef struct RPNCommand RPNCommand;
-
-struct RPNNode;
-typedef struct RPNNode RPNNode;
-
-struct RPNOperator;
-typedef struct RPNOperator RPNOperator;
-
-struct RPNOperators;
-typedef struct RPNOperators RPNOperators;
-
-struct RPNStack;
-typedef struct RPNStack RPNStack;
-
-struct RPNTokens;
-typedef struct RPNTokens RPNTokens;
-
-struct RPNVariable;
-typedef struct RPNVariable RPNVariable;
-
-struct RPNVariables;
-typedef struct RPNVariables RPNVariables;
-
-#endif // RPN_STRUCTS_H
+#endif // RPN_ARGUMENTS_H

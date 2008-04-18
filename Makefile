@@ -24,9 +24,9 @@ MKDIR = mkdir -p
 # object code
 SRCDIR = src/
 OBJDIR = obj/generic/
-SOURCES = src/arguments.c src/calculator.c src/commands.c src/error.c \
-		  src/help.c src/operators.c src/parser.c src/rpn.c src/stack.c \
-		  src/tokens.c src/variables.c
+SOURCES = src/console/arguments.c src/calculator.c src/commands.c \
+          src/console/error.c src/console/help.c src/operators.c src/parser.c \
+          src/console/rpn.c src/stack.c src/tokens.c src/variables.c
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
 # Git command to make a distribution tarball.
@@ -40,11 +40,12 @@ BIN_DIR = bin/generic
 
 # Compilation options
 ifdef RELEASE
-CFLAGS = -c -s -Wall -O2 -DRPN_LONG_DOUBLE -D_GNU_SOURCE -Isrc/include -o
+CFLAGS = -c -s -Wall -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE \
+         -Isrc/include -o
 endif
 ifdef DEBUG
-CFLAGS = -c -Wall -g -DRPN_LONG_DOUBLE -D_GNU_SOURCE -DRPN_DEBUG \
-	-Isrc/include -o
+CFLAGS = -c -Wall -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE -DRPN_DEBUG \
+         -Isrc/include -o
 endif
 LFLAGS = -s -lm -o
 TARGET = $(BIN_DIR)/rpn

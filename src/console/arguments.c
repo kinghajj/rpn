@@ -24,10 +24,12 @@
  * DAMAGE.                                                                     *
  ******************************************************************************/
 
-#ifndef RPN_ARGUMENTS_H
-#define RPN_ARGUMENTS_H
+/*******************************************************************************
+ * arguments.c -- processes argument options.                                  *
+ ******************************************************************************/
 
-#include <stdlib.h>
+#include "rpn.h"
+#include <string.h>
 
 //! Callback for arguments. If a callback returns true, then the program will
 //! continue to look for other arguments; if false, then the program exits.
@@ -46,6 +48,95 @@ struct RPNArgument
 	RPNArgumentFunc func;
 };
 
-void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[]);
+typedef struct RPNArgument RPNArgument;
 
-#endif // RPN_ARGUMENTS_H
+#ifndef DOXYGEN_SKIP
+
+static bool argumentVersion(RPNCalculator *calculator, char **args)
+{
+	RPN_printf("%i.%i.%i.%i",
+	           __RPN_MAJOR__,
+	           __RPN_MINOR__,
+	           __RPN_REVIS__,
+	           __RPN_BUILD__);
+#ifdef RPN_DEBUG
+		RPN_printf("-debug");
+#endif
+
+	calculator->status = RPN_STATUS_EXIT;
+	return false;
+}
+
+static bool argumentHelp(RPNCalculator *calculator, char **args)
+{
+	RPN_printHelp();
+	return false;
+}
+
+static bool argumentExec(RPNCalculator *calculator, char **args)
+{
+	RPN_eval(args[0], calculator);
+	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(calculator->stack));
+
+	calculator->status = RPN_STATUS_EXIT;
+	return true;
+}
+
+// tests if an argument is "null" or not.
+static inline bool argumentNotNull(RPNArgument *arg)
+{
+	if(arg->short_name && arg->long_name && arg->func)
+		return true;
+	return false;
+}
+
+static RPNArgument *findArgument(char *name)
+{
+	int i;
+	static RPNArgument arguments[] =
+	{
+	//   short form  long form     #args  callback
+		{"-v",       "--version",  0,     argumentVersion},
+		{"-h",       "--help",     0,     argumentHelp},
+		{"-e",       "--exec",     1,     argumentExec},
+		{0},
+	};
+
+	for(i = 0; argumentNotNull(&arguments[i]); i++)
+	{
+		// check if the wanted name matches the short or long names.
+		if(!strcmp(arguments[i].short_name, name) ||
+		   !strcmp(arguments[i].long_name, name))
+			return &arguments[i];
+	}
+
+	return NULL;
+}
+
+#endif // DOXYGEN_SKIP
+
+//! Goes through arguments and executes any valid options it sees.
+/**
+ * @param calculator The calculator on which options will operate.
+ * @param argc The number of arguments.
+ * @param argv The arguments.
+ */
+void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[])
+{
+	int i;
+	int cont = 1;
+	RPNArgument *argument;
+
+	/* Go through the arguments:
+	 *
+	 *   -Find if the argument is defined.
+	 *   -If found and there are enough arguments, executed and stop iterating
+	 *    through the arguments.
+	 */
+	for(i = 0; i < argc && cont; i++)
+	{
+		argument = findArgument(argv[i]);
+		if(argument && argc - i >= argument->nargs)
+			if(!argument->func(calculator, &argv[i+1])) cont = 0;
+	}
+}
