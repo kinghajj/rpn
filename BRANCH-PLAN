@@ -10,4 +10,11 @@ Files that should definitely move to a console/ directory:
 
 Even though some files, like commands.c and operators.c, are rather console-
 oriented, a GUI could just use RPN_eval() to interact with these in response to
-user input.	
+user input.
+
+--------------------------------------------------------------------------------
+
+I think this is basically done, though the separation could probably be more
+complete. Whenever I try to add a GUI, I'll probably see what I've forgetten
+now. I won't merge this back into master, however, until I get a PSP dev setup
+again and make sure the PSP port still works.
