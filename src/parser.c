@@ -70,21 +70,22 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 	// still no? then treat this as a variable name.
 	if(!everExecutedOp && !everExecutedCmd)
 	{
-		// copy variable name
-		name = strdup(tok);
-
 		// find variable with this name
-		var = RPN_findVariable(calculator->variables, name);
+		var = RPN_findVariable(calculator->variables, tok);
+
+		// if found,
 		if(var) 
-		{
-			// push it's value to the stack, free the name.
+			// push it's value to the stack
 			RPN_push(calculator->stack, var->value);
-			RPN_free(name);
-		}
-		// add a new variable to the variables table.
+		// else
 		else
+		{
+			// copy variable name
+			name = strdup(tok);
+			// add a new variable to the variable table.
 			RPN_addVariable(calculator->variables, name,
 			                RPN_peek(calculator->stack));
+		}
 	}
 }
 
