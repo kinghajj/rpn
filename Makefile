@@ -22,7 +22,7 @@ SRCDIR = src/
 OBJDIR = obj/generic/
 SOURCES = src/console/arguments.c src/calculator.c src/commands.c \
           src/console/error.c src/console/help.c src/operators.c src/parser.c \
-          src/console/rpn.c src/stack.c src/tokens.c src/variables.c
+          src/console/main.c src/stack.c src/tokens.c src/variables.c
 OBJECTS = $(subst .c,.o,$(subst $(SRCDIR),$(OBJDIR),$(SOURCES)))
 
 # Git command to make a distribution tarball.
