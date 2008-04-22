@@ -26,6 +26,11 @@
 
 /*******************************************************************************
  * Error-handling. (error.c)                                                   *
+ *                                                                             *
+ * If a GUI version of this app is ever made, then it may need to redifine     *
+ * these functions. In that case, then I'll probably need to further separate  *
+ * this into include/error.h, for standard error prototypes, and               *
+ * include/console/error.h, for console error prototypes.                      *
  ******************************************************************************/
 
 #ifndef RPN_ERROR_H
@@ -43,9 +48,11 @@ int RPN_dprintff(char *func, char *fmt, ...);
 	RPN_dprintff ((char*)__FUNCTION__, fmt, ## __VA_ARGS__)
 void *RPN_malloc(size_t n);
 void RPN_free(void *ptr);
-#else
-#define RPN_dprintf(fmt, ...) ;
-#define RPN_malloc malloc
+
+#else // NOT debug mode, so just redefine these as macros to get optimized.
+
+#define RPN_dprintf(fmt, ...) ; // don't even compile this
+#define RPN_malloc malloc       // replace these with malloc/free
 #define RPN_free free
 #endif
 

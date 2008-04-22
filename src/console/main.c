@@ -25,23 +25,13 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * rpn.c - the front-end.                                                      *
- *                                                                             *
- * This is stack-based, so expressions can be as long as memory will allow.    *
- *   Operators can be as long as you want. You can add your own by writing an  *
- * operator function then calling RPN_addOperator().                           *
- *   I've commented this code to explain any 'magic' or otherwise cryptic      *
- * sections. I hope they will suffice.                                         *
+ * main.c - the front-end of the console.                                      *
  ******************************************************************************/
 
 #include "rpn.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/*******************************************************************************
- * The main part of the program.
- ******************************************************************************/
 
 #ifndef DOXYGEN_SKIP
 
