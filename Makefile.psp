@@ -8,7 +8,7 @@ TARGET = bin/psp/psprpn
 PSP_EBOOT = bin/psp/EBOOT.PBP
 PSP_EBOOT_SFO = bin/psp/PARAM.SFO
 
-OBJDIR = obj/psp
+OBJDIR = obj/psp/
 SRCDIR = src/
 BINDIR = bin/psp
 
@@ -19,7 +19,7 @@ MYOBJS = \
 
 OBJS = $(subst $(SRCDIR),$(OBJDIR),$(MYOBJS))
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)%.o: $(SRCDIR)%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
