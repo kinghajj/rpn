@@ -100,3 +100,14 @@ psp-clean:
 .PHONY: psp-install
 psp-install:
 	$(MKF) $(PSP_MAKEFILE) install
+
+# GUI compilation.
+GUI_TARGET = $(BIN_DIR)/rpn-gui
+GUI_MAKEFILE = Makefile.gui
+
+$(GUI_TARGET): $(GUI_MAKEFILE)
+	$(MKF) $<
+
+.PHONY: gui
+gui: $(GUI_TARGET)
+
