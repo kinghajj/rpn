@@ -1,4 +1,5 @@
 bin/*
+doc/*
 obj/*
 rpn
 EBOOT.PBP

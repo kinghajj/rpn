@@ -5,6 +5,7 @@ endif
 
 CC  = gcc
 CPP = g++
+RM  = rm -f
 
 SRCDIR = src/
 OBJDIR = obj/generic/
@@ -42,3 +43,7 @@ LFLAGS = -s -lm $(shell wx-config --libs) -o
 
 $(TARGET): $(OBJECTS)
 	$(CPP) $(OBJECTS) $(LFLAGS) $@
+
+.PHONY: clean
+clean:
+	$(RM) $(TARGET) $(OBJECTS)

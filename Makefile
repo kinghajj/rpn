@@ -111,3 +111,6 @@ $(GUI_TARGET): $(GUI_MAKEFILE)
 .PHONY: gui
 gui: $(GUI_TARGET)
 
+.PHONY: gui-clean
+gui-clean:
+	$(MKF) $(GUI_MAKEFILE) clean
