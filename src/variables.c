@@ -165,7 +165,7 @@ void RPN_freeVariables(RPNVariables *variables)
 	    variable = variable->hh.next)
 		RPN_removeVariable(variables, variable);
 
-	RPN_free(variable);
+	RPN_free(variables);
 	RPN_dprintf("freed variable table %p", variables);
 }
 
