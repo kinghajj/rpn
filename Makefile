@@ -39,12 +39,13 @@ BIN_DIR = bin/generic
 ifdef RELEASE
 CFLAGS = -c -s -Wall -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE \
          -Isrc/include -o
+LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
 CFLAGS = -c -Wall -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE -DRPN_DEBUG \
          -Isrc/include -o
+LFLAGS = -lm -o
 endif
-LFLAGS = -s -lm -o
 TARGET = $(BIN_DIR)/rpn
 
 # General rule for compiling.
