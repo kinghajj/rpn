@@ -36,8 +36,6 @@
 
 /*******************************************************************************
  * The RPN operator functions, in all their glory.                             *
- * remember that math operators need to pop in reverse order because of the    *
- * way stacks work.                                                            *
  ******************************************************************************/
 
 #ifndef DOXYGEN_SKIP
@@ -74,9 +72,7 @@ static RPNValue operatorPower(RPNValue a, RPNValue b)
 
 static RPNValue operatorEquals(RPNValue a, RPNValue b)
 {
-	if(a == b)
-		return 1;
-	return 0;
+	return a == b;
 }
 
 // Modulo and bitwise operators. These are converted to integers, so they lose
