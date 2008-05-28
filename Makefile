@@ -13,9 +13,9 @@ VERSION = $(shell cat VERSION)
 
 # Programs
 MKF = make -f
-CC = gcc
-RM = rm -f
-CP = cp
+CC  = gcc
+RM  = rm -f
+CP  = cp
 
 # object code
 SRCDIR = src/
