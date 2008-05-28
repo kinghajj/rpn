@@ -126,11 +126,9 @@ static int GetButtonPushes()
 	SceCtrlData pad;
 
 	// Wait for a button press.
-	while(1)
-	{
+	pad.Buttons = 0;
+	while(!pad.Buttons)
 		sceCtrlReadBufferPositive(&pad, 1);
-		if(pad.Buttons) break;
-	}
 
 	// store the buttons.
 	buttons = pad.Buttons;
@@ -151,12 +149,13 @@ static int GetButtonPushes()
 static RPNPSPKey *FindKey(int buttons)
 {
 	int i;
+	RPNPSPKey *key = NULL;
 
-	for(i = 0; KeyMap[i].buttons; i++)
+	for(i = 0; KeyMap[i].buttons; ++i)
 		if(KeyMap[i].buttons == buttons)
-			return &KeyMap[i];
+			key = &KeyMap[i];
 
-	return NULL;
+	return key;
 }
 
 // 64 characters is a reasonable limit for the buffer.
@@ -176,7 +175,7 @@ static void clearInputBuffer()
 {
 	int i;
 
-	for(i = 0; i < RPN_BUF_SIZE; i++)
+	for(i = 0; i < RPN_BUF_SIZE; ++i)
 		buffer[i] = 0;
 }
 
@@ -217,19 +216,20 @@ static char GetCharacter()
 char *RPNPSP_GetString()
 {
 	int i, c = 0;
+	char *retbuf = buffer;
 
 	// Clear the previous buffer before filling it.
 	clearInputBuffer();
 
 	// Go until the buffer is filled or a newline is returned.
-	for(i = 0; i < RPN_BUF_SIZE && c != '\n'; i++)
+	for(i = 0; retbuf && i < RPN_BUF_SIZE && c != '\n'; i++)
 	{
 		c = GetCharacter();
 		// Backspace?
 		if(c == '\b')
 		{
 			kprintf("\n");
-			return NULL;
+			retbuf = NULL;
 		}
 		// Real character?
 		else if(c)
@@ -240,5 +240,5 @@ char *RPNPSP_GetString()
 	}
 
 	kprintf("\n");
-	return buffer;
+	return retbuf;
 }
