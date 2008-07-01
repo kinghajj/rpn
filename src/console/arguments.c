@@ -60,7 +60,13 @@ static bool argumentVersion(RPNCalculator *calculator, char **args)
 	           __RPN_REVIS__,
 	           __RPN_BUILD__);
 #ifdef RPN_DEBUG
-		RPN_printf("-debug");
+	RPN_printf("-debug");
+#endif
+#ifdef __GNUC__
+	RPN_printf(" (GCC %i.%i.%i on %s)", __GNUC__,
+	                                    __GNUC_MINOR__,
+	                                    __GNUC_PATCHLEVEL__,
+	                                    __TIMESTAMP__);
 #endif
 
 	calculator->status = RPN_STATUS_EXIT;

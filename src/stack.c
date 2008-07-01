@@ -142,10 +142,9 @@ void RPN_freeStack(RPNStack *stack)
 	RPNNode *node, *temp;
 
 	// free all nodes
-	for(node = stack->first; node;)
+	for(node = stack->first; node; node = node->next)
 	{
 		temp = node;
-		node = node->next;
 		RPN_free(temp);
 		RPN_dprintf("freed node %p", temp);
 	}

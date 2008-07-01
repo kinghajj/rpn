@@ -77,7 +77,6 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 		if(var) 
 			// push it's value to the stack
 			RPN_push(calculator->stack, var->value);
-		// else
 		else
 		{
 			// copy variable name
