@@ -27,4 +27,7 @@
 /* wii.c - the Wii front-end.
  */
 
-
+int main(int argc, char **argv)
+{
+	return 0;
+}
