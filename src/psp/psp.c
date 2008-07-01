@@ -47,6 +47,14 @@ int main()
 		__RPN_REVIS__,
 		__RPN_BUILD__);
 
+#ifdef __GNUC__
+	kprintf("GCC %i.%i.%i on %s at %s\n",
+		__GNUC__,
+		__GNUC_MINOR__,
+		__GNUC_PATCHLEVEL__,
+		__DATE__, __TIME__);
+#endif
+
 	calculator = RPN_newCalculator();
 
 	// Input loop.
