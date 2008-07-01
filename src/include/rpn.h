@@ -57,17 +57,19 @@
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)RPN_malloc(sizeof(x))
 
-// setup the type of RPNValue
+// setup the type of RPNValue and other auxillary macros.
 #ifdef RPN_LONG_DOUBLE
 typedef long double RPNValue;
 #define RPN_VALUE_LONG_FORMAT  "%Lf"
 #define RPN_VALUE_SHORT_FORMAT "%Lg"
 #define RPN_strtod strtold
+
 #elif  RPN_DOUBLE
 typedef double RPNValue;
 #define RPN_VALUE_LONG_FORMAT  "%f"
 #define RPN_VALUE_SHORT_FORMAT "%g"
 #define RPN_strtod strtod
+
 #else
 #error Please define either RPN_LONG_DOUBLE or RPN_DOUBLE.
 #endif
