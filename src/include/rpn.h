@@ -48,11 +48,11 @@
 //! The major version number.
 #define __RPN_MAJOR__ 1
 //! The minor version number.
-#define __RPN_MINOR__ 2
+#define __RPN_MINOR__ 3
 //! The revision version number.
-#define __RPN_REVIS__ 3
+#define __RPN_REVIS__ 0
 //! The build version number.
-#define __RPN_BUILD__ 5
+#define __RPN_BUILD__ 0
 
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)RPN_malloc(sizeof(x))
