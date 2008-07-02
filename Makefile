@@ -50,11 +50,13 @@ TARGET = $(BIN_DIR)/rpn
 
 # General rule for compiling.
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	$(CC) $< $(CFLAGS) $@
+	@echo Compiling $(notdir $<)
+	@$(CC) $< $(CFLAGS) $@
 
 # rule to make the program
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LFLAGS) $@
+	@echo Linking $(TARGET)...
+	@$(CC) $(OBJECTS) $(LFLAGS) $@
 
 # make the program by default
 .PHONY: all
@@ -63,8 +65,9 @@ all: $(TARGET)
 # rule to clean-up the objects and the target, if they exist
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS)
-	$(RM) $(TARGET)
+	@echo Cleaning objects and executables...
+	@$(RM) $(OBJECTS)
+	@$(RM) $(TARGET)
 
 # rule to install program
 .PHONY: install
