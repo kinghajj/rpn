@@ -36,7 +36,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-losk -lwiisprite -lwiiuse -lbte -lfat -logc -lpng -lm -lz -lmxml
+LIBS	:=	-lfat -losk -lwiisprite -lwiiuse -lbte -logc -lpng -lm -lz -lmxml
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -62,7 +62,7 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES = wii/setup.c calculator.c commands.c operators.c parser.c \
-         stack.c tokens.c variables.c
+         stack.c tokens.c variables.c console/help.c console/error.c
 CPPFILES = wii/wii.cpp
 
 #CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
@@ -94,6 +94,7 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@[ -d $@/wii ] || mkdir -p $@/wii
+	@[ -d $@/console ] || mkdir -p $@/console
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile.wii
 
 #---------------------------------------------------------------------------------

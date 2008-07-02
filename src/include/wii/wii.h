@@ -35,6 +35,7 @@
  * Wii setup (wii/setup.c)                                                     *
  ******************************************************************************/
 
+void RPNWii_InitConsole();
 void RPNWii_Setup();
 
 #endif // RPN_WII
