@@ -30,12 +30,13 @@ INCLUDES	:=  src/include
 
 DEFINES = -DRPN_DOUBLE -DRPN_WII -DRPN_CONSOLE -D_GNU_SOURCE
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) $(DEFINES)
+CXXFLAGS = $(CFLAGS)
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lwiiuse -lbte -logc -lm
+LIBS	:=	-losk -lwiisprite -lwiiuse -lbte -lfat -logc -lpng -lm -lz -lmxml
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -60,15 +61,17 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
-CFILES = wii/wii.c calculator.c commands.c operators.c parser.c \
+CFILES = wii/setup.c calculator.c commands.c operators.c parser.c \
          stack.c tokens.c variables.c
+CPPFILES = wii/wii.cpp
+
 #CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 #sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 #SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
 #BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
-export LD	:=	$(CC)
-export OFILES := $(CFILES:.c=.o)
+export LD	:=	$(CXX)
+export OFILES := $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 
 #---------------------------------------------------------------------------------
 # build a list of include paths

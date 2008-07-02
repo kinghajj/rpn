@@ -24,10 +24,18 @@
  * DAMAGE.                                                                     *
  ******************************************************************************/
 
-/* wii.c - the Wii front-end.
- */
+#ifndef RPN_WII_H
+#define RPN_WII_H
+#ifdef RPN_WII
 
-int main(int argc, char **argv)
-{
-	return 0;
-}
+#include <gccore.h>
+#include <wiiuse/wpad.h>
+
+/*******************************************************************************
+ * Wii setup (wii/setup.c)                                                     *
+ ******************************************************************************/
+
+void RPNWii_Setup();
+
+#endif // RPN_WII
+#endif // RPN_WII_H

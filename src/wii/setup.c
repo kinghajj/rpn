@@ -24,36 +24,49 @@
  * DAMAGE.                                                                     *
  ******************************************************************************/
 
-/*******************************************************************************
- * The RPN operator table. (operators.c)                                       *
- ******************************************************************************/
+/* setup.c - functions to setup Wii video and controllers, etc.
+ *
+ * This code is taken from the example template for devkitPPC with some editing.
+ * I assume that since its a template, it's free to use without restriction.
+ */
 
-#ifndef RPN_OPERATORS_H
-#define RPN_OPERATORS_H
+#include "rpn.h"
+#include <fat.h>
 
-//! Operator callback type.
-typedef RPNValue (*RPNOperatorFunc)(RPNValue a, RPNValue b);
+#ifndef DOXYGEN_SKIP
 
-//! Holds an operator.
-struct RPNOperator {
-	//! The string representation of the operator.
-	char *op;
-	//! The function that performs the operator.
-	RPNOperatorFunc func;
-	//! A uthash handle to make this hashable.
-	UT_hash_handle hh;
-};
+static void *xfb = NULL;
+static GXRModeObj *rmode = NULL;
 
-//! Holds a hash table of operators.
-struct RPNOperators {
-	//! The operator table.
-	RPNOperator *table;
-};
+void RPNWii_Setup()
+{
+	// Initialise the video system.
+	VIDEO_Init();
+	// Initialise the attached controllers.
+	WPAD_Init();
+	// Allow the WPAD to use the accelerator ? (needed for libosk)
+	WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
+	// Get the preferred video mode.
+	rmode = VIDEO_GetPreferredMode(NULL);
+	// Allocate memory for the display in the uncached region.
+	xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
+	// Initialise the console (required for printf).
+	console_init(xfb, 20, 20, rmode->fbWidth, rmode->xfbHeight,
+	             rmode->fbWidth * VI_DISPLAY_PIX_SZ);
+	// Set up the video registers with the chosen mode.
+	VIDEO_Configure(rmode);
+	// Tell the video hardware where our display memory is.
+	VIDEO_SetNextFramebuffer(xfb);
+	// Make the display visible.
+	VIDEO_SetBlack(FALSE);
+	// Flush the video register changes to the hardware.
+	VIDEO_Flush();
+	// Wait for Video setup to complete.
+	VIDEO_WaitVSync();
+	if(rmode->viTVMode & VI_NON_INTERLACE)
+		VIDEO_WaitVSync();
+	// Initialize the fat library.
+	fatInitDefault();
+}
 
-bool RPN_addOperator(RPNOperators *operators, char *op, RPNOperatorFunc func);
-void RPN_removeOperator(RPNOperators *operators, RPNOperator *_operator);
-void RPN_freeOperators(RPNOperators *operators);
-bool RPN_executeOperator(RPNCalculator *calculator, char *op);
-RPNOperators *RPN_defaultOperators();
-
-#endif // RPN_OPERATORS_H
+#endif // DOXYGEN_SKIP

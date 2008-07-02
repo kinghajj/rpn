@@ -35,6 +35,10 @@
 #ifndef __RPN_H__
 #define __RPN_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #include <stdbool.h>
 
 /* This wonderful header provides hashing for C structures. I use it to
@@ -54,8 +58,10 @@
 //! The build version number.
 #define __RPN_BUILD__ 0
 
+#ifndef __cplusplus
 //! Handy-dandy macro for allocating structures
 #define new(x) (x*)RPN_malloc(sizeof(x))
+#endif // __cplusplus
 
 // setup the type of RPNValue and other auxillary macros.
 #ifdef RPN_LONG_DOUBLE
@@ -97,5 +103,15 @@ typedef double RPNValue;
 #ifdef RPN_PSP
 #include "psp/psp.h"
 #endif // RPN_PSP
+
+/* Conditionally include Wii declarations.
+ */
+#ifdef RPN_WII
+#include "wii/wii.h"
+#endif // RPN_WII
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __RPN_H__

@@ -24,36 +24,59 @@
  * DAMAGE.                                                                     *
  ******************************************************************************/
 
-/*******************************************************************************
- * The RPN operator table. (operators.c)                                       *
- ******************************************************************************/
+/* wii.c - the Wii front-end.
+ */
 
-#ifndef RPN_OPERATORS_H
-#define RPN_OPERATORS_H
+#include "rpn.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <OnScreenKeyboard.h>
+#include <wiisprite.h>
 
-//! Operator callback type.
-typedef RPNValue (*RPNOperatorFunc)(RPNValue a, RPNValue b);
+inline static void buzz_wpad(int32_t chan, int useconds)
+{
+	// start rumbling.
+	WPAD_Rumble(chan, 1);
+	// wait.
+	usleep(useconds);
+	// stop.
+	WPAD_Rumble(chan, 0);
+}
 
-//! Holds an operator.
-struct RPNOperator {
-	//! The string representation of the operator.
-	char *op;
-	//! The function that performs the operator.
-	RPNOperatorFunc func;
-	//! A uthash handle to make this hashable.
-	UT_hash_handle hh;
-};
+inline static bool wpad_button_home_pressed(uint32_t pressed)
+{
+	return pressed & WPAD_BUTTON_HOME ||
+	       pressed & WPAD_CLASSIC_BUTTON_HOME;
+}
 
-//! Holds a hash table of operators.
-struct RPNOperators {
-	//! The operator table.
-	RPNOperator *table;
-};
+int main(int argc, char **argv)
+{
+	uint32_t pressed = 0;
+	wsp::GameWindow gwd;
+	OnScreenKeyboard *osk;
 
-bool RPN_addOperator(RPNOperators *operators, char *op, RPNOperatorFunc func);
-void RPN_removeOperator(RPNOperators *operators, RPNOperator *_operator);
-void RPN_freeOperators(RPNOperators *operators);
-bool RPN_executeOperator(RPNCalculator *calculator, char *op);
-RPNOperators *RPN_defaultOperators();
+	RPNWii_Setup();
+	gwd.InitVideo();
 
-#endif // RPN_OPERATORS_H
+	printf("Hello, world!\nWelcome to RPN!\nMore to come soon ;)\n");
+
+	osk = new OnScreenKeyboard(&gwd, "/config/key_config.xml");
+
+	while(!wpad_button_home_pressed(pressed)) {
+		// wait for user inputs.
+		WPAD_ScanPads();
+		// get inputs for the first player.
+		pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
+		if(pressed) {
+			printf("Button code: %x\n", pressed);
+			buzz_wpad(WPAD_CHAN_0, 1000);
+		}
+		// wait for video.
+		VIDEO_WaitVSync();
+	}
+
+	printf("Exiting...\n");
+
+	return 0;
+}
