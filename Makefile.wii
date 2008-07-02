@@ -1,3 +1,6 @@
+# Makefile for the Wii port of RPN.
+# Based on the template Makefile from devkitPPC.
+
 #---------------------------------------------------------------------------------
 # Clear the implicit built in rules
 #---------------------------------------------------------------------------------
@@ -16,22 +19,18 @@ include $(DEVKITPPC)/wii_rules
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
 TARGET		:=	bin/wii/rpn
-BUILD		:=	build
+BUILD		:=	wiiobj
 SOURCES		:=	src
-DATA		:=	data  
-INCLUDES	:=
+DATA		:=	data
+INCLUDES	:=  src/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DRPN_DOUBLE -D_GNU_SOURCE -I$(CURDIR)src/include
-CXXFLAGS	=	$(CFLAGS)
-
+DEFINES = -DRPN_DOUBLE -DRPN_WII -DRPN_CONSOLE -D_GNU_SOURCE
+CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) $(DEFINES)
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
-
-$(SOURCES)/%.o: $(SOURCES)/%.c
-	$(CC) $(CFLAGS) -o $@ $<
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -61,20 +60,14 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-#CFILES = src/wii/wii.c src/calculator.c src/commands.c src/operators.c src/parser.c \
-#         src/stack.c src/tokens.c src/variables.c
-#CFILES = src/wii/wii.c
-
+CFILES = wii/wii.c calculator.c commands.c operators.c parser.c \
+         stack.c tokens.c variables.c
 #CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 #sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 #SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
 #BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
 export LD	:=	$(CC)
-#export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-#					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
-#					$(sFILES:.s=.o) $(SFILES:.S=.o)
 export OFILES := $(CFILES:.c=.o)
 
 #---------------------------------------------------------------------------------
@@ -96,8 +89,9 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
 #---------------------------------------------------------------------------------
 $(BUILD):
-	@echo $(CURDIR)
+	@echo $(CURDIR) $(BUILD)
 	@[ -d $@ ] || mkdir -p $@
+	@[ -d $@/wii ] || mkdir -p $@/wii
 	@make -C $(BUILD) -f $(CURDIR)/Makefile.wii
 
 #---------------------------------------------------------------------------------
