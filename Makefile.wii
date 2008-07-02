@@ -89,10 +89,9 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
 #---------------------------------------------------------------------------------
 $(BUILD):
-	@echo $(CURDIR) $(BUILD)
 	@[ -d $@ ] || mkdir -p $@
 	@[ -d $@/wii ] || mkdir -p $@/wii
-	@make -C $(BUILD) -f $(CURDIR)/Makefile.wii
+	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile.wii
 
 #---------------------------------------------------------------------------------
 clean:

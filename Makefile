@@ -90,7 +90,7 @@ PSP_MAKEFILE = Makefile.psp
 
 # Call the PSP makefile to do the work.
 $(PSP_TARGET): $(PSP_MAKEFILE)
-	$(MKF) $<
+	@$(MKF) $<
 
 # Make the executable.
 .PHONY: psp
@@ -99,22 +99,37 @@ psp: $(PSP_TARGET)
 # Cleanup.
 .PHONY: psp-clean
 psp-clean:
-	$(MKF) $(PSP_MAKEFILE) clean
+	@$(MKF) $(PSP_MAKEFILE) clean
 
 .PHONY: psp-install
 psp-install:
-	$(MKF) $(PSP_MAKEFILE) install
+	@$(MKF) $(PSP_MAKEFILE) install
+
+# Wii compilation.
+WII_MAKEFILE = Makefile.wii
+
+.PHONY: wii
+wii: $(WII_MAKEFILE)
+	@$(MKF) $(WII_MAKEFILE)
+
+.PHONY: wii-clean
+wii-clean: $(WII_MAKEFILE)
+	@$(MKF) $(WII_MAKEFILE) clean
+
+.PHONY: wii-run
+wii-run: $(WII_MAKEFILE)
+	@$(MKF) $(WII_MAKEFILE) run
 
 # GUI compilation.
 GUI_TARGET = $(BIN_DIR)/rpn-gui
 GUI_MAKEFILE = Makefile.gui
 
 $(GUI_TARGET): $(GUI_MAKEFILE)
-	$(MKF) $<
+	@$(MKF) $<
 
 .PHONY: gui
 gui: $(GUI_TARGET)
 
 .PHONY: gui-clean
 gui-clean:
-	$(MKF) $(GUI_MAKEFILE) clean
+	@$(MKF) $(GUI_MAKEFILE) clean

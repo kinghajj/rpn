@@ -34,15 +34,18 @@ endif
 
 # General rule for compiling.
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	$(CC) $< $(CFLAGS) $@
+	@echo Compiling $(notdir $<)
+	@$(CC) $< $(CFLAGS) $@
 $(OBJDIR)%.opp: $(SRCDIR)%.cpp
-	$(CPP) $< $(CPPFLAGS) $@
+	@echo Compiling $(notdir $<)
+	@$(CPP) $< $(CPPFLAGS) $@
 
 TARGET = $(BINDIR)rpn-gui
 LFLAGS = -s -lm $(shell wx-config --libs) -o
 
 $(TARGET): $(OBJECTS)
-	$(CPP) $(OBJECTS) $(LFLAGS) $@
+	@echo Linking $(TARGET)...
+	@$(CPP) $(OBJECTS) $(LFLAGS) $@
 
 .PHONY: clean
 clean:
