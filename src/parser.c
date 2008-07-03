@@ -43,7 +43,7 @@ static bool isNumber(char *s)
 	size_t i, len = strlen(s);
 	bool isnum = true;
 
-	for(i = 0; isnum && i < len; i++)
+	for(i = 0; isnum && i < len; ++i)
 		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
 	
 	return isnum;
@@ -57,18 +57,14 @@ static bool isNumber(char *s)
 static void evalToken(RPNCalculator *calculator, char *tok)
 {
 	RPNVariable *var;
-	char *name;
-	bool everExecutedOp, everExecutedCmd;
+	bool executed;
 
-	// try to execute an operator
-	everExecutedOp = RPN_executeOperator(calculator, tok);
+	// try to execute an operator; if that fails, then try to execute a command
+	executed = RPN_executeOperator(calculator, tok) ||
+	           RPN_executeCommand(calculator, tok);
 
-	// no? try to execute a command, then.
-	if(!everExecutedOp)
-		everExecutedCmd = RPN_executeCommand(calculator, tok);
-
-	// still no? then treat this as a variable name.
-	if(!everExecutedOp && !everExecutedCmd)
+	// no? then treat this as a variable name.
+	if(!executed)
 	{
 		// find variable with this name
 		var = RPN_findVariable(calculator->variables, tok);
@@ -78,13 +74,10 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 			// push it's value to the stack
 			RPN_push(calculator->stack, var->value);
 		else
-		{
-			// copy variable name
-			name = strdup(tok);
-			// add a new variable to the variable table.
-			RPN_addVariable(calculator->variables, name,
+			// add a new variable to the variable table, whose value is that of
+			// the topmost item in the stack.
+			RPN_addVariable(calculator->variables, strdup(tok),
 			                RPN_peek(calculator->stack));
-		}
 	}
 }
 
@@ -96,20 +89,26 @@ static void evalToken(RPNCalculator *calculator, char *tok)
  */
 RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 {
+	/* these are just used as shorthands to make the code more readable. */
 	RPNTokens *tokens;
+	char *token;
 
-	calculator->tokens = RPN_splitString(s);
-	tokens = calculator->tokens;
+	/* split the string. */
+	tokens = calculator->tokens = RPN_splitString(s);
 
-	for(tokens->pos = 0; tokens->pos < tokens->size; tokens->pos++)
+	/* go through the tokens. */
+	for(tokens->pos = 0; tokens->pos < tokens->size; ++tokens->pos)
 	{
-		if(isNumber(tokens->tokens[tokens->pos]))
-			RPN_push(calculator->stack,
-				RPN_strtod(tokens->tokens[tokens->pos], NULL));
+		token = tokens->tokens[tokens->pos];
+		/* push numeric tokens to the stack. */
+		if(isNumber(token))
+			RPN_push(calculator->stack, RPN_strtod(token, NULL));
+		/* delegate other tokens to evalToken(). */
 		else
-			evalToken(calculator, tokens->tokens[tokens->pos]);
+			evalToken(calculator, token);
 	}
 
+	/* cleanup. */
 	RPN_freeTokens(tokens);
 	calculator->tokens = NULL;
 
