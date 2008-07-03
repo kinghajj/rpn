@@ -124,8 +124,9 @@ RPNCommands *RPN_newCommands()
 
 //! Creates a new command, but does not insert it into a table.
 /**
- * @param cmd The string representation of the command.
- * @param func The function that performs the command.
+ * @param cmd   The string representation of the command.
+ * @param nargs The number of arguments the command takes.
+ * @param func  The function that performs the command.
  * @return A new command.
  */
 RPNCommand *RPN_newCommand(char *cmd, size_t nargs, RPNCommandFunc func)
@@ -230,6 +231,7 @@ bool RPN_executeCommand(RPNCalculator *calculator, char *cmd)
 	command = RPN_findCommand(calculator->commands, cmd);
 	if(command)
 	{
+		// only execute if there are enough arguments.
 		if(tokens->size - tokens->pos + 1 >= command->nargs)
 			command->func(calculator, &tokens->tokens[tokens->pos + 1]);
 		// skip the arguments
