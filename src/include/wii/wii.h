@@ -38,5 +38,7 @@
 void RPNWii_InitConsole();
 void RPNWii_Setup();
 
+char *RPNWii_GetInput();
+
 #endif // RPN_WII
 #endif // RPN_WII_H
