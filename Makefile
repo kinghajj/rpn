@@ -38,7 +38,7 @@ BIN_DIR = bin/generic
 # Compilation options
 ifdef RELEASE
 CFLAGS = -c -s -Wall -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE \
-         -Isrc/include -o
+         -DHASH_FUNCTION=HASH_JSW -Isrc/include -o
 LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
