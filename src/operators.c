@@ -171,13 +171,13 @@ void RPN_removeOperator(RPNOperators *operators, RPNOperator *operator)
  */
 void RPN_freeOperators(RPNOperators *operators)
 {
-	RPNOperator *operator;
+	RPNOperator *operator, *next;
 
 	// go through all operators and remove/free them.
-	for(operator = operators->table;
-	    operator != NULL;
-	    operator = operator->hh.next)
+	for(operator = operators->table; operator != NULL; operator = next) {
+		next = operator->hh.next;
 		RPN_removeOperator(operators, operator);
+	}
 
 	RPN_free(operators);
 	RPN_dprintf("freed operator table %p", operators);

@@ -176,11 +176,13 @@ void RPN_removeCommand(RPNCommands *commands, RPNCommand *command)
  */
 void RPN_freeCommands(RPNCommands *commands)
 {
-	RPNCommand *command;
+	RPNCommand *command, *next;
 
 	// go through every command and remove/free it.
-	for(command = commands->table; command != NULL; command = command->hh.next)
+	for(command = commands->table; command != NULL; command = next) {
+		next = command->hh.next;
 		RPN_removeCommand(commands, command);
+	}
 
 	RPN_free(commands);
 	RPN_dprintf("freed command table %p", commands);

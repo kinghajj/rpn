@@ -157,13 +157,13 @@ void RPN_removeVariable(RPNVariables *variables, RPNVariable *variable)
  */
 void RPN_freeVariables(RPNVariables *variables)
 {
-	RPNVariable *variable;
+	RPNVariable *variable, *next;
 
 	// go through every command and remove/free it.
-	for(variable = variables->table;
-	    variable != NULL;
-	    variable = variable->hh.next)
+	for(variable = variables->table; variable != NULL; variable = next) {
+		next = variable->hh.next;
 		RPN_removeVariable(variables, variable);
+	}
 
 	RPN_free(variables);
 	RPN_dprintf("freed variable table %p", variables);
