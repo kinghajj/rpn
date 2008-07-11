@@ -79,6 +79,10 @@ static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
 		// allocate space for it
 		s = RPN_malloc(size);
 
+		// make sure the space was allocated.
+		if(!s)
+			RPN_error("could not allocate memory for a token");
+
 		// copy it from the source string
 		memcpy(s, &str[*pos], size);
 
@@ -101,16 +105,20 @@ static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
  */
 RPNTokens *RPN_newTokens()
 {
-	RPNTokens *tokens;
+	RPNTokens *tokens = new(RPNTokens);
 
-	tokens = new(RPNTokens);
-	if(!tokens) RPN_error("could not allocate memory for tokens");
+	if(!tokens)
+		RPN_error("could not allocate memory for tokens");
+
 	tokens->alloc_size = RPN_TOKENS_ALLOC_SIZE;
 	tokens->tokens = RPN_malloc(tokens->alloc_size * sizeof(char**));
-	if(!tokens->tokens) RPN_error("could not allocate memory for tokens");
+
+	if(!tokens->tokens)
+		RPN_error("could not allocate memory for tokens");
+
 	tokens->size = 0;
 	tokens->pos = 0;
-	RPN_dprintf("allocated tokens %p", tokens);
+
 	return tokens;
 }
 
@@ -129,7 +137,7 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 		RPN_error("attempted to add a NULL token to token array.");
 	if(token != NULL_TOKEN)
 	{
-		// Check the tokens array.
+		// Check the tokens array for resizing.
 		if(tokens->size >= tokens->alloc_size)
 		{
 			RPN_dprintf("tokens->size: %u", tokens->size);
@@ -139,8 +147,9 @@ void RPN_addToken(RPNTokens *tokens, char *token)
 
 			tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
 			tokens->tokens = realloc(tokens->tokens,
-				tokens->alloc_size * sizeof(char**));
-			if(!tokens->tokens) RPN_error("could not resize tokens");
+			                         tokens->alloc_size * sizeof(char**));
+			if(!tokens->tokens)
+				RPN_error("could not resize tokens");
 		}
 
 		// store token in token structure
@@ -159,7 +168,8 @@ RPNTokens *RPN_splitString(char *str)
 	size_t len = strlen(str), pos = 0, end;
 	RPNTokens *tokens;
 
-	if(!str) RPN_error("tried to split a null string");
+	if(!str)
+		RPN_error("tried to split a null string");
 
 	tokens = RPN_newTokens();
 
@@ -173,7 +183,8 @@ RPNTokens *RPN_splitString(char *str)
 	// don't try to resize the tokens to null.
 	if(tokens->size)
 		tokens->tokens = realloc(tokens->tokens, tokens->size * sizeof(char**));
-	if(!tokens->tokens) RPN_error("could not resize tokens");
+	if(!tokens->tokens)
+		RPN_error("could not resize tokens");
  
 	return tokens;
 }
@@ -190,10 +201,12 @@ void RPN_freeTokens(RPNTokens *tokens)
 	if(!tokens || !tokens->tokens)
 		RPN_error("tried to free a null tokens structure");
 
-	for(i = 0; i < tokens->size; i++)
-		if(!tokens->tokens[i]) RPN_error("tried to free a null token");
-		else RPN_free(tokens->tokens[i]);
-	
+	for(i = 0; i < tokens->size; ++i)
+		if(!tokens->tokens[i])
+			RPN_error("tried to free a null token");
+		else
+			RPN_free(tokens->tokens[i]);
+
 	RPN_free(tokens->tokens);
 	RPN_free(tokens);
 }
