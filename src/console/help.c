@@ -57,12 +57,10 @@ static RPNCommandHelpItem commands_help[] = {
 	{"dup",  "Pushes topmost value to the stack."},
 	{"pop",  "Removes the topmost value of the stack."},
 	{"ps",   "Prints the stack. Doesn't print anything if empty."},
-	{"psd",  "Prints the stack in detail. Doesn't print anything if"
-	         "\n\t\tempty."},
-	{"psv",  "Prints the variable table. Doesn't print anything if"
-	         "\n\t\tempty."},
-	{"psvd", "Prints the variable table in detail. Doesn't print"
-	         "\n\t\tanything if empty."},
+	{"psd",  "Prints the stack in detail. Doesn't print anything if empty."},
+	{"psv",  "Prints the variable table. Doesn't print anything if empty."},
+	{"psvd", "Prints the variable table in detail. Doesn't print anything if "
+	         "empty."},
 	{"x",    "Exits the program."},
 	{NULL},
 };
