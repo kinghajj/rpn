@@ -6,12 +6,11 @@
  * of useful features. It started out as a sort of pet project, but has become
  * somewhat serious to me.
  *
- * Even though I've never released it before, it's already up to version 1.2;
+ * Even though I've never released it before, it's already up to version 1.3;
  * at 1.0, this was a fully-function plain calculator, with not many bells and
  * whistles. In 1.1, I added variables, and in 1.2 I ported this to the
- * PlayStation portable. In this release, 1.2.3.5, I've changed the parser a bit
- * (in preparation for future features), and have begun documenting the code
- * with Doxygen.
+ * PlayStation portable. In this release, 1.3.0.0, I've ported this to the
+ * Nintendo Wii, and have fixed some potential bugs with Valgrind.
  *
  * \section features Features
  *
@@ -22,7 +21,11 @@
  *
  * Commands are like operators in implementation, but are separate because they
  * affect the calculator as a whole--it's stack, variables, etc. Operators only
- * affect the stack. (This limitation is part of the design of the program.)
+ * affect the stack. This limitation is part of the design of the program. A
+ * downside to this is that operators can only have two operands. This isn't
+ * much of a problem yet, but it may be later if one wants to add a ternary
+ * operator. For now, anything that can't be implemented as an operator should
+ * be implemented as a command.
  *
  * Variables let you save the results of your expressions and keep shorthands
  * for commonly used numbers. There are some predefined variables like PI, E,
@@ -57,6 +60,9 @@
  * a PSP SDK and toolchain installed. If not, you can find a great tutorial on
  * the Gentoo wiki. I used it to install the toolchain and SDK on Ubuntu 7.10
  * without problem. See \ref psp-spec for more information about the PSP port.
+ *
+ * Likewise, compiling for the Wii should be simple if you already have a
+ * properly setup DevkitPPC toolchain; but that's easier said than done.
  *
  * \section using Using the Program
  *
@@ -128,6 +134,8 @@
  * The PSP port would not have been possible without the tutorials at
  * psp-programming.com. The callback functions are almost carbon-copied form
  * them.
+ *
+ * The Wii port would not have been possible without the help of wiibrew.org.
  */
 
 /**
@@ -140,7 +148,7 @@
  *
  * Because not many people have a PSP toolchain on hand, I've included a
  * pre-built EBOOT.PBP. Though compiled for firmware 1.50, I have successfully
- * run it under 3.80 M33-5. To install it, simply copy EBOOT.PBP to
+ * run it under 4.00 M33-2. To install it, simply copy EBOOT.PBP to
  * ms0:/PSP/GAME/PSPRPN .
  *
  * \section psp-type How to Type on the PSP
@@ -439,7 +447,7 @@
  * function for an operator looks like this:
  *
  * \code
- * void customOperator(RPNStack *stack)
+ * void customOperator(RPNValue a, RPNValue b)
  * {
  * }
  * \endcode
