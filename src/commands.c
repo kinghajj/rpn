@@ -192,6 +192,7 @@ void RPN_freeCommands(RPNCommands *commands)
 /**
  * @param commands The command table.
  * @param cmd The string representation of a command.
+ * @param nargs The number of arguments the command needs.
  * @param func The function that performs the command.
  * @return true if succeeds.
  */
