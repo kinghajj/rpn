@@ -62,7 +62,8 @@
  * without problem. See \ref psp-spec for more information about the PSP port.
  *
  * Likewise, compiling for the Wii should be simple if you already have a
- * properly setup DevkitPPC toolchain; but that's easier said than done.
+ * properly setup DevkitPPC toolchain; but that's easier said than done. See
+ * \ref wii-spec for more information abouth the Wii port.
  *
  * \section using Using the Program
  *
@@ -404,6 +405,21 @@
  *     <TD>Z</TD>
  *   </TR>
  * </TABLE>
+ */
+
+/**
+ * \page wii-spec Specific Information about the Wii Port
+ *
+ * The Wii port, like the PSP port, is very simple. You can "type," and in a
+ * simpler way than the PSP, but it's still slow to use. In the future, I'll
+ * update the input module to be simpler to use, but for now it will suffice.
+ *
+ * \section wii-type How to Type on the Wii
+ *
+ * The input buffer is limited to 64 characters, and starts out as all spaces.
+ * Use the left and right buttons to navigate through the buffer, and the up and
+ * down buttons to change the character at that position of the buffer. Press A
+ * when done to evaluate the input.
  */
 
 /**

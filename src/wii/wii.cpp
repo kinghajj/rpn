@@ -31,24 +31,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <OnScreenKeyboard.h>
-#include <wiisprite.h>
-
-inline static void buzz_wpad(int32_t chan, int useconds)
-{
-	// start rumbling.
-	WPAD_Rumble(chan, 1);
-	// wait.
-	usleep(useconds);
-	// stop.
-	WPAD_Rumble(chan, 0);
-}
-
-inline static bool wpad_button_home_pressed(uint32_t pressed)
-{
-	return pressed & WPAD_BUTTON_HOME ||
-	       pressed & WPAD_CLASSIC_BUTTON_HOME;
-}
 
 int main(int argc, char **argv)
 {
@@ -58,14 +40,16 @@ int main(int argc, char **argv)
 	RPNWii_Setup();
 
 	calculator = RPN_newCalculator();
+	printf("\n\n\n\n\n");
 
 	// Input loop.
-	while(calculator->status == RPN_STATUS_CONTINUE)
+	while(calculator && calculator->status == RPN_STATUS_CONTINUE)
 	{
-		printf("\n\n\n\n\n[%g]> ", RPN_peek(calculator->stack));
+		printf("[%g]> ", RPN_peek(calculator->stack));
 		input = RPNWii_GetInput();
 		if(input)
 			RPN_eval(input, calculator);
 	}
 
+	return 0;
 }
