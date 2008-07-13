@@ -28,7 +28,7 @@ INCLUDES	:=  src/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-DEFINES = -DRPN_DOUBLE -DRPN_WII -DRPN_CONSOLE -D_GNU_SOURCE
+DEFINES = -DRPN_DOUBLE -DRPN_WII -DRPN_CONSOLE
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) $(DEFINES)
 CXXFLAGS = $(CFLAGS)
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
@@ -36,7 +36,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lfat -lwiiuse -lbte -logc -lpng -lm -lz -lmxml
+LIBS	:=	-lwiiuse -lbte -logc -lm 
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

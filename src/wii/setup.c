@@ -84,9 +84,6 @@ void RPNWii_Setup()
 {
 	RPNWii_InitConsole();
 	RPNWii_InitPads();
-
-	// Initialize the fat library.
-	fatInitDefault();
 }
 
 #endif // DOXYGEN_SKIP
