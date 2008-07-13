@@ -50,34 +50,6 @@ inline static bool wpad_button_home_pressed(uint32_t pressed)
 	       pressed & WPAD_CLASSIC_BUTTON_HOME;
 }
 
-static char *get_input()
-{
-	uint32_t pressed = 0;
-	wsp::GameWindow *gwd;
-	OnScreenKeyboard *osk;
-	char *input = NULL;
-
-	while(!wpad_button_home_pressed(pressed) && !input) {
-		// wait for user inputs.
-		WPAD_ScanPads();
-		// get inputs for the first player.
-		pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
-		if(pressed & WPAD_BUTTON_A) {
-			gwd = new wsp::GameWindow();
-			gwd->InitVideo();
-			osk = new OnScreenKeyboard(gwd, (char*)"/config/key_config.xml");
-			input = osk->GetString();
-			delete osk;
-			delete gwd;
-			RPNWii_InitConsole();
-		}
-		// wait for video.
-		VIDEO_WaitVSync();
-	}
-
-	return input;
-}
-
 int main(int argc, char **argv)
 {
 	RPNCalculator *calculator;
@@ -92,46 +64,8 @@ int main(int argc, char **argv)
 	{
 		printf("\n\n\n\n\n[%g]> ", RPN_peek(calculator->stack));
 		input = RPNWii_GetInput();
-		//input = get_input();
 		if(input)
 			RPN_eval(input, calculator);
 	}
 
 }
-
-/*int main(int argc, char **argv)
-{
-	uint32_t pressed = 0;
-	wsp::GameWindow *gwd = new wsp::GameWindow();
-	char *key_config = (char*)"/config/key_config.xml";
-	char *test;
-	OnScreenKeyboard *osk;
-
-	RPNWii_Setup();
-	gwd->InitVideo();
-
-	printf("Hello, world!\nWelcome to RPN!\nMore to come soon ;)\n");
-
-	osk = new OnScreenKeyboard(gwd, key_config);
-	test = osk->GetString();
-	delete gwd;
-
-	RPNWii_InitConsole();
-
-	while(!wpad_button_home_pressed(pressed)) {
-		// wait for user inputs.
-		WPAD_ScanPads();
-		// get inputs for the first player.
-		pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
-		if(pressed) {
-			printf("Button code: %x\n", pressed);
-			buzz_wpad(WPAD_CHAN_0, 1000);
-		}
-		// wait for video.
-		VIDEO_WaitVSync();
-	}
-
-	printf("Exiting...\n");
-
-	return 0;
-}*/

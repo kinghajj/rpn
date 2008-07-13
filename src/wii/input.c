@@ -38,13 +38,45 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#ifndef DOXYGEN_SKIP
+
 #define BUFFER_SIZE 64
 
 static char characters[] =
 	" 0123456789"
+	"+-/*=%^&|"
 	"abcdefghijklmnopqrstuvwxyz"
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	"+-/*=%^&|";
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+typedef struct {
+	int pos;
+	char buf[BUFFER_SIZE];
+} InputBuffer;
+
+static void init_buffer(InputBuffer *input)
+{
+	int i;
+
+	input->pos = 0;
+	for(i = 0; i < BUFFER_SIZE; ++i)
+		input->buf[i] = ' ';
+}
+
+static void print_buffer(InputBuffer *input)
+{
+	int i;
+
+	for(i = 0; i < BUFFER_SIZE; ++i)
+		printf("%c", input->buf[i]);
+}
+
+static void erase_buffer()
+{
+	int i;
+
+	for(i = 0; i < BUFFER_SIZE; ++i)
+		printf("\b");
+}
 
 static inline int find_character(char c)
 {
@@ -56,25 +88,57 @@ static inline int find_character(char c)
 		if(chars[i] == c)
 			found = true;
 
-	return found ? i : -1;
+	return found ? i - 1 : -1;
 }
 
-static inline void clear_buffer(char buffer[])
+static inline char get_next_character(char c)
 {
-	int i;
+	char ret = 0;
+	int character_pos;
 
-	for(i = 0; i < BUFFER_SIZE - 1; ++i)
-		buffer[i] = ' ';
-	buffer[i] = 0;
+	character_pos = find_character(c) + 1;
+
+	if(character_pos)
+		ret = characters[character_pos];
+
+	return ret;
 }
 
+static inline char get_prev_character(char c)
+{
+	char ret = 0;
+	int character_pos;
+
+	character_pos = find_character(c) - 1;
+
+	if(character_pos >= 0)
+		ret = characters[character_pos];
+
+	return ret;
+}
+
+static inline void update_buffer(InputBuffer *input, char c)
+{
+	if(c) {
+		input->buf[input->pos] = c;
+		erase_buffer();
+		print_buffer(input);
+	}
+}
+
+#endif /* DOXYGEN_SKIP */
+
+/**
+ * Gets a string from user input from a wiimote.
+ * @return The entered string.
+ */
 char *RPNWii_GetInput()
 {
-	static char buffer[BUFFER_SIZE];
-	int buffer_pos = 0, character_pos;
+	static InputBuffer input;
 	uint32_t pressed = 0;
 
-	clear_buffer(buffer);
+	init_buffer(&input);
+	print_buffer(&input);
 
 	while(pressed != WPAD_BUTTON_A) {
 		// wait for user inputs.
@@ -83,38 +147,26 @@ char *RPNWii_GetInput()
 		// get inputs for the first player.
 		pressed = WPAD_ButtonsDown(WPAD_CHAN_0);
 
+		// handle various button presses.
 		switch(pressed) {
 			case WPAD_BUTTON_UP:
-				character_pos = find_character(buffer[buffer_pos]);
-				if(characters[character_pos + 1]) {
-					buffer[buffer_pos] = characters[character_pos + 1];
-					//if(buffer_pos)
-						printf("\b");
-				}
+				update_buffer(&input, get_next_character(input.buf[input.pos]));
 				break;
 			case WPAD_BUTTON_DOWN:
-				character_pos = find_character(buffer[buffer_pos]);
-				if(character_pos) {
-					buffer[buffer_pos] = characters[character_pos - 1];
-					//if(buffer_pos)
-						printf("\b");
-				}
-				break;
-			case WPAD_BUTTON_RIGHT:
-				if(buffer_pos) buffer_pos--;
+				update_buffer(&input, get_prev_character(input.buf[input.pos]));
 				break;
 			case WPAD_BUTTON_LEFT:
-				if(buffer_pos < BUFFER_SIZE - 1) buffer_pos++;
+				if(input.pos) input.pos--;
+				break;
+			case WPAD_BUTTON_RIGHT:
+				if(input.pos < BUFFER_SIZE - 1) input.pos++;
 				break;
 		}
-
-		if(pressed)
-			// update the displayed buffer.
-			printf("%c", buffer[buffer_pos]);
 
 		// wait for video.
 		VIDEO_WaitVSync();
 	}
 
-	return buffer;
+	printf("\n");
+	return input.buf;
 }
