@@ -133,3 +133,7 @@ gui: $(GUI_TARGET)
 .PHONY: gui-clean
 gui-clean:
 	@$(MKF) $(GUI_MAKEFILE) clean
+
+.PHONY: love
+love:
+	@echo Not war?
