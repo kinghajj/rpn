@@ -139,14 +139,14 @@ RPNValue RPN_peek(RPNStack *stack)
  */
 void RPN_freeStack(RPNStack *stack)
 {
-	RPNNode *node, *temp;
+	RPNNode *node, *next;
 
 	// free all nodes
-	for(node = stack->first; node; node = node->next)
+	for(node = stack->first; node; node = next)
 	{
-		temp = node;
-		RPN_free(temp);
-		RPN_dprintf("freed node %p", temp);
+		next = node->next;
+		RPN_free(node);
+		RPN_dprintf("freed node %p", node);
 	}
 
 	// free the stack

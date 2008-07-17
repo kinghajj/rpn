@@ -42,7 +42,7 @@ CFLAGS = -c -s -Wall -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE \
 LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
-CFLAGS = -c -Wall -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE -DRPN_DEBUG \
+CFLAGS = -c -Wall -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE -DRPN_DEBUG -D_GNU_SOURCE \
          -Isrc/include -o
 LFLAGS = -lm -o
 endif
