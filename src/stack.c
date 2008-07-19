@@ -133,6 +133,24 @@ RPNValue RPN_peek(RPNStack *stack)
 }
 
 /**
+ * Swaps the top two items of a stack.
+ *
+ * @param stack The stack.
+ */
+void RPN_swap(RPNStack *stack)
+{
+	RPNValue first, second;
+
+	if(RPN_canOperate(stack, 2))
+	{
+		first  = RPN_pop(stack);
+		second = RPN_pop(stack);
+		RPN_push(stack, first);
+		RPN_push(stack, second);
+	}
+}
+
+/**
  * Frees a stack and all of its nodes.
  *
  * @param stack The stack to free.

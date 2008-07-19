@@ -52,6 +52,7 @@ RPNNode *RPN_newNode(RPNValue value, RPNNode *next);
 bool RPN_push(RPNStack *stack, RPNValue value);
 RPNValue RPN_pop(RPNStack *stack);
 RPNValue RPN_peek(RPNStack *stack);
+void RPN_swap(RPNStack *stack);
 void RPN_freeStack(RPNStack *stack);
 bool RPN_canOperate(RPNStack *stack, unsigned int nargs);
 void RPN_printStack(RPNStack *stack);

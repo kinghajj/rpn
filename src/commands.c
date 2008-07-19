@@ -93,6 +93,11 @@ static void commandSqrt(RPNCalculator *calculator, char **args)
 #endif
 }
 
+static void commandSwap(RPNCalculator *calculator, char **args)
+{
+	RPN_swap(calculator->stack);
+}
+
 static void commandUnset(RPNCalculator *calculator, char **args)
 {
 	char *varname = args[0];
@@ -262,6 +267,7 @@ RPNCommands *RPN_defaultCommands()
 	RPN_addCommand(commands, strdup("help"),  0, commandPrintHelp);
 	RPN_addCommand(commands, strdup("x"),     0, commandExit);
 	RPN_addCommand(commands, strdup("sqrt"),  0, commandSqrt);
+	RPN_addCommand(commands, strdup("swap"),  0, commandSwap);
 	RPN_addCommand(commands, strdup("unset"), 1, commandUnset);
 	RPN_dprintf("created default command table");
 
