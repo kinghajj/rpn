@@ -217,14 +217,16 @@ RPNOperator *RPN_findOperator(RPNOperators *operators, char *op)
 
 //! Finds and executes and operator.
 /**
+ * Finds and executes an operator.
+ *
  * @param calculator The calculator.
  * @param op The string representation of the operator.
+ * @return true if operator found, else false.
  */
 bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 {
-	RPNOperator *operator;
+	RPNOperator *operator = NULL;
 	RPNValue a, b;
-	bool executed = false;
 
 	if(!calculator)
 		RPN_error("tried to execute an operator on a NULL table.");
@@ -239,11 +241,10 @@ bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 			b = RPN_pop(calculator->stack);
 			a = RPN_pop(calculator->stack);
 			RPN_push(calculator->stack, operator->func(a, b));
-			executed = true;
 		}
 	}
 
-	return executed;
+	return operator != NULL;
 }
 
 //! Returns an operator table with default operators.
@@ -254,12 +255,12 @@ RPNOperators *RPN_defaultOperators()
 {
 	RPNOperators *operators = RPN_newOperators();
 
-	RPN_addOperator(operators, strdup("+"),    operatorAdd);
-	RPN_addOperator(operators, strdup("-"),    operatorSubtract);
-	RPN_addOperator(operators, strdup("*"),    operatorMultiply);
-	RPN_addOperator(operators, strdup("/"),    operatorDivide);
-	RPN_addOperator(operators, strdup("**"),   operatorPower);
-	RPN_addOperator(operators, strdup("="),    operatorEquals);
+	RPN_addOperator(operators, strdup("+"),  operatorAdd);
+	RPN_addOperator(operators, strdup("-"),  operatorSubtract);
+	RPN_addOperator(operators, strdup("*"),  operatorMultiply);
+	RPN_addOperator(operators, strdup("/"),  operatorDivide);
+	RPN_addOperator(operators, strdup("**"), operatorPower);
+	RPN_addOperator(operators, strdup("="),  operatorEquals);
 
 	RPN_addOperator(operators, strdup("%"), operatorModulo);
 	RPN_addOperator(operators, strdup("^"), operatorXor);
