@@ -212,10 +212,17 @@ RPNVariables *RPN_defaultVariables()
 	RPN_addVariable(variables, strdup("KiB"), 1024);
 	RPN_addVariable(variables, strdup("MiB"), 1024 * 1024);
 	RPN_addVariable(variables, strdup("GiB"), 1024 * 1024 * 1024);
+	RPN_addVariable(variables, strdup("Kib"), 1024 / 8);
+	RPN_addVariable(variables, strdup("Mib"), 1024 * 1024 / 8);
+	RPN_addVariable(variables, strdup("Gib"), 1024 * 1024 * 1024 / 8);
 
 	// Mathematical numbers.
 	RPN_addVariable(variables, strdup("PI"), 3.1415926535897932385);
 	RPN_addVariable(variables, strdup("E"),  2.72828182845904523536);
 
+	// Time sizes.
+	RPN_addVariable(variables, strdup("HOURS"), 60 * 60);
+	RPN_addVariable(variables, strdup("MINUTES"), 60);
+	
 	return variables;
 }
