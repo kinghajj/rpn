@@ -10,6 +10,7 @@ endif
 
 # Version
 VERSION = $(shell cat VERSION)
+GIT_BUILD = $(shell git describe)
 
 # Programs
 MKF = make -f
@@ -38,12 +39,12 @@ BIN_DIR = bin/generic
 # Compilation options
 ifdef RELEASE
 CFLAGS = -c -s -Wall -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE -D_GNU_SOURCE \
-         -DHASH_FUNCTION=HASH_JSW -Isrc/include -o
+         -DHASH_FUNCTION=HASH_JSW -DGIT_BUILD="\"$(GIT_BUILD)\"" -Isrc/include -o
 LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
 CFLAGS = -c -Wall -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE -DRPN_DEBUG -D_GNU_SOURCE \
-         -Isrc/include -o
+         -DHASH_FUNCTION=HASH_JSW -DGIT_BUILD="\"$(GIT_BUILD)\"" -Isrc/include -o
 LFLAGS = -lm -o
 endif
 TARGET = $(BIN_DIR)/rpn

@@ -54,11 +54,12 @@ typedef struct RPNArgument RPNArgument;
 
 static bool argumentVersion(RPNCalculator *calculator, char **args)
 {
-	RPN_printf("%i.%i.%i.%i",
+	RPN_printf("%i.%i.%i.%i (%s)",
 	           __RPN_MAJOR__,
 	           __RPN_MINOR__,
 	           __RPN_REVIS__,
-	           __RPN_BUILD__);
+	           __RPN_BUILD__,
+	           GIT_BUILD);
 #ifdef RPN_DEBUG
 	RPN_printf("-debug");
 #endif
