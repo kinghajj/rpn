@@ -1,0 +1,32 @@
+digraph module_graph
+{
+	front      [label="Front End" shape="box3d"];
+	calculator [label="calculator.c" shape="note"];
+	parser     [label="parser.c" shape="note"];
+	tokens     [label="tokens.c" shape="note"];
+	commands   [label="commands.c" shape="note"];
+	operators  [label="operators.c" shape="note"];
+	variables  [label="variables.c" shape="note"];
+	stack      [label="stack.c" shape="note"];
+
+	front -> calculator;
+	front -> parser;
+	front -> stack;
+
+	calculator -> commands;
+	calculator -> operators;
+	calculator -> stack;
+	calculator -> tokens;
+	calculator -> variables;
+
+	parser -> commands;
+	parser -> operators;
+	parser -> stack;
+	parser -> tokens;
+	parser -> variables;
+
+	commands -> stack;
+	commands -> variables;
+
+	operators -> stack;
+}
