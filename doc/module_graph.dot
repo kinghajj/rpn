@@ -16,7 +16,6 @@ digraph module_graph
 	calculator -> commands;
 	calculator -> operators;
 	calculator -> stack;
-	calculator -> tokens;
 	calculator -> variables;
 
 	parser -> commands;

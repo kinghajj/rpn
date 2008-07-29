@@ -48,8 +48,6 @@ struct RPNTokens
 	size_t pos;
 };
 
-RPNTokens *RPN_newTokens();
-void RPN_addToken(RPNTokens *tokens, char *token);
 RPNTokens *RPN_splitString(char *s);
 void RPN_freeTokens(RPNTokens *tokens);
 

@@ -26,6 +26,9 @@
 
 /*******************************************************************************
  * tokens.c -- splits a string into tokens.                                    *
+ *                                                                             *
+ * this doesn't use strtok(), which would work, because I personally dislike   *
+ * it. however, the gettok() function is equivalent.                           *
  ******************************************************************************/
 
 #include <ctype.h>
@@ -35,75 +38,74 @@
 
 #ifndef DOXYGEN_SKIP
 
-static char *NULL_TOKEN = "(NULL_TOKEN)";
-
-static size_t findNextToken(size_t cur_pos, char *s, size_t len)
+// returns true if c occurs in delims.
+static inline bool is_delim(char c, char *delims)
 {
-	size_t pos = cur_pos;
+	bool is = false;
 
-	if(s && len)
-		while(pos < len && isspace(s[pos])) pos++;
-	else
-		pos = 0;
+	if(delims)
+		while(*delims && !(is = (*delims++ == c)));
 
-	return pos;
-}
-
-static size_t findTokenEnd(size_t cur_pos, char *s, size_t len)
-{
-	size_t pos = cur_pos;
-
-	if(s && len)
-		while(pos < len && !isspace(s[pos])) pos++;
-	else
-		pos = 0;
-
-	return pos;
-}
-
-static char *getNextToken(char *str, size_t len, size_t *pos, size_t *end)
-{
-	size_t size;
-	char *s;
-
-	// find the size of the token
-	*pos = findNextToken(*pos, str, len);
-	*end = findTokenEnd(*pos, str, len);
-	size = *end - *pos + 1;
-
-	// no real token? then return NULL. handle it later.
-	if(size == 1)
-		s = NULL_TOKEN;
-	else
-	{
-		// allocate space for it
-		s = RPN_malloc(size);
-
-		// make sure the space was allocated.
-		if(!s)
-			RPN_error("could not allocate memory for a token");
-
-		// copy it from the source string
-		memcpy(s, &str[*pos], size);
-
-		// make sure that it's null-terminated
-		s[size - 1] = 0;
-
-		// update the position to be after the end of the token
-		*pos = *end + 1;
-	}
-
-	return s;
+	return is;
 }
 
 #endif // DOXYGEN_SKIP
+
+/**
+ * @param start  A pointer to a string; keeps track of current position in
+ *               original string.
+ * @param delims Characters that will deliminate tokens.
+ * @return A pointer to the first found token, or NULL if none found.
+ *
+ * gettok() works by taking in a pointer to a string, searching through that
+ * string for deliminators, then updating that string so that on the next call,
+ * it will return the next token.
+ *
+ * Like strtok(), gettok() modifies the original string by inserting NULs where
+ * it finds deliminators.
+ *
+ * @code
+ * void foo(char *str)
+ * {
+ *     char *start = str, *tok;
+ *
+ *     while((tok = gettok(&start, " ")))
+ *         processToken(tok);
+ * }
+ * @endcode
+ */
+char *gettok(char **start, char *delims)
+{
+	char *search, *token;
+
+	if(start && *start && **start && delims) {
+		// start searching from the start, and assume the token will be here.
+		search = token = *start;
+
+		// find first delim.
+		while(*search && !is_delim(*search, delims))
+			search++;
+
+		// nullify all consecutive delims.
+		while(*search && is_delim(*search, delims))
+			*search++ = '\0';
+
+		// the next token is right after the end of the delims.
+		*start = search;
+	}
+	else token = NULL;
+
+	// if token is NULL, let it pass. if token is not NULL but points to a '\0',
+	// then the token hasn't really been found, so recurse to find it.
+	return (!token || *token) ? token : gettok(start, delims);
+}
 
 /**
  * Creates a new tokens array with the default initial size.
  *
  * @returns The new tokens array structure.
  */
-RPNTokens *RPN_newTokens()
+static RPNTokens *newTokens()
 {
 	RPNTokens *tokens = new(RPNTokens);
 
@@ -129,32 +131,30 @@ RPNTokens *RPN_newTokens()
  * @param tokens The array to which to add the token.
  * @param token The token to add.
  */
-void RPN_addToken(RPNTokens *tokens, char *token)
+static void addToken(RPNTokens *tokens, char *token)
 {
 	if(!tokens)
 		RPN_error("attempted to add token to a NULL token array.");
 	if(!token)
 		RPN_error("attempted to add a NULL token to token array.");
-	if(token != NULL_TOKEN)
+
+	// Check the tokens array for resizing.
+	if(tokens->size >= tokens->alloc_size)
 	{
-		// Check the tokens array for resizing.
-		if(tokens->size >= tokens->alloc_size)
-		{
-			RPN_dprintf("tokens->size: %u", tokens->size);
-			RPN_dprintf("tokens->alloc_size: %u", tokens->alloc_size);
-			RPN_dprintf("tokens->tokens: %p", tokens->tokens);
-			RPN_dprintf("token: \"%s\" (%u)", token, strlen(token));
+		RPN_dprintf("tokens->size: %u", tokens->size);
+		RPN_dprintf("tokens->alloc_size: %u", tokens->alloc_size);
+		RPN_dprintf("tokens->tokens: %p", tokens->tokens);
+		RPN_dprintf("token: \"%s\" (%u)", token, strlen(token));
 
-			tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
-			tokens->tokens = realloc(tokens->tokens,
-			                         tokens->alloc_size * sizeof(char**));
-			if(!tokens->tokens)
-				RPN_error("could not resize tokens");
-		}
-
-		// store token in token structure
-		tokens->tokens[tokens->size++] = token;
+		tokens->alloc_size += RPN_TOKENS_ALLOC_SIZE;
+		tokens->tokens = realloc(tokens->tokens,
+		                         tokens->alloc_size * sizeof(char**));
+		if(!tokens->tokens)
+			RPN_error("could not resize tokens");
 	}
+
+	// store token in token structure
+	tokens->tokens[tokens->size++] = token;
 }
 
 /**
@@ -165,27 +165,23 @@ void RPN_addToken(RPNTokens *tokens, char *token)
  */
 RPNTokens *RPN_splitString(char *str)
 {
-	size_t len = strlen(str), pos = 0, end;
+	char *start = str, *tok;
 	RPNTokens *tokens;
 
 	if(!str)
 		RPN_error("tried to split a null string");
 
-	tokens = RPN_newTokens();
+	tokens = newTokens();
 
-	// Add tokens until we run out.
-	while(pos < len)
-		RPN_addToken(tokens, getNextToken(str, len, &pos, &end));
+	while((tok = gettok(&start, " \t\n")))
+		addToken(tokens, tok);
 
-	// resize array
-	RPN_dprintf("tokens->size: %u", tokens->size);
-	RPN_dprintf("tokens->tokens: %p", tokens->tokens);
 	// don't try to resize the tokens to null.
 	if(tokens->size)
 		tokens->tokens = realloc(tokens->tokens, tokens->size * sizeof(char**));
 	if(!tokens->tokens)
 		RPN_error("could not resize tokens");
- 
+
 	return tokens;
 }
 
@@ -196,16 +192,8 @@ RPNTokens *RPN_splitString(char *str)
  */
 void RPN_freeTokens(RPNTokens *tokens)
 {
-	size_t i;
-
 	if(!tokens || !tokens->tokens)
 		RPN_error("tried to free a null tokens structure");
-
-	for(i = 0; i < tokens->size; ++i)
-		if(!tokens->tokens[i])
-			RPN_error("tried to free a null token");
-		else
-			RPN_free(tokens->tokens[i]);
 
 	RPN_free(tokens->tokens);
 	RPN_free(tokens);
