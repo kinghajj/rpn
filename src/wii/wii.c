@@ -35,6 +35,7 @@
 int main(int argc, char **argv)
 {
 	RPNCalculator *calculator;
+	RPNValue peek = 0;
 	char *input;
 
 	RPNWii_Setup();
@@ -45,10 +46,10 @@ int main(int argc, char **argv)
 	// Input loop.
 	while(calculator && calculator->status == RPN_STATUS_CONTINUE)
 	{
-		printf("[%g]> ", RPN_peek(calculator->stack));
+		printf("[%g]> ", peek);
 		input = RPNWii_GetInput();
 		if(input)
-			RPN_eval(input, calculator);
+			peek = RPN_eval(input, calculator);
 	}
 
 	return 0;
