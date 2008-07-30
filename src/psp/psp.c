@@ -35,6 +35,7 @@ PSP_MODULE_INFO("PSPRPN", 0, 1, 1);
 int main()
 {
 	RPNCalculator *calculator;
+	RPNValue peek = 0;
 	char *input;
 
 	// Setup the PSP screen, callbacks, etc.
@@ -60,10 +61,10 @@ int main()
 	// Input loop.
 	while(calculator->status == RPN_STATUS_CONTINUE)
 	{
-		kprintf("[%g]> ", RPN_peek(calculator->stack));
+		kprintf("[%g]> ", peek);
 		input = RPNPSP_GetString();
 		if(input)
-			RPN_eval(input, calculator);
+			peek = RPN_eval(input, calculator);
 	}
 
 	sceKernelExitGame();
