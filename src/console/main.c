@@ -38,16 +38,17 @@
 int main(int argc, char *argv[])
 {
 	RPNCalculator *calculator = RPN_newCalculator();
+	RPNValue peek = 0;
 	char input[1024];
 
 	RPN_processArguments(calculator, argc, argv);
 
 	while(calculator->status == RPN_STATUS_CONTINUE)
 	{
-		printf("[" RPN_VALUE_SHORT_FORMAT "]> ", RPN_peek(calculator->stack));
+		printf("[" RPN_VALUE_SHORT_FORMAT "]> ", peek);
 		fgets(input, 1024, stdin);
 		if(feof(stdin)) break;
-		RPN_eval(input, calculator);
+		peek = RPN_eval(input, calculator);
 	}
 
 	fputc('\n', stdout);
