@@ -45,7 +45,11 @@ static bool isNumber(char *s)
 
 	for(i = 0; isnum && i < len; ++i)
 		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
-	
+
+	// caveat: if length is one and that's just a dot, then it's NOT a number.
+	if(isnum && len == 1 && *s == '.')
+		isnum = false;
+
 	return isnum;
 }
 
