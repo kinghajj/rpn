@@ -10,7 +10,7 @@ RM  = rm -f
 SRCDIR = src/
 OBJDIR = obj/generic/
 BINDIR = bin/
-SOURCES = src/console/arguments.c src/calculator.c src/commands.c \
+SOURCES = src/calculator.c src/commands.c \
           src/console/error.c src/console/help.c src/operators.c src/parser.c \
           src/stack.c src/tokens.c src/variables.c \
           src/gui/App.cpp src/gui/MainForm.cpp
