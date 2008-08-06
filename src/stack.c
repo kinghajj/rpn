@@ -67,6 +67,41 @@ RPNNode *RPN_newNode(RPNValue value, RPNNode *next)
 }
 
 /**
+ * Creates a deep copy of a node.
+ *
+ * @param node The node to copy.
+ * @return A new node and its subnodes with the same values of the input node.
+ */
+RPNNode *RPN_copyNode(RPNNode *node)
+{
+	RPNNode *new_node = NULL;
+
+	if(node)
+		new_node = RPN_newNode(node->value, RPN_copyNode(node->next));
+
+	return new_node;
+}
+
+/**
+ * Creates a deep copy of the stack.
+ *
+ * @param stack The stack to copy.
+ * @return A new stack with new nodes with the same values of the input stack.
+ */
+RPNStack *RPN_copyStack(RPNStack *stack)
+{
+	RPNStack *new_stack = NULL;
+
+	if(stack) {
+		new_stack = RPN_newStack();
+		new_stack->first = RPN_copyNode(stack->first);
+		new_stack->len = stack->len;
+	}
+
+	return new_stack;
+}
+
+/**
  * Pushes a value to a stack.
  *
  * @param stack The stack.
