@@ -51,6 +51,8 @@ struct RPNStack {
 
 RPNStack *RPN_newStack(RPNStack *next);
 RPNNode *RPN_newNode(RPNValue value, RPNNode *next);
+RPNNode *RPN_copyNode(RPNNode *node);
+RPNStack *RPN_copyStack(RPNStack *stack);
 bool RPN_push(RPNStack *stack, RPNValue value);
 RPNValue RPN_pop(RPNStack *stack);
 RPNValue RPN_peek(RPNStack *stack);

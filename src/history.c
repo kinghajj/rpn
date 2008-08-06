@@ -48,3 +48,26 @@ void RPN_freeHistory(RPNHistory *history)
 		free(history);
 	}
 }
+
+void RPN_pushHistory(RPNHistory *history)
+{
+	RPNStack *copy;
+
+	if(history && history->first) {
+		copy = RPN_copyStack(history->first);
+		copy->next = history->first;
+		history->first = copy;
+	}
+}
+
+void RPN_popHistory(RPNHistory *history)
+{
+	RPNStack *orig;
+
+	if(history && history->first) {
+		orig = history->first;
+		history->first = history->first->next;
+		RPN_freeStack(orig);
+	}
+}
+

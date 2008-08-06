@@ -108,6 +108,16 @@ static void commandUnset(RPNCalculator *calculator, char **args)
 		RPN_removeVariable(calculator->variables, variable);
 }
 
+static void commandPushHistory(RPNCalculator *calculator, char **args)
+{
+	RPN_pushHistory(calculator->history);
+}
+
+static void commandPopHistory(RPNCalculator *calculator, char **args)
+{
+	RPN_popHistory(calculator->history);
+}
+
 #endif // DOXYGEN_SKIP
 
 /*******************************************************************************
@@ -271,6 +281,8 @@ RPNCommands *RPN_defaultCommands()
 	RPN_addCommand(commands, strdup("sqrt"),  0, commandSqrt);
 	RPN_addCommand(commands, strdup("swap"),  0, commandSwap);
 	RPN_addCommand(commands, strdup("unset"), 1, commandUnset);
+	RPN_addCommand(commands, strdup("pushh"), 0, commandPushHistory);
+	RPN_addCommand(commands, strdup("poph"),  0, commandPopHistory);
 	RPN_dprintf("created default command table");
 
 	return commands;
