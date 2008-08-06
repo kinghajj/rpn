@@ -29,7 +29,7 @@
  ******************************************************************************/
 
 #include "rpn.h"
-
+#include <stdio.h>
 
 RPNHistory *RPN_newHistory()
 {
@@ -73,3 +73,28 @@ void RPN_popHistory(RPNHistory *history)
 	}
 }
 
+void RPN_printHistory(RPNHistory *history)
+{
+	RPNStack *stack;
+
+	RPN_printf("[");
+	if(history)
+		for(stack = history->first; stack; stack = stack->next) {
+			RPN_printStack(stack);
+			RPN_printf(", ");
+		}
+	RPN_printf("]");
+}
+
+void RPN_printHistoryDetailed(RPNHistory *history)
+{
+	RPNStack *stack;
+
+	RPN_printf("[");
+	if(history)
+		for(stack = history->first; stack; stack = stack->next) {
+			RPN_printStack(stack);
+			RPN_printf(", ");
+		}
+	RPN_printf("]");
+}

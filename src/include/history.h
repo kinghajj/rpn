@@ -39,5 +39,7 @@ RPNHistory *RPN_newHistory();
 void RPN_freeHistory(RPNHistory *history);
 void RPN_pushHistory(RPNHistory *history);
 void RPN_popHistory(RPNHistory *history);
+void RPN_printHistory(RPNHistory *history);
+void RPN_printHistoryDetailed(RPNHistory *history);
 
 #endif // RPN_HISTORY_H

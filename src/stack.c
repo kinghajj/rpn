@@ -240,7 +240,7 @@ void RPN_printStack(RPNStack *stack)
 	RPN_printf("[ ");
 	for(node = stack->first; node; node = node->next)
 		RPN_printf(RPN_VALUE_SHORT_FORMAT ", ", node->value);
-	RPN_printf("]\n");
+	RPN_printf("]");
 }
 
 /**
@@ -255,5 +255,5 @@ void RPN_printStackDetailed(RPNStack *stack)
 	RPN_printf("[ ");
 	for(node = stack->first; node; node = node->next)
 		RPN_printf(RPN_VALUE_LONG_FORMAT ", ", node->value);
-	RPN_printf("]\n");
+	RPN_printf("]");
 }

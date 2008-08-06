@@ -115,6 +115,7 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	/* cleanup. */
 	RPN_freeTokens(tokens);
 	calculator->tokens = NULL;
+	RPN_printf("\n");
 
 	return RPN_peek(RPN_currentStack(calculator));
 }

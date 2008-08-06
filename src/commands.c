@@ -60,6 +60,16 @@ static void commandPrintVariablesDetailed(RPNCalculator *calculator,
 	RPN_printVariablesDetailed(calculator->variables);
 }
 
+static void commandPrintHistory(RPNCalculator *calculator, char **args)
+{
+	RPN_printHistory(calculator->history);
+}
+
+static void commandPrintHistoryDetailed(RPNCalculator *calculator, char **args)
+{
+	RPN_printHistoryDetailed(calculator->history);
+}
+
 static void commandPrintHelp(RPNCalculator *calculator, char **args)
 {
 	RPN_printHelp();
@@ -276,6 +286,8 @@ RPNCommands *RPN_defaultCommands()
 	RPN_addCommand(commands, strdup("psd"),   0, commandPrintDetailed);
 	RPN_addCommand(commands, strdup("psv"),   0, commandPrintVariables);
 	RPN_addCommand(commands, strdup("psvd"),  0, commandPrintVariablesDetailed);
+	RPN_addCommand(commands, strdup("psh"),   0, commandPrintHistory);
+	RPN_addCommand(commands, strdup("pshd"),  0, commandPrintHistoryDetailed);
 	RPN_addCommand(commands, strdup("help"),  0, commandPrintHelp);
 	RPN_addCommand(commands, strdup("x"),     0, commandExit);
 	RPN_addCommand(commands, strdup("sqrt"),  0, commandSqrt);
