@@ -37,7 +37,7 @@ RPNHistory *RPN_newHistory()
 
 	if(history)
 		history->first = RPN_newStack(NULL);
-	
+
 	return history;
 }
 
