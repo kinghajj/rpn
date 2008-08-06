@@ -25,39 +25,7 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * The RPN stack. Very important for calculation. (stack.c)                    *
+ * history.c - implements the history stack.                                   *
  ******************************************************************************/
 
-#ifndef RPN_STACK_H
-#define RPN_STACK_H
 
-//! An item in the stack.
-struct RPNNode {
-	//! The value of the item.
-	RPNValue value;
-	//! A pointer to the next item.
-	struct RPNNode *next;
-};
-
-//! The stack.
-struct RPNStack {
-	//! The first item in the stack.
-	RPNNode *first;
-	//! The number of items in the stack.
-	size_t len;
-	//! A pointer to the next stack in the history.
-	RPNStack *next;
-};
-
-RPNStack *RPN_newStack(RPNStack *next);
-RPNNode *RPN_newNode(RPNValue value, RPNNode *next);
-bool RPN_push(RPNStack *stack, RPNValue value);
-RPNValue RPN_pop(RPNStack *stack);
-RPNValue RPN_peek(RPNStack *stack);
-void RPN_swap(RPNStack *stack);
-void RPN_freeStack(RPNStack *stack);
-bool RPN_canOperate(RPNStack *stack, unsigned int nargs);
-void RPN_printStack(RPNStack *stack);
-void RPN_printStackDetailed(RPNStack *stack);
-
-#endif // RPN_STACK_H

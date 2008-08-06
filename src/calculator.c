@@ -53,7 +53,7 @@ RPNCalculator *RPN_newCalculator()
 	RPN_dprintf("allocating calculator members");
 	calculator->commands  = RPN_defaultCommands();
 	calculator->operators = RPN_defaultOperators();
-	calculator->stack     = RPN_newStack();
+	calculator->stack     = RPN_newStack(NULL);
 	calculator->status    = RPN_STATUS_CONTINUE;
 	calculator->tokens    = NULL;
 	calculator->variables = RPN_defaultVariables();

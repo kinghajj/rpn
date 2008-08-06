@@ -37,12 +37,13 @@
  *
  * @return The new, empty stack.
  */
-RPNStack *RPN_newStack()
+RPNStack *RPN_newStack(RPNStack *next)
 {
 	RPNStack *stack = new(RPNStack);
 	if(!stack)
 		RPN_error("could not allocate memory for the stack.");
 	stack->first = NULL;
+	stack->next  = next;
 	stack->len   = 0;
 	RPN_dprintf("allocated stack %p", stack);
 	return stack;
@@ -93,7 +94,7 @@ RPNStack *RPN_copyStack(RPNStack *stack)
 	RPNStack *new_stack = NULL;
 
 	if(stack) {
-		new_stack = RPN_newStack();
+		new_stack = RPN_newStack(RPN_copyStack(stack->next));
 		new_stack->first = RPN_copyNode(stack->first);
 		new_stack->len = stack->len;
 	}
