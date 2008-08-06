@@ -41,12 +41,12 @@
 
 static void commandPrint(RPNCalculator *calculator, char **args)
 {
-	RPN_printStack(calculator->stack);
+	RPN_printStack(RPN_currentStack(calculator));
 }
 
 static void commandPrintDetailed(RPNCalculator *calculator, char **args)
 {
-	RPN_printStackDetailed(calculator->stack);
+	RPN_printStackDetailed(RPN_currentStack(calculator));
 }
 
 static void commandPrintVariables(RPNCalculator *calculator, char **args)
@@ -72,30 +72,32 @@ static void commandExit(RPNCalculator *calculator, char **args)
 
 static void commandPop(RPNCalculator *calculator, char **args)
 {
-	RPN_pop(calculator->stack);
+	RPN_pop(RPN_currentStack(calculator));
 }
 
 static void commandDup(RPNCalculator *calculator, char **args)
 {
-	if(RPN_canOperate(calculator->stack, 1))
-		RPN_push(calculator->stack, RPN_peek(calculator->stack));
+	RPNStack *stack = RPN_currentStack(calculator);
+
+	if(RPN_canOperate(stack, 1))
+		RPN_push(stack, RPN_peek(stack));
 }
 
 static void commandSqrt(RPNCalculator *calculator, char **args)
 {
 	RPNValue a;
-	if(!RPN_canOperate(calculator->stack, 1)) return;
-	a = RPN_pop(calculator->stack);
+	if(!RPN_canOperate(RPN_currentStack(calculator), 1)) return;
+	a = RPN_pop(RPN_currentStack(calculator));
 #ifdef RPN_LONG_DOUBLE
-	RPN_push(calculator->stack, sqrtl(a));
+	RPN_push(RPN_currentStack(calculator), sqrtl(a));
 #elif RPN_DOUBLE
-	RPN_push(calculator->stack, sqrt(a));
+	RPN_push(RPN_currentStack(calculator), sqrt(a));
 #endif
 }
 
 static void commandSwap(RPNCalculator *calculator, char **args)
 {
-	RPN_swap(calculator->stack);
+	RPN_swap(RPN_currentStack(calculator));
 }
 
 static void commandUnset(RPNCalculator *calculator, char **args)

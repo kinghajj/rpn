@@ -54,7 +54,6 @@ RPNCalculator *RPN_newCalculator()
 	calculator->commands  = RPN_defaultCommands();
 	calculator->history   = RPN_newHistory();
 	calculator->operators = RPN_defaultOperators();
-	calculator->stack     = RPN_newStack(NULL);
 	calculator->status    = RPN_STATUS_CONTINUE;
 	calculator->tokens    = NULL;
 	calculator->variables = RPN_defaultVariables();
@@ -75,10 +74,15 @@ void RPN_freeCalculator(RPNCalculator *calculator)
 	// Free every member, then the calculator itself.
 	RPN_dprintf("freeing calculator members");
 	RPN_freeHistory(calculator->history);
-	RPN_freeStack(calculator->stack);
 	RPN_freeVariables(calculator->variables);
 	RPN_freeOperators(calculator->operators);
 	RPN_freeCommands(calculator->commands);
 	RPN_dprintf("freeing calculator");
 	RPN_free(calculator);
+}
+
+RPNStack *RPN_currentStack(RPNCalculator *calculator)
+{
+	return (calculator && calculator->history && calculator->history->first) ?
+		calculator->history->first : NULL;
 }

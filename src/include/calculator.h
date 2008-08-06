@@ -49,8 +49,6 @@ struct RPNCalculator
 	RPNHistory *history;
 	//! The calculator's available operators.
 	RPNOperators *operators;
-	//! The calculator's stack.
-	RPNStack *stack;
 	//! The calculator's tokens.
 	RPNTokens *tokens;
 	//! The calcalator's variables.
@@ -60,6 +58,7 @@ struct RPNCalculator
 };
 
 RPNCalculator *RPN_newCalculator();
+RPNStack *RPN_currentStack(RPNCalculator *calculator);
 void RPN_freeCalculator(RPNCalculator *calculator);
 
 #endif // RPN_CALCULATOR_H

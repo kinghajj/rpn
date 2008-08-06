@@ -225,6 +225,7 @@ RPNOperator *RPN_findOperator(RPNOperators *operators, char *op)
  */
 bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 {
+	RPNStack *stack = RPN_currentStack(calculator);
 	RPNOperator *operator = NULL;
 	RPNValue a, b;
 
@@ -236,11 +237,11 @@ bool RPN_executeOperator(RPNCalculator *calculator, char *op)
 		// find the operator.
 		operator = RPN_findOperator(calculator->operators, op);
 		// execute it, return.
-		if(operator && RPN_canOperate(calculator->stack, 2))
+		if(operator && RPN_canOperate(stack, 2))
 		{
-			b = RPN_pop(calculator->stack);
-			a = RPN_pop(calculator->stack);
-			RPN_push(calculator->stack, operator->func(a, b));
+			b = RPN_pop(stack);
+			a = RPN_pop(stack);
+			RPN_push(stack, operator->func(a, b));
 		}
 	}
 

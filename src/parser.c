@@ -76,12 +76,12 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 		// if found,
 		if(var) 
 			// push it's value to the stack
-			RPN_push(calculator->stack, var->value);
+			RPN_push(RPN_currentStack(calculator), var->value);
 		else
 			// add a new variable to the variable table, whose value is that of
 			// the topmost item in the stack.
 			RPN_addVariable(calculator->variables, strdup(tok),
-			                RPN_peek(calculator->stack));
+			                RPN_peek(RPN_currentStack(calculator)));
 	}
 }
 
@@ -106,7 +106,7 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 		token = tokens->tokens[tokens->pos];
 		/* push numeric tokens to the stack. */
 		if(isNumber(token))
-			RPN_push(calculator->stack, RPN_strtod(token, NULL));
+			RPN_push(RPN_currentStack(calculator), RPN_strtod(token, NULL));
 		/* delegate other tokens to evalToken(). */
 		else
 			evalToken(calculator, token);
@@ -116,5 +116,5 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	RPN_freeTokens(tokens);
 	calculator->tokens = NULL;
 
-	return RPN_peek(calculator->stack);
+	return RPN_peek(RPN_currentStack(calculator));
 }

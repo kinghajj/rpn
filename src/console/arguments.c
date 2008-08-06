@@ -82,8 +82,9 @@ static bool argumentHelp(RPNCalculator *calculator, char **args)
 
 static bool argumentExec(RPNCalculator *calculator, char **args)
 {
+	RPNStack *stack = RPN_currentStack(calculator);
 	RPN_eval(args[0], calculator);
-	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(calculator->stack));
+	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(stack));
 
 	calculator->status = RPN_STATUS_EXIT;
 	return true;
