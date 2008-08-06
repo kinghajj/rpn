@@ -44,8 +44,10 @@ RPNHistory *RPN_newHistory()
 void RPN_freeHistory(RPNHistory *history)
 {
 	if(history) {
+		while(history->first)
+			RPN_popHistory(history);
 		RPN_freeStack(history->first);
-		free(history);
+		RPN_free(history);
 	}
 }
 

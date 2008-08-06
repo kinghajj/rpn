@@ -94,7 +94,7 @@ RPNStack *RPN_copyStack(RPNStack *stack)
 	RPNStack *new_stack = NULL;
 
 	if(stack) {
-		new_stack = RPN_newStack(RPN_copyStack(stack->next));
+		new_stack = RPN_newStack(stack);
 		new_stack->first = RPN_copyNode(stack->first);
 		new_stack->len = stack->len;
 	}
@@ -194,11 +194,8 @@ void RPN_swap(RPNStack *stack)
 void RPN_freeStack(RPNStack *stack)
 {
 	RPNNode *node, *next;
-	RPNStack *next_stack;
 
 	if(stack) {
-		next_stack = stack->next;
-
 		// free all nodes
 		for(node = stack->first; node; node = next)
 		{
@@ -209,7 +206,6 @@ void RPN_freeStack(RPNStack *stack)
 
 		// free the stack
 		RPN_free(stack);
-		RPN_freeStack(next_stack);
 		RPN_dprintf("freed stack %p", stack);
 	}
 }
@@ -225,6 +221,8 @@ bool RPN_canOperate(RPNStack *stack, unsigned int nargs)
 {
 	if(!stack)
 		RPN_error("tried to probe a NULL stack.");
+
+	RPN_dprintf("probing %p\n", stack);
 
 	// can only operate if there are enough items in the stack
 	return stack->len >= nargs ? true : false;
