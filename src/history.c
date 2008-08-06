@@ -28,4 +28,23 @@
  * history.c - implements the history stack.                                   *
  ******************************************************************************/
 
+#include "rpn.h"
 
+
+RPNHistory *RPN_newHistory()
+{
+	RPNHistory *history = new(RPNHistory);
+
+	if(history)
+		history->first = RPN_newStack(NULL);
+	
+	return history;
+}
+
+void RPN_freeHistory(RPNHistory *history)
+{
+	if(history) {
+		RPN_freeStack(history->first);
+		free(history);
+	}
+}

@@ -45,6 +45,8 @@ struct RPNCalculator
 {
 	//! The calculator's available commands.
 	RPNCommands *commands;
+	//! The stack history.
+	RPNHistory *history;
 	//! The calculator's available operators.
 	RPNOperators *operators;
 	//! The calculator's stack.

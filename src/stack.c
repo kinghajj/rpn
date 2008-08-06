@@ -194,18 +194,24 @@ void RPN_swap(RPNStack *stack)
 void RPN_freeStack(RPNStack *stack)
 {
 	RPNNode *node, *next;
+	RPNStack *next_stack;
 
-	// free all nodes
-	for(node = stack->first; node; node = next)
-	{
-		next = node->next;
-		RPN_free(node);
-		RPN_dprintf("freed node %p", node);
+	if(stack) {
+		next_stack = stack->next;
+
+		// free all nodes
+		for(node = stack->first; node; node = next)
+		{
+			next = node->next;
+			RPN_free(node);
+			RPN_dprintf("freed node %p", node);
+		}
+
+		// free the stack
+		RPN_free(stack);
+		RPN_freeStack(next_stack);
+		RPN_dprintf("freed stack %p", stack);
 	}
-
-	// free the stack
-	RPN_free(stack);
-	RPN_dprintf("freed stack %p", stack);
 }
 
 /**

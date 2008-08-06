@@ -40,6 +40,9 @@ typedef struct RPNCommands RPNCommands;
 struct RPNCommand;
 typedef struct RPNCommand RPNCommand;
 
+struct RPNHistory;
+typedef struct RPNHistory RPNHistory;
+
 struct RPNNode;
 typedef struct RPNNode RPNNode;
 

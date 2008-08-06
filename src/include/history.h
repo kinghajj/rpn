@@ -31,11 +31,12 @@
 #ifndef RPN_HISTORY_H
 #define RPN_HISTORY_H
 
-typedef struct {
+struct RPNHistory {
 	RPNStack *first;
-} RPNHistory;
+};
 
-RPNHistory RPN_newHistory();
+RPNHistory *RPN_newHistory();
+void RPN_freeHistory(RPNHistory *history);
 void RPN_pushHistory(RPNHistory *history);
 void RPN_popHistory(RPNHistory *history);
 

@@ -62,8 +62,8 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES = wii/input.c wii/setup.c wii/wii.c calculator.c commands.c \
-		 operators.c parser.c stack.c tokens.c variables.c console/help.c \
-		 console/error.c
+		 history.c operators.c parser.c stack.c tokens.c variables.c \
+		 console/help.c console/error.c
 
 #CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 #sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
