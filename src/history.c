@@ -31,6 +31,10 @@
 #include "rpn.h"
 #include <stdio.h>
 
+//! Creates a new history stack.
+/**
+ * @return A new history stack.
+ */
 RPNHistory *RPN_newHistory()
 {
 	RPNHistory *history = new(RPNHistory);
@@ -41,6 +45,10 @@ RPNHistory *RPN_newHistory()
 	return history;
 }
 
+//! Completely frees a history stack and all stacks within it.
+/**
+ * @param history The history stack to free.
+ */
 void RPN_freeHistory(RPNHistory *history)
 {
 	if(history) {
@@ -51,6 +59,10 @@ void RPN_freeHistory(RPNHistory *history)
 	}
 }
 
+//! Duplicates the current stack, and pushes the current one down.
+/**
+ * @param history The history to push.
+ */
 void RPN_pushHistory(RPNHistory *history)
 {
 	RPNStack *copy;
@@ -62,6 +74,10 @@ void RPN_pushHistory(RPNHistory *history)
 	}
 }
 
+//! Pops and frees the topmost stack in the history.
+/**
+ * @param history The history to pop.
+ */
 void RPN_popHistory(RPNHistory *history)
 {
 	RPNStack *orig;
@@ -73,6 +89,10 @@ void RPN_popHistory(RPNHistory *history)
 	}
 }
 
+//! Prints an entire history stack.
+/**
+ * @param history The stack to print.
+ */
 void RPN_printHistory(RPNHistory *history)
 {
 	RPNStack *stack;
@@ -86,6 +106,10 @@ void RPN_printHistory(RPNHistory *history)
 	RPN_printf("]");
 }
 
+//! Prints an entire history stack in detail.
+/**
+ * @param history The stack to print.
+ */
 void RPN_printHistoryDetailed(RPNHistory *history)
 {
 	RPNStack *stack;

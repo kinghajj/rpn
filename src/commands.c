@@ -96,12 +96,13 @@ static void commandDup(RPNCalculator *calculator, char **args)
 static void commandSqrt(RPNCalculator *calculator, char **args)
 {
 	RPNValue a;
-	if(!RPN_canOperate(RPN_currentStack(calculator), 1)) return;
-	a = RPN_pop(RPN_currentStack(calculator));
+	RPNStack *stack = RPN_currentStack(calculator);
+	if(!RPN_canOperate(stack, 1)) return;
+	a = RPN_pop(stack);
 #ifdef RPN_LONG_DOUBLE
-	RPN_push(RPN_currentStack(calculator), sqrtl(a));
+	RPN_push(stack, sqrtl(a));
 #elif RPN_DOUBLE
-	RPN_push(RPN_currentStack(calculator), sqrt(a));
+	RPN_push(stack, sqrt(a));
 #endif
 }
 
@@ -284,10 +285,10 @@ RPNCommands *RPN_defaultCommands()
 	RPN_addCommand(commands, strdup("pop"),   0, commandPop);
 	RPN_addCommand(commands, strdup("ps"),    0, commandPrint);
 	RPN_addCommand(commands, strdup("psd"),   0, commandPrintDetailed);
-	RPN_addCommand(commands, strdup("psv"),   0, commandPrintVariables);
-	RPN_addCommand(commands, strdup("psvd"),  0, commandPrintVariablesDetailed);
-	RPN_addCommand(commands, strdup("psh"),   0, commandPrintHistory);
-	RPN_addCommand(commands, strdup("pshd"),  0, commandPrintHistoryDetailed);
+	RPN_addCommand(commands, strdup("pv"),    0, commandPrintVariables);
+	RPN_addCommand(commands, strdup("pvd"),   0, commandPrintVariablesDetailed);
+	RPN_addCommand(commands, strdup("ph"),    0, commandPrintHistory);
+	RPN_addCommand(commands, strdup("phd"),   0, commandPrintHistoryDetailed);
 	RPN_addCommand(commands, strdup("help"),  0, commandPrintHelp);
 	RPN_addCommand(commands, strdup("x"),     0, commandExit);
 	RPN_addCommand(commands, strdup("sqrt"),  0, commandSqrt);
