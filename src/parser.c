@@ -95,7 +95,6 @@ static void evalToken(RPNCalculator *calculator, char *tok)
 RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 {
 	/* these are just used as shorthands to make the code more readable. */
-	RPNStack *stack = RPN_currentStack(calculator);
 	RPNTokens *tokens;
 	char *token;
 
@@ -108,7 +107,7 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 		token = tokens->tokens[tokens->pos];
 		/* push numeric tokens to the stack. */
 		if(isNumber(token))
-			RPN_push(stack, RPN_strtod(token, NULL));
+			RPN_push(RPN_currentStack(calculator), RPN_strtod(token, NULL));
 		/* delegate other tokens to evalToken(). */
 		else
 			evalToken(calculator, token);
@@ -119,5 +118,5 @@ RPNValue RPN_eval(char *s, RPNCalculator *calculator)
 	calculator->tokens = NULL;
 	RPN_printf("\n");
 
-	return RPN_peek(stack);
+	return RPN_peek(RPN_currentStack(calculator));
 }

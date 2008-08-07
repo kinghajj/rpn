@@ -117,7 +117,7 @@ void RPN_printHistoryDetailed(RPNHistory *history)
 	RPN_printf("[");
 	if(history)
 		for(stack = history->first; stack; stack = stack->next) {
-			RPN_printStack(stack);
+			RPN_printStackDetailed(stack);
 			RPN_printf(", ");
 		}
 	RPN_printf("]");
