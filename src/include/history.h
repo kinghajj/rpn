@@ -31,7 +31,9 @@
 #ifndef RPN_HISTORY_H
 #define RPN_HISTORY_H
 
+//! The stack history stack.
 struct RPNHistory {
+	//! The first item in the stack.
 	RPNStack *first;
 };
 

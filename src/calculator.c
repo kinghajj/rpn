@@ -83,7 +83,7 @@ void RPN_freeCalculator(RPNCalculator *calculator)
 
 //! Returns the topmost stack in the history.
 /**
- * @param A pointer to the calculator from which to get the stack.
+ * @param calculator A pointer to the calculator from which to get the stack.
  * @return The calculator's topmost stack.
  */
 RPNStack *RPN_currentStack(RPNCalculator *calculator)
