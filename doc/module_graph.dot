@@ -2,6 +2,7 @@ digraph module_graph
 {
 	front      [label="Front End" shape="box3d"];
 	calculator [label="calculator.c" shape="note"];
+	history    [label="history.c" shape="note"];
 	parser     [label="parser.c" shape="note"];
 	tokens     [label="tokens.c" shape="note"];
 	commands   [label="commands.c" shape="note"];
@@ -13,9 +14,12 @@ digraph module_graph
 	front -> parser;
 
 	calculator -> commands;
+	calculator -> history;
 	calculator -> operators;
 	calculator -> stack;
 	calculator -> variables;
+
+	history -> stack;
 
 	parser -> commands;
 	parser -> operators;
@@ -23,6 +27,7 @@ digraph module_graph
 	parser -> tokens;
 	parser -> variables;
 
+	commands -> history;
 	commands -> stack;
 	commands -> variables;
 
