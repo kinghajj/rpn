@@ -51,8 +51,6 @@ int main(int argc, char *argv[])
 		peek = RPN_eval(input, calculator);
 	}
 
-	fputc('\n', stdout);
-
 	// cleanup.
 	RPN_freeCalculator(calculator);
 
