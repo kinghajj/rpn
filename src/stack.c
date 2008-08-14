@@ -111,9 +111,11 @@ RPNStack *RPN_copyStack(RPNStack *stack)
  */
 bool RPN_push(RPNStack *stack, RPNValue value)
 {
+	RPNNode *node;
+
 	if(!stack)
 		RPN_error("tried to push to a NULL stack.");
-	RPNNode *node = RPN_newNode(value, stack->first);
+	node = RPN_newNode(value, stack->first);
 	stack->first = node;
 	stack->len++;
 	RPN_dprintf("pushed " RPN_VALUE_SHORT_FORMAT  " to stack", value);
