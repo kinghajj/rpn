@@ -132,7 +132,7 @@ static RPNArgument *findArgument(char *name)
 void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[])
 {
 	int i;
-	int cont = 1;
+	bool cont = true;
 	RPNArgument *argument;
 
 	/* Go through the arguments:
@@ -145,6 +145,9 @@ void RPN_processArguments(RPNCalculator *calculator, int argc, char *argv[])
 	{
 		argument = findArgument(argv[i]);
 		if(argument && argc - i >= argument->nargs)
-			if(!argument->func(calculator, &argv[i+1])) cont = 0;
+			if(!argument->func(calculator, &argv[i+1])) cont = false;
 	}
+
+	if(!cont)
+		RPN_printf("\n");
 }
