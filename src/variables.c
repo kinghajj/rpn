@@ -180,7 +180,7 @@ void RPN_printVariables(RPNVariables *variables)
 	RPN_printf("[ ");
 	for(var = variables->table; var != NULL; var = var->hh.next)
 		RPN_printf("%s = " RPN_VALUE_SHORT_FORMAT ", ", var->name, var->value);
-	RPN_printf("]\n");
+	RPN_printf("]");
 }
 
 //! Prints the variables of a variable table in more detail.
@@ -194,7 +194,7 @@ void RPN_printVariablesDetailed(RPNVariables *variables)
 	RPN_printf("[ ");
 	for(var = variables->table; var != NULL; var = var->hh.next)
 		RPN_printf("%s = " RPN_VALUE_LONG_FORMAT ", ", var->name, var->value);
-	RPN_printf("]\n");
+	RPN_printf("]");
 }
 
 //! Returns a default variable table.

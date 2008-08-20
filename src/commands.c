@@ -42,37 +42,44 @@
 static void commandPrint(RPNCalculator *calculator, char **args)
 {
 	RPN_printStack(RPN_currentStack(calculator));
+	calculator->needs_newline = true;
 }
 
 static void commandPrintDetailed(RPNCalculator *calculator, char **args)
 {
 	RPN_printStackDetailed(RPN_currentStack(calculator));
+	calculator->needs_newline = true;
 }
 
 static void commandPrintVariables(RPNCalculator *calculator, char **args)
 {
 	RPN_printVariables(calculator->variables);
+	calculator->needs_newline = true;
 }
 
 static void commandPrintVariablesDetailed(RPNCalculator *calculator,
                                           char **args)
 {
 	RPN_printVariablesDetailed(calculator->variables);
+	calculator->needs_newline = true;
 }
 
 static void commandPrintHistory(RPNCalculator *calculator, char **args)
 {
 	RPN_printHistory(calculator->history);
+	calculator->needs_newline = true;
 }
 
 static void commandPrintHistoryDetailed(RPNCalculator *calculator, char **args)
 {
 	RPN_printHistoryDetailed(calculator->history);
+	calculator->needs_newline = true;
 }
 
 static void commandPrintHelp(RPNCalculator *calculator, char **args)
 {
 	RPN_printHelp();
+	calculator->needs_newline = true;
 }
 
 static void commandExit(RPNCalculator *calculator, char **args)

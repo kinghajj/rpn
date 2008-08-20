@@ -57,6 +57,7 @@ RPNCalculator *RPN_newCalculator()
 	calculator->status    = RPN_STATUS_CONTINUE;
 	calculator->tokens    = NULL;
 	calculator->variables = RPN_defaultVariables();
+	calculator->needs_newline = false;
 
 	return calculator;
 }

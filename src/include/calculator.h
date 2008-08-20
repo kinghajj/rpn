@@ -55,6 +55,7 @@ struct RPNCalculator
 	RPNVariables *variables;
 	//! Holds the status of the calculator.
 	int status;
+	bool needs_newline;
 };
 
 RPNCalculator *RPN_newCalculator();
