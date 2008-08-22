@@ -87,7 +87,7 @@ static bool argumentExec(RPNCalculator *calculator, char **args)
 	RPN_printf(RPN_VALUE_LONG_FORMAT, RPN_peek(stack));
 
 	calculator->status = RPN_STATUS_EXIT;
-	return true;
+	return false;
 }
 
 // tests if an argument is "null" or not.
