@@ -134,6 +134,8 @@ static void commandPushHistory(RPNCalculator *calculator, char **args)
 static void commandPopHistory(RPNCalculator *calculator, char **args)
 {
 	RPN_popHistory(calculator->history);
+	if(!calculator->history->first)
+		calculator->history->first = RPN_newStack(NULL);
 }
 
 #endif // DOXYGEN_SKIP
