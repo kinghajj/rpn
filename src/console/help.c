@@ -56,11 +56,12 @@ static RPNCommandHelpItem operators_help[] = {
 static RPNCommandHelpItem commands_help[] = {
 	{"dup",  "Pushes topmost value to the stack."},
 	{"pop",  "Removes the topmost value of the stack."},
-	{"ps",   "Prints the stack. Doesn't print anything if empty."},
-	{"psd",  "Prints the stack in detail. Doesn't print anything if empty."},
-	{"psv",  "Prints the variable table. Doesn't print anything if empty."},
-	{"psvd", "Prints the variable table in detail. Doesn't print anything if "
-	         "empty."},
+	{"ph",   "Prints the history stack."},
+	{"phd",  "Prints the history stack in detail."},
+	{"ps",   "Prints the stack."},
+	{"psd",  "Prints the stack in detail."},
+	{"pv",   "Prints the variable table."},
+	{"pvd",  "Prints the variable table in detail."},
 	{"x",    "Exits the program."},
 	{NULL},
 };
