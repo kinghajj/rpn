@@ -56,7 +56,7 @@ extern "C" {
 //! The revision version number.
 #define __RPN_REVIS__ 1
 //! The build version number.
-#define __RPN_BUILD__ 1
+#define __RPN_BUILD__ 2
 
 #ifndef __cplusplus
 //! Handy-dandy macro for allocating structures
