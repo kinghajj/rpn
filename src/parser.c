@@ -40,10 +40,13 @@
  */
 static bool isNumber(char *s)
 {
-	size_t i, len = strlen(s);
+	size_t i = 0, len = strlen(s);
 	bool isnum = true;
 
-	for(i = 0; isnum && i < len; ++i)
+	if(len && s[0] == '-')
+		i = 1;
+
+	for(; isnum && i < len; ++i)
 		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
 
 	// caveat: if length is one and that's just a dot, then it's NOT a number.
