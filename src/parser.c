@@ -44,7 +44,13 @@ static bool isNumber(char *s)
 	bool isnum = true;
 
 	if(len && s[0] == '-')
-		i = 1;
+	{
+		// if it's just a dash, it's not a number.
+		if(len == 1)
+			isnum = false;
+		else
+			i = 1;
+	}
 
 	for(; isnum && i < len; ++i)
 		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
