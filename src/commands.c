@@ -171,9 +171,9 @@ RPNCommand *RPN_newCommand(char *cmd, size_t nargs, RPNCommandFunc func)
 	RPNCommand *command = new(RPNCommand);
 	if(!command)
 		RPN_error("could not allocate memory for command.");
-	command->cmd = cmd;
+	command->cmd   = cmd;
 	command->nargs = nargs;
-	command->func = func;
+	command->func  = func;
 	RPN_dprintf("allocated command %p", command);
 	return command;
 }

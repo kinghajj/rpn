@@ -43,15 +43,12 @@ static bool isNumber(char *s)
 	size_t i = 0, len = strlen(s);
 	bool isnum = true;
 
+	// check for a front dash.
 	if(len && s[0] == '-')
-	{
 		// if it's just a dash, it's not a number.
-		if(len == 1)
-			isnum = false;
-		else
-			i = 1;
-	}
+		len == 1 ? (isnum = false) : (i = 1);
 
+	// go through the rest of the string to verify each character is a digit.
 	for(; isnum && i < len; ++i)
 		if(!isdigit(s[i]) && s[i] != '.') isnum = false;
 
