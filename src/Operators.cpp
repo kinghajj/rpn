@@ -29,6 +29,7 @@
  ******************************************************************************/
 
 #include "rpn.h"
+#include <cmath>
 using namespace std;
 using namespace RPN;
 
@@ -52,14 +53,50 @@ static Value division(Value a, Value b)
     return a / b;
 }
 
+static Value power(Value a, Value b)
+{
+    return powl(a, b);
+}
+
+static Value equals(Value a, Value b)
+{
+    return a == b ? 1 : 0;
+}
+
+static Value modulo(Value a, Value b)
+{
+    return (long)a % (long)b;
+}
+
+static Value _xor(Value a, Value b)
+{
+    return (long)a ^ (long)b;
+}
+
+static Value _and(Value a, Value b)
+{
+    return (long)a & (long)b;
+}
+
+static Value _or(Value a, Value b)
+{
+    return (long)a | (long)b;
+}
+
 Operators RPN::defaultOperators()
 {
     Operators ret;
 
-    ret["+"] = addition;
-    ret["-"] = subtraction;
-    ret["*"] = multiplication;
-    ret["/"] = division;
+    ret["+"]  = addition;
+    ret["-"]  = subtraction;
+    ret["*"]  = multiplication;
+    ret["/"]  = division;
+    ret["**"] = power;
+    ret["="]  = equals;
+    ret["%"]  = modulo;
+    ret["^"]  = _xor;
+    ret["&"]  = _and;
+    ret["|"]  = _or;
 
     return ret;
 }

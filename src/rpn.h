@@ -78,11 +78,19 @@ namespace RPN
         Variables variables;
 
         //! The command to duplicate the top item of the stack.
-        void dup       (std::list<std::string>&);
+        void dup        (std::list<std::string>&);
         //! The command to exit the calculator.
-        void exit      (std::list<std::string>&);
+        void exit       (std::list<std::string>&);
+        //! Removes the top stack as long as there will be at least one left.
+        void popHistory (std::list<std::string>&);
+        //! Copies the top stack and pushes it onto the history.
+        void pushHistory(std::list<std::string>&);
         //! The command to print the stack.
-        void printStack(std::list<std::string>&);
+        void printStack (std::list<std::string>&);
+        //! Pops the top item, then pushes its square root.
+        void sqrtTop    (std::list<std::string>&);
+        //! Swaps the top two items of the stack.
+        void swap       (std::list<std::string>&);
 
     public:
         Calculator()

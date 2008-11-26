@@ -29,29 +29,14 @@
  ******************************************************************************/
 
 #include "rpn.h"
+#include <cmath>
 using namespace std;
 using namespace RPN;
 
-void Calculator::dup(list<string>& args)
+template <class T>
+static void printAnyStack(stack<T>& s)
 {
-    if(!history.size() ||
-       !history.top().size())
-        return;
-
-    Stack& stack(history.top());
-    Value dup = stack.top();
-    stack.push(dup);
-}
-
-void Calculator::exit(list<string>& args)
-{
-    status = Stop;
-}
-
-void Calculator::printStack(list<string>& args)
-{
-    if(!history.size()) return;
-    Stack copy = history.top();
+    stack<T> copy = s;
 
     cout << "[";
     while(!copy.empty())
@@ -62,13 +47,77 @@ void Calculator::printStack(list<string>& args)
     cout << "]" << endl;
 }
 
+void Calculator::dup(list<string>& args)
+{
+    if(history.size() && history.top().size())
+    {
+        Stack& stack(history.top());
+        Value dup = stack.top();
+        stack.push(dup);
+    }
+}
+
+void Calculator::exit(list<string>& args)
+{
+    status = Stop;
+}
+
+void Calculator::popHistory(list<string>& args)
+{
+    if(history.size() > 1)
+        history.pop();
+}
+
+void Calculator::printStack(list<string>& args)
+{
+    if(history.size())
+    printAnyStack(history.top());
+}
+
+void Calculator::pushHistory(list<string>& args)
+{
+    if(history.size())
+    {
+        Stack copy = history.top();
+        history.push(copy);
+    }
+}
+
+void Calculator::sqrtTop(list<string>& args)
+{
+    if(history.size() && history.top().size())
+    {
+        Value top = history.top().top();
+        history.top().pop();
+        history.top().push(sqrtl(top));
+    }
+}
+
+void Calculator::swap(list<string>& args)
+{
+    if(history.size() && history.top().size() > 1)
+    {
+        Value a, b;
+        a = history.top().top();
+        history.top().pop();
+        b = history.top().top();
+        history.top().pop();
+        history.top().push(a);
+        history.top().push(b);
+    }
+}
+
 Commands Calculator::defaultCommands()
 {
     Commands ret;
 
-    ret["dup"] = Command(&Calculator::dup);
-    ret["ps"]  = Command(&Calculator::printStack);
-    ret["x"]   = Command(&Calculator::exit);
+    ret["dup"]   = Command(&Calculator::dup);
+    ret["poph"]  = Command(&Calculator::popHistory);
+    ret["ps"]    = Command(&Calculator::printStack);
+    ret["pushh"] = Command(&Calculator::pushHistory);
+    ret["sqrt"]  = Command(&Calculator::sqrtTop);
+    ret["swap"]  = Command(&Calculator::swap);
+    ret["x"]     = Command(&Calculator::exit);
 
     return ret;
 }
