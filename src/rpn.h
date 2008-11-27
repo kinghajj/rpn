@@ -37,10 +37,17 @@
 #include <stack>
 #include <string>
 
+//! Calls an objects member function via pointer.
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember)) 
 
 namespace RPN
 {
+    // version information.
+    const int         VERSION_MAJOR = 2;
+    const int         VERSION_MINOR = 0;
+    const int         VERSION_BUILD = 0;
+    const std::string VERSION_EXTRA = "pre";
+
     // forward declarations.
     class Calculator;
     class Command;
@@ -150,6 +157,7 @@ namespace RPN
         }
 
         unsigned NumArgs() const { return num_args; }
+
         void Perform(Calculator& calculator, std::list<std::string> args) const
         {
             if(command_ptr)

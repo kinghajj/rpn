@@ -29,12 +29,33 @@
  ******************************************************************************/
 
 #include "rpn.h"
+#include <vector>
 using namespace std;
 using namespace RPN;
+
+static vector<string> vectorize(char **argv, int argc)
+{
+    vector<string> ret;
+
+    for(int i = 0; i < argc; ++i)
+        ret.push_back(argv[i]);
+
+    return ret;
+}
 
 int main(int argc, char *argv[])
 {
     Calculator calculator;
+    vector<string> args = vectorize(argv, argc);
+
+    if(args.size() > 1 && args[1] == "--version")
+    {
+        cout << "RPN " << VERSION_MAJOR << '.'
+                       << VERSION_MINOR << '.'
+                       << VERSION_BUILD << ' '
+                       << VERSION_EXTRA << endl;
+        return 0;
+    }
 
     while(calculator.IsRunning() && cin)
     {
