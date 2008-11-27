@@ -40,7 +40,9 @@ void Calculator::Eval(string s)
     typedef tokenizer< char_separator<char> > Tokens;
     char_separator<char> sep(" \t");
     Tokens tokens(s, sep);
-    
+
+    if(!HasStack()) return;
+
     for(Tokens::iterator tok = tokens.begin();
         tok != tokens.end() && status == Continue;
         ++tok)
@@ -51,31 +53,42 @@ void Calculator::Eval(string s)
         istringstream iss(*tok);
         Value val;
 
-        // if the token is a number and there's a stack, push it.
-        if(iss >> val && history.size() > 0)
-            history.top().push(val);
+        // if the token is a number, push it.
+        if(iss >> val)
+            CurrentStack().push(val);
+
         // if the token is a command, perform it.
         else if(foundCommand != commands.end())
-                (*foundCommand).second.Perform(*this, list<string>());
-        // if the token is an operator, there's a stack, and that stack has
-        // at least two items, then perform that operator.
-        else if(foundOperator != operators.end() && history.size() > 0 && 
-                history.top().size() > 1)
         {
-            Value b = history.top().top();
-            history.top().pop();
-            Value a = history.top().top();
-            history.top().pop();
-            history.top().push((*foundOperator).second(a, b));
+            const Command& command = (*foundCommand).second;
+            list<string> args;
+
+            // collect a list of tokens that will be the arguments to the
+            // command.
+            while(tok != tokens.end() && args.size() != command.NumArgs())
+                args.push_back(*++tok);
+
+            // only perform a command if we can give it enough arguments.
+            if(args.size() == command.NumArgs())
+                command.Perform(*this, args);
         }
-        // if the token is a variable and there's a stack, push the variable
-        // onto the stack.
-        else if(foundVariable != variables.end() && history.size() > 0)
-            history.top().push((*foundVariable).second);
-        // otherwise, if there's a stack with at least one item, set a new
-        // variable whose name is the token and value is the top item.
-        else if(history.size() > 0 && history.top().size() > 0)
-            variables[*tok] = history.top().top();
+
+        // if the token is an operator and that stack has at least two items,
+        // then perform that operator.
+        else if(foundOperator != operators.end() && StackSize() > 1)
+        {
+            Value b = TopmostItem(); CurrentStack().pop();
+            Value a = TopmostItem(); CurrentStack().pop();
+            CurrentStack().push((*foundOperator).second(a, b));
+        }
+
+        // if the token is a variable, push the variable onto the stack.
+        else if(foundVariable != variables.end())
+            CurrentStack().push((*foundVariable).second);
+
+        // otherwise, if the stack has at least one item, set a new variable 
+        // whose name is the token and value is the top item.
+        else variables[*tok] = TopmostItem();
     }
 }
 
@@ -85,7 +98,5 @@ void Calculator::Eval(string s)
 // able to do!
 ostream& Calculator::Display(ostream& os) const
 {
-    if(history.size() > 0 && history.top().size() > 0)
-        os << history.top().top();
-    return os;
+    return os << TopmostItem();
 }

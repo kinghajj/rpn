@@ -91,6 +91,26 @@ namespace RPN
         void sqrtTop    (std::list<std::string>&);
         //! Swaps the top two items of the stack.
         void swap       (std::list<std::string>&);
+        //! Unsets a previously set variable.
+        void unset      (std::list<std::string>&);
+
+        //! Returns true if there is at least one stack.
+        bool HasStack() const { return history.size() != 0; }
+
+        //! Returns a reference to the current stack.
+        Stack& CurrentStack() { return history.top(); }
+
+        //! Returns the current stack's size.
+        size_t StackSize() const
+        {
+            return HasStack() ? history.top().size() : 0;
+        }
+
+        //! Returns the topmost item of the current stack.
+        Value TopmostItem() const
+        {
+            return HasStack() && StackSize() > 0 ? history.top().top() : 0;
+        }
 
     public:
         Calculator()
@@ -111,7 +131,7 @@ namespace RPN
         Commands  defaultCommands();
 
         //! Displays the top item of the stack.
-        std::ostream& Display(std::ostream& os) const;
+        std::ostream& Display(std::ostream& os = std::cout) const;
     };
 
     typedef void (Calculator::*CommandPtr)(std::list<std::string>&);
@@ -121,7 +141,7 @@ namespace RPN
     class Command
     {
         CommandPtr command_ptr;
-        unsigned int num_args;
+        unsigned num_args;
 
     public:
         Command(CommandPtr command_ptr = NULL, unsigned int num_args = 0)
@@ -129,7 +149,8 @@ namespace RPN
         {
         }
 
-        void Perform(Calculator& calculator, std::list<std::string> args)
+        unsigned NumArgs() const { return num_args; }
+        void Perform(Calculator& calculator, std::list<std::string> args) const
         {
             if(command_ptr)
                 CALL_MEMBER_FN(calculator, command_ptr)(args);

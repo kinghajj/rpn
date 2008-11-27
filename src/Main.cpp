@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     {
         string s;
         cout << '[';
-        calculator.Display(cout);
+        calculator.Display();
         cout << "]> ";
         getline(cin, s);
         calculator.Eval(s);

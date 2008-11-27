@@ -107,6 +107,11 @@ void Calculator::swap(list<string>& args)
     }
 }
 
+void Calculator::unset(list<string>& args)
+{
+    variables.erase(args.front());
+}
+
 Commands Calculator::defaultCommands()
 {
     Commands ret;
@@ -117,6 +122,7 @@ Commands Calculator::defaultCommands()
     ret["pushh"] = Command(&Calculator::pushHistory);
     ret["sqrt"]  = Command(&Calculator::sqrtTop);
     ret["swap"]  = Command(&Calculator::swap);
+    ret["unset"] = Command(&Calculator::unset, 1);
     ret["x"]     = Command(&Calculator::exit);
 
     return ret;
