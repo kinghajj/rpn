@@ -60,7 +60,7 @@ void Calculator::Eval(string s)
         // if the token is a command, perform it.
         else if(foundCommand != commands.end())
         {
-            const Command& command = (*foundCommand).second;
+            const Command& command = foundCommand->second;
             vector<string> args;
             args.reserve(command.NumArgs());
 
@@ -80,12 +80,12 @@ void Calculator::Eval(string s)
         {
             Value b = TopmostItem(); CurrentStack().pop_front();
             Value a = TopmostItem(); CurrentStack().pop_front();
-            CurrentStack().push_front((*foundOperator).second(a, b));
+            CurrentStack().push_front(foundOperator->second(a, b));
         }
 
         // if the token is a variable, push the variable onto the stack.
         else if(foundVariable != variables.end())
-            CurrentStack().push_front((*foundVariable).second);
+            CurrentStack().push_front(foundVariable->second);
 
         // otherwise, if the stack has at least one item, set a new variable 
         // whose name is the token and value is the top item.
