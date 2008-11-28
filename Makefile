@@ -25,11 +25,12 @@ CXXFLAGS = -Wall -pedantic -g -DRPN_CONSOLE
 LFLAGS = -lm -o
 endif
 
+OBJDIR = obj/console/
 SRCDIR = src/
 TARGET = bin/rpn
 OBJECTS = \
-	$(SRCDIR)Calculator.o $(SRCDIR)Commands.o $(SRCDIR)History.o \
-	$(SRCDIR)Main.o $(SRCDIR)Operators.o $(SRCDIR)Variables.o
+	$(OBJDIR)Calculator.o $(OBJDIR)Commands.o $(OBJDIR)History.o \
+	$(OBJDIR)Main.o $(OBJDIR)Operators.o $(OBJDIR)Variables.o
 
 # make the program by default
 .PHONY: all
@@ -42,7 +43,7 @@ clean:
 	@$(RM) $(OBJECTS) $(TARGET)
 
 # General rule for compiling.
-$(SRCDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)rpn.h
+$(OBJDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)rpn.h
 	@echo Compiling $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
