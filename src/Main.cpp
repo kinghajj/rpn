@@ -33,6 +33,11 @@
 using namespace std;
 using namespace RPN;
 
+#ifdef RPN_PSP
+// Tell the PSP about the program.
+PSP_MODULE_INFO("PSPRPN", 0, 1, 1);
+#endif
+
 //! Converts command-line arguments into a vector of strings.
 static vector<string> vectorize(char **argv, int argc)
 {

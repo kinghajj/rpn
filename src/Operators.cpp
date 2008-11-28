@@ -57,9 +57,9 @@ static Value division(Value a, Value b)
 
 static Value power(Value a, Value b)
 {
-#ifdef RPN_WII
+#ifdef RPN_DOUBLE
     return pow(a, b);
-#else
+#elif  RPN_LONG_DOUBLE
     return powl(a, b);
 #endif
 }

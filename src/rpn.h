@@ -70,8 +70,15 @@ namespace RPN
     // TYPEDEFS                                                               //
     ////////////////////////////////////////////////////////////////////////////
 
+#ifdef RPN_DOUBLE
+    //! The type operated on by the calculator.
+    typedef double Value;
+#elif  RPN_LONG_DOUBLE
     //! The type operated on by the calculator.
     typedef long double Value;
+#else
+#error Please choose either RPN_DOUBLE or RPN_LONG_DOUBLE.
+#endif
     //! The type of an operator function.
     typedef Value (*Operator)(Value a, Value b);
     //! The type of a collection of commands.

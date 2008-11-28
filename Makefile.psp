@@ -13,28 +13,27 @@ SRCDIR = src/
 BINDIR = bin/psp
 
 MYOBJS = \
-	src/calculator.o src/commands.o src/console/help.o src/history.o \
-	src/operators.o src/parser.o src/stack.o src/tokens.o src/variables.o \
-	src/psp/psp.o src/psp/error.o src/psp/input.o src/psp/setup.o
+	src/Calculator.o src/Commands.o src/History.o src/Main.o \
+	src/Operators.o src/Variables.o \
 
 OBJS = $(subst $(SRCDIR),$(OBJDIR),$(MYOBJS))
 
-$(OBJDIR)%.o: $(SRCDIR)%.c
+$(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@echo Compiling $(notdir $<)
 	@$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
-CFLAGS = -O2 -G0 -Wall -DRPN_DOUBLE -DRPN_CONSOLE -DRPN_PSP -Isrc/include -Isrc
+CFLAGS = -O2 -G0 -Wall -DRPN_PSP -DRPN_DOUBLE
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
-LIBS = -lm
+LIBS = -lm -lstdc++
 LDFLAGS = 
 
 EXTRA_TARGETS = $(PSP_EBOOT)
 PSP_EBOOT_TITLE = PSPRPN v. $(VERSION)
-PSP_EBOOT_ICON = src/psp/psprpn3.png
+PSP_EBOOT_ICON = img/psprpn3.png
 
 PSPSDK = $(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak

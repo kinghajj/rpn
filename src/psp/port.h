@@ -32,11 +32,47 @@
 #ifndef _CONSOLE_PORT_H_
 #define _CONSOLE_PORT_H_
 
-#include <pspkernel.h>
+extern "C" {
+#include <pspctrl.h>
 #include <pspdebug.h>
+#include <pspdisplay.h>
+#include <pspkernel.h>
+}
 
 class Port
 {
+    // Executed on exit; used for cleanup.
+    static int ExitCallback(int arg1, int arg2, void *common)
+    {
+        sceKernelExitGame();
+        return 0;
+    }
+
+    // Thread to create and register callbacks.
+    static int CallbackThread(SceSize args, void *argp)
+    {
+        int cbid;
+
+        cbid = sceKernelCreateCallback("Exit Callback", ExitCallback, NULL);
+        sceKernelRegisterExitCallback(cbid);
+        sceKernelSleepThreadCB();
+
+        return 0;
+    }
+
+    // Starts thread to create callbacks.
+    static int SetupCallbacks()
+    {
+        int thid;
+
+        thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11,
+                                     0xFA0, 0, 0);
+        if(thid >= 0)
+            sceKernelStartThread(thid, 0, 0);
+    
+        return thid;
+    }
+
 public:
 
     static bool CanRun()
@@ -52,6 +88,7 @@ public:
 
     static void Post()
     {
+        sceKernelExitGame();
     }
 
     static void Print(const char* str)
@@ -61,7 +98,8 @@ public:
 
     static void Setup()
     {
-        sceKernelExitGame();
+        pspDebugScreenInit();
+        SetupCallbacks();
     }
 };
 

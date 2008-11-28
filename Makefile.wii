@@ -28,7 +28,7 @@ INCLUDES	:=  -I/home/samuel/Wii_Homebrew/devkitpro/devkitPPC/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-DEFINES = -DRPN_WII
+DEFINES = -DRPN_WII -DRPN_DOUBLE
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) $(DEFINES) $(INCLUDES)
 CXXFLAGS = $(CFLAGS)
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
