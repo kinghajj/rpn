@@ -1,23 +1,67 @@
+# Makefile for rpn.
+# Should be fairly portable for the various *nix systems. The rules
+# themselves shouldn't need to be changed; only the variables may need to
+# change.
+
+# Automatically default to a release build.
+ifndef DEBUG
+RELEASE = 1
+endif
+
+# Version
+VERSION = $(shell cat VERSION)
+GIT_BUILD = $(shell git describe)
+
+# Git command to make a distribution tarball.
+GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
+	bzip2 >rpn-$(VERSION).tar.bz2
+
+ifdef RELEASE
 CXXFLAGS = -Wall -pedantic -O2
+LFLAGS = -s -lm -o
+endif
+ifdef DEBUG
+CXXFLAGS = -Wall -pedantic -g
+LFLAGS = -lm -o
+endif
+
 SRCDIR = src/
 TARGET = bin/rpn
 OBJECTS = \
 	$(SRCDIR)Calculator.o $(SRCDIR)Commands.o $(SRCDIR)History.o \
 	$(SRCDIR)Main.o $(SRCDIR)Operators.o $(SRCDIR)Variables.o
 
+# make the program by default
 .PHONY: all
 all: $(TARGET)
 
+# rule to clean-up the objects and the target, if they exist
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(TARGET)
+	@echo Cleaning objects and executables...
+	@$(RM) $(OBJECTS) $(TARGET)
 
+# General rule for compiling.
+$(SRCDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)rpn.h
+	@echo Compiling $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# rule to make the program
 $(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@
+	@echo Linking $(TARGET)...
+	@$(CXX) $(OBJECTS) $(LFLAGS) $@
 
-$(SRCDIR)Calculator.o: $(SRCDIR)Calculator.cpp $(SRCDIR)rpn.h
-$(SRCDIR)Commands.o:   $(SRCDIR)Commands.cpp   $(SRCDIR)rpn.h
-$(SRCDIR)History.o:    $(SRCDIR)History.cpp    $(SRCDIR)rpn.h
-$(SRCDIR)Main.o:       $(SRCDIR)Main.cpp       $(SRCDIR)rpn.h
-$(SRCDIR)Operators.o:  $(SRCDIR)Operators.cpp  $(SRCDIR)rpn.h
-$(SRCDIR)Variables.o:  $(SRCDIR)Variables.cpp  $(SRCDIR)rpn.h
+# rule to make tarball for distribution.
+.PHONY: dist
+dist:
+	$(GIT_ARCHIVE)
+
+# rule to make documentation
+.PHONY: doc
+doc:
+	doxygen Doxyfile
+
+# An easter egg, just for the hell of it.
+.PHONY: love
+love:
+	@echo Not war?
