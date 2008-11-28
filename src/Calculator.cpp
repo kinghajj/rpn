@@ -97,7 +97,7 @@ void Calculator::Eval(string s)
 // I tried to write this as a friend operator<<(), but I got errors for
 // accessing private data, which is what friend functions are supposed to be
 // able to do!
-ostream& Calculator::Display(ostream& os) const
+void Calculator::Display() const
 {
-    return os << TopmostItem();
+    Print(TopmostItem());
 }

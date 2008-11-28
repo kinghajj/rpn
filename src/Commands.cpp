@@ -30,7 +30,6 @@
 
 #include "rpn.h"
 #include <boost/foreach.hpp>
-#include <boost/typeof/typeof.hpp>
 #include <cmath>
 using namespace std;
 using namespace RPN;
@@ -38,16 +37,19 @@ using namespace RPN;
 template <class T>
 static void printAnything(T t)
 {
-    cout << t;
+    Print(t);
 }
 
 template <class T>
 static void printAnyList(list<T>& l, void (*printer)(T))
 {
-    cout << "[ ";
+    Print("[ ");
     BOOST_FOREACH(T& item, l)
-        cout << item << ", ";
-    cout << ']';
+    {
+        Print(item);
+        Print(", ");
+    }
+    Print(']');
 }
 
 void Calculator::dup(vector<string>& args)
@@ -78,13 +80,13 @@ void Calculator::popHistory(vector<string>& args)
 
 void Calculator::printHistory(vector<string>& args)
 {
-    cout << '[';
+    Print('[');
     BOOST_FOREACH(Stack& item, history)
     {
         printAnyList(item, printAnything);
-        cout << ", ";
+        Print(", ");
     }
-    cout << ']' << endl;
+    Print("]\n");
 }
 
 void Calculator::printStack(vector<string>& args)
@@ -92,16 +94,21 @@ void Calculator::printStack(vector<string>& args)
     if(HasStack())
     {
         printAnyList(history.front(), printAnything);
-        cout << endl;
+        Print('\n');
     }
 }
 
 void Calculator::printVariables(vector<string>& args)
 {
-    cout << "[ ";
+    Print("[ ");
     BOOST_FOREACH(Variables::value_type& v, variables)
-        cout << v.first << " = " << v.second << ", ";
-    cout << ']' << endl;
+    {
+        Print(v.first);
+        Print(" = ");
+        Print(v.second);
+        Print(", ");
+    }
+    Print("]\n");
 }
 
 void Calculator::pushHistory(vector<string>& args)

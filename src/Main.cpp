@@ -50,19 +50,24 @@ int main(int argc, char *argv[])
 
     if(args.size() > 1 && args[1] == "--version")
     {
-        cout << "RPN " << VERSION_MAJOR << '.'
-                       << VERSION_MINOR << '.'
-                       << VERSION_BUILD << ' '
-                       << VERSION_EXTRA << endl;
+        Print("RPN ");
+        Print(VERSION_MAJOR);
+        Print('.');
+        Print(VERSION_MINOR);
+        Print('.');
+        Print(VERSION_BUILD);
+        Print(' ');
+        Print(VERSION_EXTRA);
+        Print('\n');
         return 0;
     }
 
     while(calculator.IsRunning() && cin)
     {
         string s;
-        cout << '[';
+        Print('[');
         calculator.Display();
-        cout << "]> ";
+        Print("]> ");
         getline(cin, s);
         calculator.Eval(s);
     }

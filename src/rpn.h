@@ -34,6 +34,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <vector>
@@ -145,7 +146,7 @@ namespace RPN
         Commands  defaultCommands();
 
         //! Displays the top item of the stack.
-        std::ostream& Display(std::ostream& os = std::cout) const;
+        void Display() const;
     };
 
     typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
@@ -165,12 +166,26 @@ namespace RPN
 
         unsigned NumArgs() const { return num_args; }
 
-        void Perform(Calculator& calculator, std::vector<std::string> args) const
+        void Perform(Calculator& calc, std::vector<std::string> args) const
         {
             if(command_ptr)
-                CALL_MEMBER_FN(calculator, command_ptr)(args);
+                CALL_MEMBER_FN(calc, command_ptr)(args);
         }
     };
+
+#ifdef RPN_PSP
+#define RPN_portPrintf psp
+#else
+#define RPN_portPrintf printf
+#endif
+
+    template <class T>
+    void Print(const T& item)
+    {
+        std::ostringstream oss;
+        oss << item;
+        RPN_portPrintf(oss.str().c_str());
+    }
 }
 
 #endif // _RPN_H_
