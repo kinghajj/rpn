@@ -1,0 +1,63 @@
+Style Guide for RPN
+by Samuel Fredrickson <kinghajj@gmail.com>
+2008-11-27
+
+0. About this Document
+----------------------
+
+    This is a simple style guideline for the RPN project. All code in the
+    project must follow these rules, which are subject to change at any time.
+
+1. Tabs, Spaces and Alignment
+-----------------------------
+
+    No tabs. Uses spaces to indent and align. I formally advocated tabs to
+    indent and spaces to align, but I've come to find that that makes me waste
+    too much time making sure that there wasn't some tab where it shouldn't be.
+    Using spaces is easier.
+
+    Indent blocks with 4 spaces. No exceptions.
+
+    Here's some examples of how you should align.
+
+int RPN_hereIsALongFunctionWithSomeSmallParameters(int firstParam,
+                                                   int secondParam);
+int RPN_andHereIsALongFunctionWithManyLongParameters(int a, double b,
+                                                     RPN_Calculator *calc);
+int RPN_thisNameIsWayTooLongButIsIncludedJustInCaseItsEverNeeded(
+    RPNCalculator *calc, RPNValue v);
+
+    And here's an example definition of a function.
+
+int RPN_hereIsALongFunctionWithManyLongParameters(int firstParam,
+                                                  int secondParam)
+{
+    if(firstParam == secondParam)
+        RPN_printf("firstParam == secondParam\n");
+    return firstParam + secondParam;
+}
+
+    You may also choose to align assignments if it's logical to do so. But
+    again, use spaces to align to keep the alignment portable.
+
+2. Curly Bracket Placement
+--------------------------
+
+    I prefer the BSD/Allman style, which puts curly brackets on their own line
+    with the same indentation as the control structure or function, but I'm
+    tolerant of the K&R style. The GNU and Pico styles are just ugly.
+
+3. Variable Declaration
+-----------------------
+
+    Although C++ compilers let you declare a variable anywhere within a
+    function, for this project, declare most variables at the beginning. Writing
+    the variables you think you'll need can help you plan a function, and having
+    all declarations together can make it easier to remove unneeded ones.
+    However, if there is a variable used in only one block, it's fine to just
+    put it there.
+
+4. 80-Column Limit
+------------------
+
+    Always stay within the 80-column limit. No exceptions.
