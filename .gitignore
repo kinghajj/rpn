@@ -1,9 +1,0 @@
-bin/*
-doc/*
-obj/*
-rpn
-EBOOT.PBP
-PARAM.SFO
-psprpn.elf
-*.swp
-wiiobj
