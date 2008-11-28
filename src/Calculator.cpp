@@ -61,7 +61,8 @@ void Calculator::Eval(string s)
         else if(foundCommand != commands.end())
         {
             const Command& command = (*foundCommand).second;
-            list<string> args;
+            vector<string> args;
+            args.reserve(command.NumArgs());
 
             // collect a list of tokens that will be the arguments to the
             // command.

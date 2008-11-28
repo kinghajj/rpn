@@ -36,6 +36,7 @@
 #include <map>
 #include <stack>
 #include <string>
+#include <vector>
 
 //! Calls an objects member function via pointer.
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember)) 
@@ -58,8 +59,8 @@ namespace RPN
     typedef std::map<std::string, Command>   Commands;
     typedef std::map<std::string, Operator>  Operators;
     typedef std::map<std::string, Value>     Variables;
-    typedef std::list<Value>                Stack;
-    typedef std::list<Stack>                History;
+    typedef std::list<Value>                 Stack;
+    typedef std::list<Stack>                 History;
 
     //! Returns a default, empty History stack.
     History   defaultHistory();
@@ -85,23 +86,23 @@ namespace RPN
         Variables variables;
 
         //! The command to duplicate the top item of the stack.
-        void dup          (std::list<std::string>&);
+        void dup          (std::vector<std::string>&);
         //! The command to exit the calculator.
-        void exit         (std::list<std::string>&);
+        void exit         (std::vector<std::string>&);
         //! Removes the top stack as long as there will be at least one left.
-        void popHistory   (std::list<std::string>&);
+        void popHistory   (std::vector<std::string>&);
         //! Copies the top stack and pushes it onto the history.
-        void pushHistory  (std::list<std::string>&);
+        void pushHistory  (std::vector<std::string>&);
         //! The command to print the history.
-        void printHistory (std::list<std::string>&);
+        void printHistory (std::vector<std::string>&);
         //! The command to print the stack.
-        void printStack   (std::list<std::string>&);
+        void printStack   (std::vector<std::string>&);
         //! Pops the top item, then pushes its square root.
-        void sqrtTop      (std::list<std::string>&);
+        void sqrtTop      (std::vector<std::string>&);
         //! Swaps the top two items of the stack.
-        void swap         (std::list<std::string>&);
+        void swap         (std::vector<std::string>&);
         //! Unsets a previously set variable.
-        void unset        (std::list<std::string>&);
+        void unset        (std::vector<std::string>&);
 
         //! Returns true if there is at least one stack.
         bool HasStack() const { return history.size() != 0; }
@@ -143,7 +144,7 @@ namespace RPN
         std::ostream& Display(std::ostream& os = std::cout) const;
     };
 
-    typedef void (Calculator::*CommandPtr)(std::list<std::string>&);
+    typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
 
     //! Holds information on a command, such as what its function is and how
     //! many arguments it takes.
@@ -160,7 +161,7 @@ namespace RPN
 
         unsigned NumArgs() const { return num_args; }
 
-        void Perform(Calculator& calculator, std::list<std::string> args) const
+        void Perform(Calculator& calculator, std::vector<std::string> args) const
         {
             if(command_ptr)
                 CALL_MEMBER_FN(calculator, command_ptr)(args);

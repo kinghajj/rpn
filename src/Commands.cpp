@@ -29,6 +29,7 @@
  ******************************************************************************/
 
 #include "rpn.h"
+#include <boost/foreach.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <cmath>
 using namespace std;
@@ -43,19 +44,13 @@ static void printAnything(T t)
 template <class T>
 static void printAnyList(list<T>& l, void (*printer)(T))
 {
-    // list<T>::iterator doesn't work, so I'll use BOOST_AUTO.
-    BOOST_AUTO(it, l.begin());
-
     cout << "[ ";
-    while(it != l.end())
-    {
-        printer(*it++);
-        cout << ", ";
-    }
+    BOOST_FOREACH(T item, l)
+        cout << item << ", ";
     cout << ']';
 }
 
-void Calculator::dup(list<string>& args)
+void Calculator::dup(vector<string>& args)
 {
     if(history.size() && history.front().size())
     {
@@ -65,31 +60,29 @@ void Calculator::dup(list<string>& args)
     }
 }
 
-void Calculator::exit(list<string>& args)
+void Calculator::exit(vector<string>& args)
 {
     status = Stop;
 }
 
-void Calculator::popHistory(list<string>& args)
+void Calculator::popHistory(vector<string>& args)
 {
     if(history.size() > 1)
         history.pop_front();
 }
 
-void Calculator::printHistory(list<string>& args)
+void Calculator::printHistory(vector<string>& args)
 {
-    BOOST_AUTO(it, history.begin());
-
-    cout << "[";
-    while(it != history.end())
+    cout << '[';
+    BOOST_FOREACH(Stack item, history)
     {
-        printAnyList(*it++, printAnything);
+        printAnyList(item, printAnything);
         cout << ", ";
     }
     cout << ']' << endl;
 }
 
-void Calculator::printStack(list<string>& args)
+void Calculator::printStack(vector<string>& args)
 {
     if(HasStack())
     {
@@ -98,7 +91,7 @@ void Calculator::printStack(list<string>& args)
     }
 }
 
-void Calculator::pushHistory(list<string>& args)
+void Calculator::pushHistory(vector<string>& args)
 {
     if(history.size())
     {
@@ -107,7 +100,7 @@ void Calculator::pushHistory(list<string>& args)
     }
 }
 
-void Calculator::sqrtTop(list<string>& args)
+void Calculator::sqrtTop(vector<string>& args)
 {
     if(history.size() && history.front().size())
     {
@@ -117,7 +110,7 @@ void Calculator::sqrtTop(list<string>& args)
     }
 }
 
-void Calculator::swap(list<string>& args)
+void Calculator::swap(vector<string>& args)
 {
     if(history.size() && history.front().size() > 1)
     {
@@ -131,7 +124,7 @@ void Calculator::swap(list<string>& args)
     }
 }
 
-void Calculator::unset(list<string>& args)
+void Calculator::unset(vector<string>& args)
 {
     variables.erase(args.front());
 }
