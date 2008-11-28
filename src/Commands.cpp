@@ -34,6 +34,8 @@
 using namespace std;
 using namespace RPN;
 
+#ifndef DOXYGEN_SKIP
+
 template <class T>
 static void printAnything(T t)
 {
@@ -187,6 +189,8 @@ void Calculator::unset(vector<string>& args)
 {
     variables.erase(args.front());
 }
+
+#endif
 
 Commands Calculator::defaultCommands()
 {

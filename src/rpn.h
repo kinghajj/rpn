@@ -44,25 +44,53 @@
 
 namespace RPN
 {
-    // version information.
+    ////////////////////////////////////////////////////////////////////////////
+    // CONSTANTS                                                              //
+    ////////////////////////////////////////////////////////////////////////////
+
+    //! The major version number.
     const int         VERSION_MAJOR = 2;
+    //! The minor version number.
     const int         VERSION_MINOR = 0;
+    //! The revision version number.
     const int         VERSION_REVIS = 0;
+    //! The build version number.
     const int         VERSION_BUILD = 0;
+    //! Any extra information about the version.
     const std::string VERSION_EXTRA = "pre";
 
-    // forward declarations.
+    ////////////////////////////////////////////////////////////////////////////
+    // FORWARD DECLARATIONS                                                   //
+    ////////////////////////////////////////////////////////////////////////////
+
     class Calculator;
     class Command;
 
-    // various typedefs.
+    ////////////////////////////////////////////////////////////////////////////
+    // TYPEDEFS                                                               //
+    ////////////////////////////////////////////////////////////////////////////
+
+    //! The type operated on by the calculator.
     typedef long double Value;
+    //! The type of an operator function.
     typedef Value (*Operator)(Value a, Value b);
+    //! The type of a collection of commands.
     typedef std::map<std::string, Command>   Commands;
+    //! The type of a collection of operators.
     typedef std::map<std::string, Operator>  Operators;
+    //! The type of a collection of variables.
     typedef std::map<std::string, Value>     Variables;
+    //! The type of the stack used by the calculator.
     typedef std::list<Value>                 Stack;
+    //! The type of the history stack used by the calculator.
     typedef std::list<Stack>                 History;
+    //! The type of a command member function. All commands must be members
+    //! of the Calculator class.
+    typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // FUNCTIONS                                                              //
+    ////////////////////////////////////////////////////////////////////////////
 
     //! Returns a default, empty History stack.
     History   defaultHistory();
@@ -70,6 +98,40 @@ namespace RPN
     Operators defaultOperators();
     //! Returns a map of the default variables.
     Variables defaultVariables();
+
+    ////////////////////////////////////////////////////////////////////////////
+    // PORTABILITY                                                            //
+    ////////////////////////////////////////////////////////////////////////////
+
+#ifndef DOXYGEN_SKIP
+#ifdef RPN_PSP
+#define RPN_portPrintf psp
+#else
+#define RPN_portPrintf printf
+#endif
+#endif
+
+    //! A portable way to print things.
+    template <class T>
+    void Print(const T& item)
+    {
+        std::ostringstream oss;
+        oss << item;
+        RPN_portPrintf(oss.str().c_str());
+    }
+
+    //! A portable way to print things in detail.
+    template <class T>
+    void PrintDetailed(const T& item)
+    {
+        std::ostringstream oss;
+        oss << std::fixed << item;
+        RPN_portPrintf(oss.str().c_str());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // CLASSSES                                                               //
+    ////////////////////////////////////////////////////////////////////////////
 
     //! The main class for the program.
     class Calculator
@@ -135,6 +197,8 @@ namespace RPN
         }
 
     public:
+
+        //! The default and only constructor.
         Calculator()
             : commands  (defaultCommands()),
               history   (defaultHistory()),
@@ -146,6 +210,7 @@ namespace RPN
 
         //! Evaluates a string.
         void Eval(std::string input);
+
         //! Returns true if the calculator is running.
         bool IsRunning() const { return status == Continue; }
 
@@ -156,8 +221,6 @@ namespace RPN
         void Display() const;
     };
 
-    typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
-
     //! Holds information on a command, such as what its function is and how
     //! many arguments it takes.
     class Command
@@ -166,41 +229,24 @@ namespace RPN
         unsigned num_args;
 
     public:
+
+        //! Constructs a command with a function pointer and number of
+        //arguments.
         Command(CommandPtr command_ptr = NULL, unsigned int num_args = 0)
             : command_ptr(command_ptr), num_args(num_args)
         {
         }
 
+        //! Returns the number of arguments the function requires.
         unsigned NumArgs() const { return num_args; }
 
+        //! Performs the command on a calculator with the given functions.
         void Perform(Calculator& calc, std::vector<std::string> args) const
         {
             if(command_ptr)
                 CALL_MEMBER_FN(calc, command_ptr)(args);
         }
     };
-
-#ifdef RPN_PSP
-#define RPN_portPrintf psp
-#else
-#define RPN_portPrintf printf
-#endif
-
-    template <class T>
-    void Print(const T& item)
-    {
-        std::ostringstream oss;
-        oss << item;
-        RPN_portPrintf(oss.str().c_str());
-    }
-
-    template <class T>
-    void PrintDetailed(const T& item)
-    {
-        std::ostringstream oss;
-        oss << std::fixed << item;
-        RPN_portPrintf(oss.str().c_str());
-    }
 }
 
 #endif // _RPN_H_

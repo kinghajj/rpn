@@ -33,6 +33,8 @@
 using namespace std;
 using namespace RPN;
 
+#ifndef DOXYGEN_SKIP
+
 static Value addition(Value a, Value b)
 {
     return a + b;
@@ -82,6 +84,8 @@ static Value _or(Value a, Value b)
 {
     return (long)a | (long)b;
 }
+
+#endif
 
 Operators RPN::defaultOperators()
 {

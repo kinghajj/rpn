@@ -33,6 +33,7 @@
 using namespace std;
 using namespace RPN;
 
+//! Converts command-line arguments into a vector of strings.
 static vector<string> vectorize(char **argv, int argc)
 {
     vector<string> ret;
