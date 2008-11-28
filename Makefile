@@ -17,11 +17,11 @@ GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
 	bzip2 >rpn-$(VERSION).tar.bz2
 
 ifdef RELEASE
-CXXFLAGS = -Wall -pedantic -O2
+CXXFLAGS = -Wall -pedantic -O2 -DRPN_CONSOLE
 LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
-CXXFLAGS = -Wall -pedantic -g
+CXXFLAGS = -Wall -pedantic -g -DRPN_CONSOLE
 LFLAGS = -lm -o
 endif
 

@@ -103,12 +103,14 @@ namespace RPN
     // PORTABILITY                                                            //
     ////////////////////////////////////////////////////////////////////////////
 
-#ifndef DOXYGEN_SKIP
-#ifdef RPN_PSP
-#define RPN_portPrintf psp
+#ifdef RPN_CONSOLE
+#include "console/port.h"
+#elif  RPN_PSP
+#include "psp/port.h"
+#elif  RPN_WII
+#include "wii/port.h"
 #else
-#define RPN_portPrintf printf
-#endif
+#error Please choose a port to build.
 #endif
 
     //! A portable way to print things.
@@ -117,7 +119,7 @@ namespace RPN
     {
         std::ostringstream oss;
         oss << item;
-        RPN_portPrintf(oss.str().c_str());
+        Port::Print(oss.str().c_str());
     }
 
     //! A portable way to print things in detail.
@@ -126,7 +128,7 @@ namespace RPN
     {
         std::ostringstream oss;
         oss << std::fixed << item;
-        RPN_portPrintf(oss.str().c_str());
+        Port::Print(oss.str().c_str());
     }
 
     ////////////////////////////////////////////////////////////////////////////

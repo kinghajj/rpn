@@ -25,59 +25,42 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Main.cpp - the entry point to the program.                                  *
+ * port.h - specialized ports for the console version.                         *
  ******************************************************************************/
 
-#include "rpn.h"
-#include <vector>
-using namespace std;
-using namespace RPN;
+#ifndef DOXYGEN_SKIP
+#ifndef _CONSOLE_PORT_H_
+#define _CONSOLE_PORT_H_
 
-//! Converts command-line arguments into a vector of strings.
-static vector<string> vectorize(char **argv, int argc)
+class Port
 {
-    vector<string> ret;
+public:
 
-    for(int i = 0; i < argc; ++i)
-        ret.push_back(argv[i]);
-
-    return ret;
-}
-
-int main(int argc, char *argv[])
-{
-    Calculator calculator;
-    vector<string> args = vectorize(argv, argc);
-
-    Port::Setup();
-
-    if(args.size() > 1 && args[1] == "--version")
+    static bool CanRun()
     {
-        Print("RPN ");
-        Print(VERSION_MAJOR);
-        Print('.');
-        Print(VERSION_MINOR);
-        Print('.');
-        Print(VERSION_REVIS);
-        Print('.');
-        Print(VERSION_BUILD);
-        Print(' ');
-        Print(VERSION_EXTRA);
-        Print('\n');
-        return 0;
+        return std::cin;
     }
 
-    while(calculator.IsRunning() && Port::CanRun())
+    static std::string GetLine()
     {
-        string s;
-        Print('[');
-        calculator.Display();
-        Print("]> ");
-        s = Port::GetLine();
-        calculator.Eval(s);
+        std::string ret;
+        std::getline(std::cin, ret);
+        return ret;
     }
 
-    Port::Post();
+    static void Post()
+    {
+    }
 
-    return 0;
-}
+    static void Print(const char* str)
+    {
+        printf(str);
+    }
+
+    static void Setup()
+    {
+    }
+};
+
+#endif
+#endif
