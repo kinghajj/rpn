@@ -17,11 +17,11 @@ GIT_ARCHIVE = git archive --format=tar --prefix=rpn-$(VERSION)/ HEAD | \
 	bzip2 >rpn-$(VERSION).tar.bz2
 
 ifdef RELEASE
-CXXFLAGS = -Wall -pedantic -O2 -DRPN_CONSOLE
+CXXFLAGS = -Wall -pedantic -O2 -DRPN_CONSOLE -DRPN_LONG_DOUBLE
 LFLAGS = -s -lm -o
 endif
 ifdef DEBUG
-CXXFLAGS = -Wall -pedantic -g -DRPN_CONSOLE
+CXXFLAGS = -Wall -pedantic -g -DRPN_CONSOLE -DRPN_LONG_DOUBLE
 LFLAGS = -lm -o
 endif
 
@@ -61,6 +61,42 @@ dist:
 .PHONY: doc
 doc:
 	doxygen Doxyfile
+
+# PSP compilation.
+PSP_TARGET   = EBOOT.PBP
+PSP_MAKEFILE = Makefile.psp
+
+# Call the PSP makefile to do the work.
+$(PSP_TARGET): $(PSP_MAKEFILE)
+	@$(MAKE) -f $<
+
+# Make the executable.
+.PHONY: psp
+psp: $(PSP_TARGET)
+
+# Cleanup.
+.PHONY: psp-clean
+psp-clean:
+	@$(MAKE) -f $(PSP_MAKEFILE) clean
+
+.PHONY: psp-install
+psp-install:
+	@$(MAKE) -f $(PSP_MAKEFILE) install
+
+# Wii compilation.
+WII_MAKEFILE = Makefile.wii
+
+.PHONY: wii
+wii: $(WII_MAKEFILE)
+	@$(MAKE) -f $(WII_MAKEFILE)
+
+.PHONY: wii-clean
+wii-clean: $(WII_MAKEFILE)
+	@$(MAKE) -f $(WII_MAKEFILE) clean
+
+.PHONY: wii-run
+wii-run: $(WII_MAKEFILE)
+	@$(MAKE) -f $(WII_MAKEFILE) run
 
 # An easter egg, just for the hell of it.
 .PHONY: love
