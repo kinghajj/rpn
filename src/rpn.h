@@ -86,23 +86,27 @@ namespace RPN
         Variables variables;
 
         //! The command to duplicate the top item of the stack.
-        void dup          (std::vector<std::string>&);
+        void dup           (std::vector<std::string>&);
         //! The command to exit the calculator.
-        void exit         (std::vector<std::string>&);
+        void exit          (std::vector<std::string>&);
+        //! Pops the topmost item from the stack.
+        void pop           (std::vector<std::string>&);
         //! Removes the top stack as long as there will be at least one left.
-        void popHistory   (std::vector<std::string>&);
+        void popHistory    (std::vector<std::string>&);
         //! Copies the top stack and pushes it onto the history.
-        void pushHistory  (std::vector<std::string>&);
+        void pushHistory   (std::vector<std::string>&);
         //! The command to print the history.
-        void printHistory (std::vector<std::string>&);
+        void printHistory  (std::vector<std::string>&);
         //! The command to print the stack.
-        void printStack   (std::vector<std::string>&);
+        void printStack    (std::vector<std::string>&);
+        //! The command to print the variables.
+        void printVariables(std::vector<std::string>&);
         //! Pops the top item, then pushes its square root.
-        void sqrtTop      (std::vector<std::string>&);
+        void sqrtTop       (std::vector<std::string>&);
         //! Swaps the top two items of the stack.
-        void swap         (std::vector<std::string>&);
+        void swap          (std::vector<std::string>&);
         //! Unsets a previously set variable.
-        void unset        (std::vector<std::string>&);
+        void unset         (std::vector<std::string>&);
 
         //! Returns true if there is at least one stack.
         bool HasStack() const { return history.size() != 0; }

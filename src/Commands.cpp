@@ -45,7 +45,7 @@ template <class T>
 static void printAnyList(list<T>& l, void (*printer)(T))
 {
     cout << "[ ";
-    BOOST_FOREACH(T item, l)
+    BOOST_FOREACH(T& item, l)
         cout << item << ", ";
     cout << ']';
 }
@@ -65,6 +65,11 @@ void Calculator::exit(vector<string>& args)
     status = Stop;
 }
 
+void Calculator::pop(vector<string>& args)
+{
+    CurrentStack().pop_front();
+}
+
 void Calculator::popHistory(vector<string>& args)
 {
     if(history.size() > 1)
@@ -74,7 +79,7 @@ void Calculator::popHistory(vector<string>& args)
 void Calculator::printHistory(vector<string>& args)
 {
     cout << '[';
-    BOOST_FOREACH(Stack item, history)
+    BOOST_FOREACH(Stack& item, history)
     {
         printAnyList(item, printAnything);
         cout << ", ";
@@ -89,6 +94,14 @@ void Calculator::printStack(vector<string>& args)
         printAnyList(history.front(), printAnything);
         cout << endl;
     }
+}
+
+void Calculator::printVariables(vector<string>& args)
+{
+    cout << "[ ";
+    BOOST_FOREACH(Variables::value_type& v, variables)
+        cout << v.first << " = " << v.second << ", ";
+    cout << ']' << endl;
 }
 
 void Calculator::pushHistory(vector<string>& args)
@@ -134,9 +147,11 @@ Commands Calculator::defaultCommands()
     Commands ret;
 
     ret["dup"]   = Command(&Calculator::dup);
+    ret["pop"]   = Command(&Calculator::pop);
     ret["poph"]  = Command(&Calculator::popHistory);
     ret["ph"]    = Command(&Calculator::printHistory);
     ret["ps"]    = Command(&Calculator::printStack);
+    ret["pv"]    = Command(&Calculator::printVariables);
     ret["pushh"] = Command(&Calculator::pushHistory);
     ret["sqrt"]  = Command(&Calculator::sqrtTop);
     ret["swap"]  = Command(&Calculator::swap);

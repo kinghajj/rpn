@@ -45,6 +45,9 @@ Variables RPN::defaultVariables()
     ret["KiB"] = 1024;
     ret["MiB"] = 1024 * 1024;
     ret["GiB"] = 1024 * 1024 * 1024;
+    ret["Kib"] = 1024 / 8;
+    ret["Mib"] = 1024 * 1024 / 8;
+    ret["Gib"] = 1024 * 1024 * 1024 / 8;
 
     ret["MINUTES"] = 60;
     ret["HOURS"]   = 60 * 60;
