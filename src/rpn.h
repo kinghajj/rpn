@@ -58,8 +58,8 @@ namespace RPN
     typedef std::map<std::string, Command>   Commands;
     typedef std::map<std::string, Operator>  Operators;
     typedef std::map<std::string, Value>     Variables;
-    typedef std::stack<Value>                Stack;
-    typedef std::stack<Stack>                History;
+    typedef std::list<Value>                Stack;
+    typedef std::list<Stack>                History;
 
     //! Returns a default, empty History stack.
     History   defaultHistory();
@@ -85,38 +85,40 @@ namespace RPN
         Variables variables;
 
         //! The command to duplicate the top item of the stack.
-        void dup        (std::list<std::string>&);
+        void dup          (std::list<std::string>&);
         //! The command to exit the calculator.
-        void exit       (std::list<std::string>&);
+        void exit         (std::list<std::string>&);
         //! Removes the top stack as long as there will be at least one left.
-        void popHistory (std::list<std::string>&);
+        void popHistory   (std::list<std::string>&);
         //! Copies the top stack and pushes it onto the history.
-        void pushHistory(std::list<std::string>&);
+        void pushHistory  (std::list<std::string>&);
+        //! The command to print the history.
+        void printHistory (std::list<std::string>&);
         //! The command to print the stack.
-        void printStack (std::list<std::string>&);
+        void printStack   (std::list<std::string>&);
         //! Pops the top item, then pushes its square root.
-        void sqrtTop    (std::list<std::string>&);
+        void sqrtTop      (std::list<std::string>&);
         //! Swaps the top two items of the stack.
-        void swap       (std::list<std::string>&);
+        void swap         (std::list<std::string>&);
         //! Unsets a previously set variable.
-        void unset      (std::list<std::string>&);
+        void unset        (std::list<std::string>&);
 
         //! Returns true if there is at least one stack.
         bool HasStack() const { return history.size() != 0; }
 
         //! Returns a reference to the current stack.
-        Stack& CurrentStack() { return history.top(); }
+        Stack& CurrentStack() { return history.front(); }
 
         //! Returns the current stack's size.
         size_t StackSize() const
         {
-            return HasStack() ? history.top().size() : 0;
+            return HasStack() ? history.front().size() : 0;
         }
 
         //! Returns the topmost item of the current stack.
         Value TopmostItem() const
         {
-            return HasStack() && StackSize() > 0 ? history.top().top() : 0;
+            return HasStack() && StackSize() > 0 ? history.front().front() : 0;
         }
 
     public:

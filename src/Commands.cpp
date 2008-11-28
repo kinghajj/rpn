@@ -29,31 +29,39 @@
  ******************************************************************************/
 
 #include "rpn.h"
+#include <boost/typeof/typeof.hpp>
 #include <cmath>
 using namespace std;
 using namespace RPN;
 
 template <class T>
-static void printAnyStack(stack<T>& s)
+static void printAnything(T t)
 {
-    stack<T> copy = s;
+    cout << t;
+}
 
-    cout << "[";
-    while(!copy.empty())
+template <class T>
+static void printAnyList(list<T>& l, void (*printer)(T))
+{
+    // list<T>::iterator doesn't work, so I'll use BOOST_AUTO.
+    BOOST_AUTO(it, l.begin());
+
+    cout << "[ ";
+    while(it != l.end())
     {
-        cout << copy.top() << ", ";
-        copy.pop();
+        printer(*it++);
+        cout << ", ";
     }
-    cout << "]" << endl;
+    cout << ']';
 }
 
 void Calculator::dup(list<string>& args)
 {
-    if(history.size() && history.top().size())
+    if(history.size() && history.front().size())
     {
-        Stack& stack(history.top());
-        Value dup = stack.top();
-        stack.push(dup);
+        Stack& stack(history.front());
+        Value dup = stack.front();
+        stack.push_front(dup);
     }
 }
 
@@ -65,45 +73,61 @@ void Calculator::exit(list<string>& args)
 void Calculator::popHistory(list<string>& args)
 {
     if(history.size() > 1)
-        history.pop();
+        history.pop_front();
+}
+
+void Calculator::printHistory(list<string>& args)
+{
+    BOOST_AUTO(it, history.begin());
+
+    cout << "[";
+    while(it != history.end())
+    {
+        printAnyList(*it++, printAnything);
+        cout << ", ";
+    }
+    cout << ']' << endl;
 }
 
 void Calculator::printStack(list<string>& args)
 {
-    if(history.size())
-    printAnyStack(history.top());
+    if(HasStack())
+    {
+        printAnyList(history.front(), printAnything);
+        cout << endl;
+    }
 }
 
 void Calculator::pushHistory(list<string>& args)
 {
     if(history.size())
     {
-        Stack copy = history.top();
-        history.push(copy);
+        Stack copy = history.front();
+        history.push_front(copy);
     }
 }
 
 void Calculator::sqrtTop(list<string>& args)
 {
-    if(history.size() && history.top().size())
+    if(history.size() && history.front().size())
     {
-        Value top = history.top().top();
-        history.top().pop();
-        history.top().push(sqrtl(top));
+        Value top = history.front().front();
+        history.front().pop_front();
+        history.front().push_front(sqrtl(top));
     }
 }
 
 void Calculator::swap(list<string>& args)
 {
-    if(history.size() && history.top().size() > 1)
+    if(history.size() && history.front().size() > 1)
     {
         Value a, b;
-        a = history.top().top();
-        history.top().pop();
-        b = history.top().top();
-        history.top().pop();
-        history.top().push(a);
-        history.top().push(b);
+        a = history.front().front();
+        history.front().pop_front();
+        b = history.front().front();
+        history.front().pop_front();
+        history.front().push_front(a);
+        history.front().push_front(b);
     }
 }
 
@@ -118,6 +142,7 @@ Commands Calculator::defaultCommands()
 
     ret["dup"]   = Command(&Calculator::dup);
     ret["poph"]  = Command(&Calculator::popHistory);
+    ret["ph"]    = Command(&Calculator::printHistory);
     ret["ps"]    = Command(&Calculator::printStack);
     ret["pushh"] = Command(&Calculator::pushHistory);
     ret["sqrt"]  = Command(&Calculator::sqrtTop);

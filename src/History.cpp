@@ -36,7 +36,7 @@ History RPN::defaultHistory()
 {
     History ret;
 
-    ret.push(Stack());
+    ret.push_front(Stack());
 
     return ret;
 }

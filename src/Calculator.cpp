@@ -55,7 +55,7 @@ void Calculator::Eval(string s)
 
         // if the token is a number, push it.
         if(iss >> val)
-            CurrentStack().push(val);
+            CurrentStack().push_front(val);
 
         // if the token is a command, perform it.
         else if(foundCommand != commands.end())
@@ -77,14 +77,14 @@ void Calculator::Eval(string s)
         // then perform that operator.
         else if(foundOperator != operators.end() && StackSize() > 1)
         {
-            Value b = TopmostItem(); CurrentStack().pop();
-            Value a = TopmostItem(); CurrentStack().pop();
-            CurrentStack().push((*foundOperator).second(a, b));
+            Value b = TopmostItem(); CurrentStack().pop_front();
+            Value a = TopmostItem(); CurrentStack().pop_front();
+            CurrentStack().push_front((*foundOperator).second(a, b));
         }
 
         // if the token is a variable, push the variable onto the stack.
         else if(foundVariable != variables.end())
-            CurrentStack().push((*foundVariable).second);
+            CurrentStack().push_front((*foundVariable).second);
 
         // otherwise, if the stack has at least one item, set a new variable 
         // whose name is the token and value is the top item.
