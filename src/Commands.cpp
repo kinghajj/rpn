@@ -167,7 +167,11 @@ void Calculator::sqrtTop(vector<string>& args)
     {
         Value top = history.front().front();
         history.front().pop_front();
+#ifdef RPN_WII
+        history.front().push_front(sqrt(top));
+#else
         history.front().push_front(sqrtl(top));
+#endif
     }
 }
 

@@ -27,7 +27,7 @@ endif
 
 OBJDIR = obj/console/
 SRCDIR = src/
-TARGET = bin/rpn
+TARGET = bin/console/rpn
 OBJECTS = \
 	$(OBJDIR)Calculator.o $(OBJDIR)Commands.o $(OBJDIR)History.o \
 	$(OBJDIR)Main.o $(OBJDIR)Operators.o $(OBJDIR)Variables.o
