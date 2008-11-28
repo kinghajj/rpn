@@ -41,12 +41,18 @@ static void printAnything(T t)
 }
 
 template <class T>
+static void printAnythingDetailed(T t)
+{
+    PrintDetailed(t);
+}
+
+template <class T>
 static void printAnyList(list<T>& l, void (*printer)(T))
 {
     Print("[ ");
     BOOST_FOREACH(T& item, l)
     {
-        Print(item);
+        printer(item);
         Print(", ");
     }
     Print(']');
@@ -89,11 +95,31 @@ void Calculator::printHistory(vector<string>& args)
     Print("]\n");
 }
 
+void Calculator::printHistoryDetailed(vector<string>& args)
+{
+    Print('[');
+    BOOST_FOREACH(Stack& item, history)
+    {
+        printAnyList(item, printAnythingDetailed);
+        Print(", ");
+    }
+    Print("]\n");
+}
+
 void Calculator::printStack(vector<string>& args)
 {
     if(HasStack())
     {
         printAnyList(history.front(), printAnything);
+        Print('\n');
+    }
+}
+
+void Calculator::printStackDetailed(vector<string>& args)
+{
+    if(HasStack())
+    {
+        printAnyList(history.front(), printAnythingDetailed);
         Print('\n');
     }
 }
@@ -106,6 +132,19 @@ void Calculator::printVariables(vector<string>& args)
         Print(v.first);
         Print(" = ");
         Print(v.second);
+        Print(", ");
+    }
+    Print("]\n");
+}
+
+void Calculator::printVariablesDetailed(vector<string>& args)
+{
+    Print("[ ");
+    BOOST_FOREACH(Variables::value_type& v, variables)
+    {
+        Print(v.first);
+        Print(" = ");
+        PrintDetailed(v.second);
         Print(", ");
     }
     Print("]\n");
@@ -157,8 +196,11 @@ Commands Calculator::defaultCommands()
     ret["pop"]   = Command(&Calculator::pop);
     ret["poph"]  = Command(&Calculator::popHistory);
     ret["ph"]    = Command(&Calculator::printHistory);
+    ret["phd"]   = Command(&Calculator::printHistoryDetailed);
     ret["ps"]    = Command(&Calculator::printStack);
+    ret["psd"]   = Command(&Calculator::printStackDetailed);
     ret["pv"]    = Command(&Calculator::printVariables);
+    ret["pvd"]   = Command(&Calculator::printVariablesDetailed);
     ret["pushh"] = Command(&Calculator::pushHistory);
     ret["sqrt"]  = Command(&Calculator::sqrtTop);
     ret["swap"]  = Command(&Calculator::swap);
