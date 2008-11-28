@@ -47,6 +47,7 @@ namespace RPN
     // version information.
     const int         VERSION_MAJOR = 2;
     const int         VERSION_MINOR = 0;
+    const int         VERSION_REVIS = 0;
     const int         VERSION_BUILD = 0;
     const std::string VERSION_EXTRA = "pre";
 

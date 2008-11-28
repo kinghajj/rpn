@@ -55,6 +55,8 @@ int main(int argc, char *argv[])
         Print('.');
         Print(VERSION_MINOR);
         Print('.');
+        Print(VERSION_REVIS);
+        Print('.');
         Print(VERSION_BUILD);
         Print(' ');
         Print(VERSION_EXTRA);
