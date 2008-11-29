@@ -14,7 +14,7 @@ BINDIR = bin/psp
 
 MYOBJS = \
 	src/Calculator.o src/Commands.o src/History.o src/Main.o \
-	src/Operators.o src/Variables.o \
+	src/Operators.o src/Variables.o src/psp/port.o \
 
 OBJS = $(subst $(SRCDIR),$(OBJDIR),$(MYOBJS))
 

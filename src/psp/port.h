@@ -41,37 +41,70 @@ extern "C" {
 
 class Port
 {
+    //! Holds information on how a certain button press on the PSP maps to
+    //! characters. The alternate form is accessed by pressing the
+    //! right trigger.
+    struct CharPair
+    {
+        char chr, alt_chr;
+
+        CharPair(char chr = '\0', char alt_chr = '\0')
+            : chr(chr), alt_chr(alt_chr) {}
+    };
+
     // Executed on exit; used for cleanup.
-    static int ExitCallback(int arg1, int arg2, void *common)
-    {
-        sceKernelExitGame();
-        return 0;
-    }
-
+    static int ExitCallback(int arg1, int arg2, void *common);
     // Thread to create and register callbacks.
-    static int CallbackThread(SceSize args, void *argp)
-    {
-        int cbid;
-
-        cbid = sceKernelCreateCallback("Exit Callback", ExitCallback, NULL);
-        sceKernelRegisterExitCallback(cbid);
-        sceKernelSleepThreadCB();
-
-        return 0;
-    }
-
+    static int CallbackThread(SceSize args, void *argp);
     // Starts thread to create callbacks.
-    static int SetupCallbacks()
-    {
-        int thid;
+    static int SetupCallbacks();
 
-        thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11,
-                                     0xFA0, 0, 0);
-        if(thid >= 0)
-            sceKernelStartThread(thid, 0, 0);
-    
-        return thid;
+    //! Gets button pushes.
+    /**
+     * This reports multiple button pushes, so this does not return until all
+     * buttons have been released.
+     *
+     * @return An integer with button press flags.
+     */
+    static int GetButtonPushes();
+
+    // Returns a key that matches the given buttons.
+    // Simple but fast on a small map.
+    static CharPair *FindPair(int buttons)
+    {
+        CharPair* pair = NULL;
+        std::map<int, CharPair>::iterator it = KeyMap.find(buttons);
+        if(it != KeyMap.end())
+            pair = &it->second;
+        return pair;
     }
+
+    // 64 characters is a reasonable limit for the buffer.
+    const static size_t buf_size = 64;
+    static char buffer[buf_size];
+    // To press "enter", press the triggers simultaneously.
+    static int enter;
+    // To cancel input, press the left trigger.
+    static int cancel;
+    // To switch to alternate characters, press the right trigger.
+    static int alternate;
+    // Don't start in alternate mode.
+    static bool alternateMode;
+    // Holds a map of button presses to characters.
+    static std::map<int, CharPair> KeyMap;
+
+    // Clear the buffer to remove previous inputs.
+    static void clearInputBuffer()
+    {
+        memset(buffer, 0, buf_size);
+    }
+
+    //! Get one character; map special characters so they can be handled later.
+    //!
+    /**
+     * @return The typed character or 0 if invalid.
+     */
+    static char GetCharacter();
 
 public:
 
@@ -80,11 +113,7 @@ public:
         return true;
     }
 
-    static std::string GetLine()
-    {
-        for(;;);
-        return "";
-    }
+    static std::string GetLine();
 
     static void Post()
     {
@@ -96,11 +125,7 @@ public:
         pspDebugScreenPrintf(str);
     }
 
-    static void Setup()
-    {
-        pspDebugScreenInit();
-        SetupCallbacks();
-    }
+    static void Setup();
 };
 
 #endif

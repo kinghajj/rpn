@@ -38,7 +38,7 @@ using namespace RPN;
 void Calculator::Eval(string s)
 {
     typedef tokenizer< char_separator<char> > Tokens;
-    char_separator<char> sep(" \t");
+    char_separator<char> sep(" \t\n");
     Tokens tokens(s, sep);
 
     if(!HasStack()) return;
