@@ -1,0 +1,44 @@
+# Makefile for the PSP.
+# Based on examples at psp-programming.com
+
+CP = cp
+
+VERSION = $(shell cat VERSION)
+TARGET = bin/psp/psprpn
+PSP_EBOOT = bin/psp/EBOOT.PBP
+PSP_EBOOT_SFO = bin/psp/PARAM.SFO
+
+OBJDIR = obj/psp/
+SRCDIR = src/
+BINDIR = bin/psp
+
+MYOBJS = \
+	src/Calculator.o src/Commands.o src/History.o src/Main.o \
+	src/Operators.o src/Variables.o src/psp/port.o \
+
+OBJS = $(subst $(SRCDIR),$(OBJDIR),$(MYOBJS))
+
+$(OBJDIR)%.o: $(SRCDIR)%.cpp
+	@echo Compiling $(notdir $<)
+	@$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
+
+# The -G0 flag fixes some oddity in the MIPS architecture. 
+CFLAGS = -O2 -G0 -Wall -DRPN_PSP -DRPN_DOUBLE
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+LIBDIR =
+LIBS = -lm -lstdc++
+LDFLAGS = 
+
+EXTRA_TARGETS = $(PSP_EBOOT)
+PSP_EBOOT_TITLE = PSPRPN v. $(VERSION)
+PSP_EBOOT_ICON = img/psprpn3.png
+
+PSPSDK = $(shell psp-config --pspsdk-path)
+include $(PSPSDK)/lib/build.mak
+
+INSTALL_DIR = /media/disk/PSP/GAME/psprpn
+.PHONY: install
+install: $(EXTRA_TARGETS)
+	$(CP) $(EXTRA_TARGETS) $(INSTALL_DIR)
