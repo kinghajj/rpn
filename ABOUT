@@ -1,1 +1,4 @@
-This is a C++ port of RPN, a Reverse Polish Notation calculator.
+This is a C++ port of RPN, a Reverse Polish Notation calculator. The
+original C version is available in the Git repository.
+
+http://repo.or.cz/w/rpn.git

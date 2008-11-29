@@ -57,7 +57,7 @@ namespace RPN
     //! The build version number.
     const int         VERSION_BUILD = 0;
     //! Any extra information about the version.
-    const std::string VERSION_EXTRA = "pre";
+    const std::string VERSION_EXTRA = "alpha";
 
     ////////////////////////////////////////////////////////////////////////////
     // FORWARD DECLARATIONS                                                   //
