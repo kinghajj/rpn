@@ -63,7 +63,7 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 CPPFILES = \
 		Calculator.cpp Commands.cpp History.cpp Main.cpp Operators.cpp \
-		Variables.cpp
+		Variables.cpp wii/port.cpp
 
 #CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 #sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
