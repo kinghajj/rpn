@@ -70,18 +70,10 @@ class Port
 
     // Returns a key that matches the given buttons.
     // Simple but fast on a small map.
-    static CharPair *FindPair(int buttons)
-    {
-        CharPair* pair = NULL;
-        std::map<int, CharPair>::iterator it = KeyMap.find(buttons);
-        if(it != KeyMap.end())
-            pair = &it->second;
-        return pair;
-    }
+    static CharPair* FindPair(int buttons);
 
     // 64 characters is a reasonable limit for the buffer.
     const static size_t buf_size = 64;
-    static char buffer[buf_size];
     // To press "enter", press the triggers simultaneously.
     static int enter;
     // To cancel input, press the left trigger.
@@ -91,13 +83,7 @@ class Port
     // Don't start in alternate mode.
     static bool alternateMode;
     // Holds a map of button presses to characters.
-    static std::map<int, CharPair> KeyMap;
-
-    // Clear the buffer to remove previous inputs.
-    static void clearInputBuffer()
-    {
-        memset(buffer, 0, buf_size);
-    }
+    static std::map<int, CharPair> keyMap;
 
     //! Get one character; map special characters so they can be handled later.
     //!

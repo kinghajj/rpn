@@ -35,8 +35,7 @@ using namespace std;
 
 #define kprintf pspDebugScreenPrintf
 
-map<int, Port::CharPair> Port::KeyMap;
-char Port::buffer[buf_size];
+map<int, Port::CharPair> Port::keyMap;
 int  Port::enter         = PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER;
 int  Port::cancel        = PSP_CTRL_LTRIGGER;
 int  Port::alternate     = PSP_CTRL_RTRIGGER;
@@ -69,6 +68,15 @@ int Port::SetupCallbacks()
         sceKernelStartThread(thid, 0, 0);
     
     return thid;
+}
+
+Port::CharPair* Port::FindPair(int buttons)
+{
+    CharPair* pair = NULL;
+    std::map<int, CharPair>::iterator it = keyMap.find(buttons);
+    if(it != keyMap.end())
+        pair = &it->second;
+    return pair;
 }
 
 int Port::GetButtonPushes()
@@ -121,32 +129,31 @@ char Port::GetCharacter()
 
 string Port::GetLine()
 {
-    size_t i, c = 0;
-    char *retbuf = buffer;
-
-    // Clear the previous buffer before filling it.
-    clearInputBuffer();
+    size_t i;
+    char c = '\0';
+    bool end = false;
+    string ret(buf_size, ' ');
 
     // Go until the buffer is filled or a newline is returned.
-    for(i = 0; retbuf && i < buf_size && c != '\n'; i++)
+    for(i = 0; i < buf_size && c != '\n' && !end; ++i)
     {
         c = GetCharacter();
         // Backspace?
         if(c == '\b')
         {
-            kprintf("\n");
-            retbuf = NULL;
+            ret = "";
+            end = true;
         }
         // Real character?
         else if(c)
-            buffer[i] = c;
+            ret[i] = c;
         // No; stay back.
         else
             i--;
     }
 
     kprintf("\n");
-    return retbuf;
+    return ret;
 }
 
 void Port::Setup()
@@ -155,87 +162,87 @@ void Port::Setup()
     SetupCallbacks();
 
     // Numbers
-    KeyMap[PSP_CTRL_CROSS]                  = CharPair('0', '0');
-    KeyMap[PSP_CTRL_CROSS | PSP_CTRL_UP]    = CharPair('1', '1');
-    KeyMap[PSP_CTRL_CROSS | PSP_CTRL_RIGHT] = CharPair('2', '2');
-    KeyMap[PSP_CTRL_CROSS | PSP_CTRL_DOWN]  = CharPair('3', '3');
-    KeyMap[PSP_CTRL_CROSS | PSP_CTRL_LEFT]  = CharPair('4', '4');
+    keyMap[PSP_CTRL_CROSS]                  = CharPair('0', '0');
+    keyMap[PSP_CTRL_CROSS | PSP_CTRL_UP]    = CharPair('1', '1');
+    keyMap[PSP_CTRL_CROSS | PSP_CTRL_RIGHT] = CharPair('2', '2');
+    keyMap[PSP_CTRL_CROSS | PSP_CTRL_DOWN]  = CharPair('3', '3');
+    keyMap[PSP_CTRL_CROSS | PSP_CTRL_LEFT]  = CharPair('4', '4');
 
-    KeyMap[PSP_CTRL_CIRCLE]                  = CharPair('5', '5');
-    KeyMap[PSP_CTRL_CIRCLE | PSP_CTRL_UP]    = CharPair('6', '6');
-    KeyMap[PSP_CTRL_CIRCLE | PSP_CTRL_RIGHT] = CharPair('7', '7');
-    KeyMap[PSP_CTRL_CIRCLE | PSP_CTRL_DOWN]  = CharPair('8', '8');
-    KeyMap[PSP_CTRL_CIRCLE | PSP_CTRL_LEFT]  = CharPair('9', '9');
+    keyMap[PSP_CTRL_CIRCLE]                  = CharPair('5', '5');
+    keyMap[PSP_CTRL_CIRCLE | PSP_CTRL_UP]    = CharPair('6', '6');
+    keyMap[PSP_CTRL_CIRCLE | PSP_CTRL_RIGHT] = CharPair('7', '7');
+    keyMap[PSP_CTRL_CIRCLE | PSP_CTRL_DOWN]  = CharPair('8', '8');
+    keyMap[PSP_CTRL_CIRCLE | PSP_CTRL_LEFT]  = CharPair('9', '9');
 
     // Special characters
-    KeyMap[PSP_CTRL_SQUARE]                  = CharPair('.', '=');
-    KeyMap[PSP_CTRL_SQUARE | PSP_CTRL_UP]    = CharPair( '+', '+');
-    KeyMap[PSP_CTRL_SQUARE | PSP_CTRL_RIGHT] = CharPair('-', '-');
-    KeyMap[PSP_CTRL_SQUARE | PSP_CTRL_DOWN]  = CharPair('*', '*');
-    KeyMap[PSP_CTRL_SQUARE | PSP_CTRL_LEFT]  = CharPair('/', '/');
+    keyMap[PSP_CTRL_SQUARE]                  = CharPair('.', '=');
+    keyMap[PSP_CTRL_SQUARE | PSP_CTRL_UP]    = CharPair( '+', '+');
+    keyMap[PSP_CTRL_SQUARE | PSP_CTRL_RIGHT] = CharPair('-', '-');
+    keyMap[PSP_CTRL_SQUARE | PSP_CTRL_DOWN]  = CharPair('*', '*');
+    keyMap[PSP_CTRL_SQUARE | PSP_CTRL_LEFT]  = CharPair('/', '/');
 
-    KeyMap[PSP_CTRL_TRIANGLE]                  = CharPair(' ', ' ');
-    KeyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_UP]    = CharPair('%', '%');
-    KeyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_RIGHT] = CharPair('^', '^');
-    KeyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_DOWN]  = CharPair('&', '&');
-    KeyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_LEFT]  = CharPair('|', '|');
+    keyMap[PSP_CTRL_TRIANGLE]                  = CharPair(' ', ' ');
+    keyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_UP]    = CharPair('%', '%');
+    keyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_RIGHT] = CharPair('^', '^');
+    keyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_DOWN]  = CharPair('&', '&');
+    keyMap[PSP_CTRL_TRIANGLE | PSP_CTRL_LEFT]  = CharPair('|', '|');
 
     // The alphabet
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS]
         = CharPair('a', 'A');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_UP]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_UP]
         = CharPair('b', 'B');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_RIGHT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_RIGHT]
         = CharPair('c', 'C');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_DOWN]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_DOWN]
         = CharPair('d', 'D');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_LEFT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CROSS | PSP_CTRL_LEFT]
         = CharPair('e', 'E');
 
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE]
         = CharPair('f', 'F');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_UP]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_UP]
         = CharPair('g', 'G');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_RIGHT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_RIGHT]
         = CharPair('h', 'H');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_DOWN]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_DOWN]
         = CharPair('i', 'I');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_LEFT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_CIRCLE | PSP_CTRL_LEFT]
         = CharPair('j', 'J');
 
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE]
         = CharPair('k', 'K');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_UP]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_UP]
         = CharPair('l', 'L');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_RIGHT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_RIGHT]
         = CharPair('m', 'M');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_DOWN]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_DOWN]
         = CharPair('n', 'N');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_LEFT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE | PSP_CTRL_LEFT]
         = CharPair('o', 'O');
 
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE]
         = CharPair('p', 'P');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_UP]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_UP]
         = CharPair('q', 'Q');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_RIGHT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_RIGHT]
         = CharPair('r', 'R');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_DOWN]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_DOWN]
         = CharPair('s', 'S');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_LEFT]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_TRIANGLE | PSP_CTRL_LEFT]
         = CharPair('t', 'T');
 
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS]
         = CharPair('u', 'U');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
            PSP_CTRL_UP] = CharPair('v', 'V');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
            PSP_CTRL_RIGHT] = CharPair('w', 'W');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
            PSP_CTRL_DOWN] = CharPair('x', 'X');
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CROSS |
            PSP_CTRL_LEFT] = CharPair('y', 'Y');
 
-    KeyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CIRCLE]
+    keyMap[PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_CIRCLE]
             = CharPair('z', 'Z');
 }
