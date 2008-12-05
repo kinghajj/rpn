@@ -37,7 +37,7 @@ static void argumentEvaluate(vector<string>& args)
     Calculator calculator;
     calculator.Eval(args[0]);
     calculator.Display();
-    cout << endl;
+    Print('\n');
 }
 
 static void argumentVersion(vector<string>& args)
