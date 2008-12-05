@@ -32,6 +32,8 @@
 #ifndef _CONSOLE_PORT_H_
 #define _CONSOLE_PORT_H_
 
+#include "Arguments.h"
+
 class Port
 {
 public:

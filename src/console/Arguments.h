@@ -25,45 +25,51 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Main.cpp - the entry point to the program.                                  *
+ * Argument.h - argument handling for the console port.                        *
  ******************************************************************************/
 
-#include "rpn.h"
-#include <vector>
-using namespace std;
-using namespace RPN;
+#ifndef RPN_CONSOLE_ARGUMENT
+#define RPN_CONSOLE_ARGUMENT
 
-#ifdef RPN_PSP
-// Tell the PSP about the program.
-PSP_MODULE_INFO("PSPRPN", 0, 1, 1);
-#endif
-
-int main(int argc, char *argv[])
+class Argument
 {
-    Calculator calculator;
+    unsigned nargs;
+    bool     continueProgram;
+    void     (*f)(std::vector<std::string>&);
 
-#ifdef RPN_CONSOLE
-    Arguments arguments;
-    setupArguments(arguments);
-    bool run = processArguments(vectorize(argv, argc), arguments);
-#else
-    bool run = true;
+public:
+    Argument()
+        : nargs(0), continueProgram(true), f(NULL)
+    {
+    }
+
+    Argument(unsigned nargs, bool continueProgram,
+             void (*f)(std::vector<std::string>&))
+        : nargs(nargs), continueProgram(continueProgram), f(f)
+    {
+    }
+
+    bool ContinueProgram() const
+    {
+        return continueProgram;
+    }
+
+    unsigned NumArgs() const
+    {
+        return nargs;
+    }
+
+    void Perform(std::vector<std::string>& args) const
+    {
+        if(f) f(args);
+    }
+};
+
+typedef std::map<std::string, Argument> Arguments;
+
+std::vector<std::string> vectorize(char **argv, int argc);
+bool processArguments(const std::vector<std::string>& args,
+                      const Arguments& arguments);
+void setupArguments(Arguments& arguments);
+
 #endif
-
-    Port::Setup();
-
-    if(run)
-        while(calculator.IsRunning() && Port::CanRun())
-        {
-            string s;
-            Print('[');
-            calculator.Display();
-            Print("]> ");
-            s = Port::GetLine();
-            calculator.Eval(s);
-        }
-
-    Port::Post();
-
-    return 0;
-}
