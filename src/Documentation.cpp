@@ -11,12 +11,12 @@
  * PlayStation portable. In  1.3, I ported this to the Nintendo Wii, and fixed
  * some potential bugs with Valgrind.
  *
- * In the current version, 2.0.0.0-alpha, I've re-written the program in C++.
+ * In the current version, 2.0.0.0-alpha2, I've re-written the program in C++.
  * The source code is now less than half of what the C code was, though the
  * compiled executable is larger. This alpha release has the same PSP and Wii
  * ports, though I've not tested them well; however, I don't expect any problems
- * with them. This alpha does not, however, have all of the command-line
- * features of the C version, nor the help command.
+ * with them. This alpha implements all of the old commands except "help", and
+ * all of the old arguments except "--help" and "-h".
  *
  * \section features Features
  *
