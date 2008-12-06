@@ -25,52 +25,43 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Argument.h - argument handling for the console port.                        *
+ * Help.cpp - the help module for the console port.                            *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
+#include "rpn.h"
+#include <boost/foreach.hpp>
+using namespace RPN;
+using namespace std;
 
-class Argument
+void RPN::printHelpItems(const HelpItems& items)
 {
-    unsigned nargs;
-    bool     continueProgram;
-    void     (*f)(std::vector<std::string>&, Calculator&);
-
-public:
-    Argument()
-        : nargs(0), continueProgram(true), f(NULL)
+    BOOST_FOREACH(const HelpItem& item, items)
     {
+        Print("    ");
+        Print(item.Brief());
+        Print("\n        ");
+        Print(item.Description());
+        Print("\n");
     }
+}
 
-    Argument(unsigned nargs, bool continueProgram,
-             void (*f)(std::vector<std::string>&, Calculator&))
-        : nargs(nargs), continueProgram(continueProgram), f(f)
-    {
-    }
+HelpItems RPN::defaultHelpItems()
+{
+    HelpItems items;
 
-    bool ContinueProgram() const
-    {
-        return continueProgram;
-    }
+    items.push_back(HelpItem("+, -, *, /, **, sqrt, =",
+                             "The basic math operators."));
+    items.push_back(HelpItem("%, ^, &, |",
+                             "Modulo and bitwise operators."));
+    items.push_back(HelpItem("dup", "Pushes the topmost value to the stack."));
+    items.push_back(HelpItem("pop", "Removes the topmost value of the stack."));
+    items.push_back(HelpItem("ph",  "Prints the history stack."));
+    items.push_back(HelpItem("phd", "Prints the history stack in detail."));
+    items.push_back(HelpItem("ps",  "Prints the stack."));
+    items.push_back(HelpItem("psd", "Prints the stack in detail."));
+    items.push_back(HelpItem("ph",  "Prints the variable map."));
+    items.push_back(HelpItem("phd", "Prints the variable map in detail."));
+    items.push_back(HelpItem("x",   "Exits the program."));
 
-    unsigned NumArgs() const
-    {
-        return nargs;
-    }
-
-    void Perform(std::vector<std::string>& args, Calculator& calculator) const
-    {
-        if(f) f(args, calculator);
-    }
-};
-
-typedef std::map<std::string, Argument> Arguments;
-
-std::vector<std::string> vectorize(char **argv, int argc);
-bool processArguments(const std::vector<std::string>& args,
-                      const Arguments& arguments,
-                      Calculator& calculator);
-void setupArguments(Arguments& arguments);
-
-#endif
+    return items;
+}

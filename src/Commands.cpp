@@ -86,6 +86,11 @@ void Calculator::popHistory(vector<string>& args)
         history.pop_front();
 }
 
+void Calculator::printHelp(vector<string>& args)
+{
+    printHelpItems(helpItems);
+}
+
 void Calculator::printHistory(vector<string>& args)
 {
     Print('[');
@@ -152,6 +157,21 @@ void Calculator::printVariablesDetailed(vector<string>& args)
     Print("]\n");
 }
 
+void Calculator::printVersion(vector<string>& args)
+{
+    Print("RPN ");
+    Print(VERSION_MAJOR);
+    Print('.');
+    Print(VERSION_MINOR);
+    Print('.');
+    Print(VERSION_REVIS);
+    Print('.');
+    Print(VERSION_BUILD);
+    Print(' ');
+    Print(VERSION_EXTRA);
+    Print("\nBy Sam Fredrickson <kinghajj@gmail.com>\n");
+}
+
 void Calculator::pushHistory(vector<string>& args)
 {
     if(history.size())
@@ -201,6 +221,7 @@ Commands Calculator::defaultCommands()
     Commands ret;
 
     ret["dup"]   = Command(&Calculator::dup);
+    ret["help"]  = Command(&Calculator::printHelp);
     ret["pop"]   = Command(&Calculator::pop);
     ret["poph"]  = Command(&Calculator::popHistory);
     ret["ph"]    = Command(&Calculator::printHistory);
@@ -213,6 +234,7 @@ Commands Calculator::defaultCommands()
     ret["sqrt"]  = Command(&Calculator::sqrtTop);
     ret["swap"]  = Command(&Calculator::swap);
     ret["unset"] = Command(&Calculator::unset, 1);
+    ret["ver"]   = Command(&Calculator::printVersion);
     ret["x"]     = Command(&Calculator::exit);
 
     return ret;

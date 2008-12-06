@@ -65,6 +65,7 @@ namespace RPN
 
     class Calculator;
     class Command;
+    class HelpItem;
 
     ////////////////////////////////////////////////////////////////////////////
     // TYPEDEFS                                                               //
@@ -94,6 +95,8 @@ namespace RPN
     //! The type of a command member function. All commands must be members
     //! of the Calculator class.
     typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
+    //! A list of help items.
+    typedef std::list<HelpItem> HelpItems;
 
     ////////////////////////////////////////////////////////////////////////////
     // FUNCTIONS                                                              //
@@ -105,6 +108,10 @@ namespace RPN
     Operators defaultOperators();
     //! Returns a map of the default variables.
     Variables defaultVariables();
+    //! Returns a list of the default help items.
+    HelpItems defaultHelpItems();
+    //! Portably prints a list of help items.
+    void printHelpItems(const HelpItems& items);
 
     ////////////////////////////////////////////////////////////////////////////
     // PORTABILITY                                                            //
@@ -153,6 +160,7 @@ namespace RPN
         };
 
         Commands  commands;
+        HelpItems helpItems;
         History   history;
         Operators operators;
         Status    status;
@@ -166,6 +174,8 @@ namespace RPN
         void pop                   (std::vector<std::string>&);
         //! Removes the top stack as long as there will be at least one left.
         void popHistory            (std::vector<std::string>&);
+        //! The command to print the help list.
+        void printHelp             (std::vector<std::string>&);
         //! Copies the top stack and pushes it onto the history.
         void pushHistory           (std::vector<std::string>&);
         //! The command to print the history.
@@ -180,6 +190,7 @@ namespace RPN
         void printVariables        (std::vector<std::string>&);
         //! The command to print the variables in detail.
         void printVariablesDetailed(std::vector<std::string>&);
+        void printVersion          (std::vector<std::string>&);
         //! Pops the top item, then pushes its square root.
         void sqrtTop               (std::vector<std::string>&);
         //! Swaps the top two items of the stack.
@@ -210,6 +221,7 @@ namespace RPN
         //! The default and only constructor.
         Calculator()
             : commands  (defaultCommands()),
+              helpItems (defaultHelpItems()),
               history   (defaultHistory()),
               operators (defaultOperators()),
               status    (Continue),
@@ -254,6 +266,33 @@ namespace RPN
         {
             if(command_ptr)
                 CALL_MEMBER_FN(calc, command_ptr)(args);
+        }
+    };
+
+    class HelpItem
+    {
+        std::string brief;
+        std::string description;
+
+    public:
+        HelpItem(std::string& brief, std::string& description)
+            : brief(brief), description(description)
+        {
+        }
+
+        HelpItem(const char* brief, const char* description)
+            : brief(brief), description(description)
+        {
+        }
+
+        const std::string& Brief() const
+        {
+            return brief;
+        }
+
+        const std::string& Description() const
+        {
+            return description;
         }
     };
 }

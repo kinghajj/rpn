@@ -32,27 +32,21 @@
 using namespace RPN;
 using namespace std;
 
-static void argumentEvaluate(vector<string>& args)
+static void argumentEvaluate(vector<string>& args, Calculator& calculator)
 {
-    Calculator calculator;
     calculator.Eval(args[0]);
     calculator.Display();
     Print('\n');
 }
 
-static void argumentVersion(vector<string>& args)
+static void argumentHelp(vector<string>& args, Calculator& calculator)
 {
-    Print("RPN ");
-    Print(VERSION_MAJOR);
-    Print('.');
-    Print(VERSION_MINOR);
-    Print('.');
-    Print(VERSION_REVIS);
-    Print('.');
-    Print(VERSION_BUILD);
-    Print(' ');
-    Print(VERSION_EXTRA);
-    Print('\n');
+    calculator.Eval("help");
+}
+
+static void argumentVersion(vector<string>& args, Calculator& calculator)
+{
+    calculator.Eval("ver");
 }
 
 //! Converts command-line arguments into a vector of strings.
@@ -66,8 +60,10 @@ vector<string> RPN::vectorize(char **argv, int argc)
     return ret;
 }
 
+//! Processes a vector of arguments and performs valid ones as found.
 bool RPN::processArguments(const vector<string>& args,
-                           const Arguments& arguments)
+                           const Arguments& arguments,
+                           Calculator& calculator)
 {
     bool continueProgram = true;
     bool performed = false;
@@ -89,7 +85,7 @@ bool RPN::processArguments(const vector<string>& args,
                 vector<string> argument_args(
                     it + 1, it + found->second.NumArgs() + 1);
                 // and perform the argument.
-                found->second.Perform(argument_args);
+                found->second.Perform(argument_args, calculator);
                 performed = true;
                 // then skip the argument's arguments.
                 it += found->second.NumArgs();
@@ -99,7 +95,7 @@ bool RPN::processArguments(const vector<string>& args,
             {
                 // perform it with an empty arguments vector.
                 vector<string> argument_args;
-                found->second.Perform(argument_args);
+                found->second.Perform(argument_args, calculator);
                 performed = true;
             }
 
@@ -115,9 +111,12 @@ bool RPN::processArguments(const vector<string>& args,
     return continueProgram;
 }
 
+//! Creates a default arguments map.
 void RPN::setupArguments(Arguments& arguments)
 {
+    arguments["-h"]        = Argument(0, true,  argumentHelp);
     arguments["-e"]        = Argument(1, false, argumentEvaluate);
     arguments["-v"]        = Argument(0, false, argumentVersion);
+    arguments["--help"]    = Argument(0, true,  argumentHelp);
     arguments["--version"] = Argument(0, false, argumentVersion);
 }

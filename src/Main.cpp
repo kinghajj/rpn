@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 #ifdef RPN_CONSOLE
     Arguments arguments;
     setupArguments(arguments);
-    bool run = processArguments(vectorize(argv, argc), arguments);
+    bool run = processArguments(vectorize(argv, argc), arguments, calculator);
 #else
     bool run = true;
 #endif

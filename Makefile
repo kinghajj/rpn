@@ -29,9 +29,9 @@ OBJDIR = obj/console/
 SRCDIR = src/
 TARGET = bin/console/rpn
 OBJECTS = \
-	$(OBJDIR)Calculator.o $(OBJDIR)Commands.o $(OBJDIR)History.o \
-	$(OBJDIR)Main.o $(OBJDIR)Operators.o $(OBJDIR)Variables.o \
-	$(OBJDIR)console/Arguments.o
+	$(OBJDIR)Calculator.o $(OBJDIR)Commands.o $(OBJDIR)Help.o \
+	$(OBJDIR)History.o $(OBJDIR)Main.o $(OBJDIR)Operators.o \
+	$(OBJDIR)Variables.o $(OBJDIR)console/Arguments.o
 
 # make the program by default
 .PHONY: all
