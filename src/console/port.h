@@ -40,7 +40,7 @@ public:
 
     static bool CanRun()
     {
-        return std::cin;
+        return !!std::cin;
     }
 
     static std::string GetLine()

@@ -60,6 +60,16 @@ static void printAnyList(list<T>& l, void (*printer)(T))
     Print(']');
 }
 
+static void printValue(Value v)
+{
+    printAnything(v);
+}
+
+static void printValueDetailed(Value v)
+{
+    printAnythingDetailed(v);
+}
+
 void Calculator::dup(vector<string>& args)
 {
     if(history.size() && history.front().size())
@@ -96,7 +106,7 @@ void Calculator::printHistory(vector<string>& args)
     Print('[');
     BOOST_FOREACH(Stack& item, history)
     {
-        printAnyList(item, printAnything);
+        printAnyList(item, printValue);
         Print(", ");
     }
     Print("]\n");
@@ -107,7 +117,7 @@ void Calculator::printHistoryDetailed(vector<string>& args)
     Print('[');
     BOOST_FOREACH(Stack& item, history)
     {
-        printAnyList(item, printAnythingDetailed);
+        printAnyList(item, printValueDetailed);
         Print(", ");
     }
     Print("]\n");
@@ -117,7 +127,7 @@ void Calculator::printStack(vector<string>& args)
 {
     if(HasStack())
     {
-        printAnyList(history.front(), printAnything);
+        printAnyList(history.front(), printValue);
         Print('\n');
     }
 }
@@ -126,7 +136,7 @@ void Calculator::printStackDetailed(vector<string>& args)
 {
     if(HasStack())
     {
-        printAnyList(history.front(), printAnythingDetailed);
+        printAnyList(history.front(), printValueDetailed);
         Print('\n');
     }
 }
