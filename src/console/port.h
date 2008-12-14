@@ -32,37 +32,43 @@
 #ifndef _CONSOLE_PORT_H_
 #define _CONSOLE_PORT_H_
 
+#include <cstdio>
+#include <iostream>
+#include <string>
 #include "Arguments.h"
 
-class Port
+namespace RPN
 {
-public:
-
-    static bool CanRun()
+    class Port
     {
-        return !!std::cin;
-    }
+    public:
 
-    static std::string GetLine()
-    {
-        std::string ret;
-        std::getline(std::cin, ret);
-        return ret;
-    }
+        static bool CanRun()
+        {
+            return !!std::cin;
+        }
 
-    static void Post()
-    {
-    }
+        static std::string GetLine()
+        {
+            std::string ret;
+            std::getline(std::cin, ret);
+            return ret;
+        }
 
-    static void Print(const char* str)
-    {
-        printf(str);
-    }
+        static void Post()
+        {
+        }
 
-    static void Setup()
-    {
-    }
-};
+        static void Print(const char* str)
+        {
+            printf(str);
+        }
+
+        static void Setup()
+        {
+        }
+    };
+}
 
 #endif
 #endif

@@ -25,60 +25,26 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Arguments.h - argument handling for the console port.                       *
+ * constants.h - various constant values used by the program.                  *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
+#ifndef RPN_CONSTANTS_H
+#define RPN_CONSTANTS_H
 
-#include <map>
 #include <string>
-#include <vector>
-#include "../typedefs.h"
 
 namespace RPN
 {
-    class Argument
-    {
-        unsigned nargs;
-        bool     continueProgram;
-        void     (*f)(std::vector<std::string>&, Calculator&);
-
-    public:
-        Argument()
-            : nargs(0), continueProgram(true), f(NULL)
-        {
-        }
-
-        Argument(unsigned nargs, bool continueProgram,
-                 void (*f)(std::vector<std::string>&, Calculator&))
-            : nargs(nargs), continueProgram(continueProgram), f(f)
-        {
-        }
-
-        bool ContinueProgram() const
-        {
-            return continueProgram;
-        }
-
-        unsigned NumArgs() const
-        {
-            return nargs;
-        }
-
-        void Perform(std::vector<std::string>& args, Calculator& calc) const
-        {
-            if(f) f(args, calc);
-        }
-    };
-
-    typedef std::map<std::string, Argument> Arguments;
-
-    std::vector<std::string> vectorize(char **argv, int argc);
-    bool processArguments(const std::vector<std::string>& args,
-                          const Arguments& arguments,
-                          Calculator& calculator);
-    void setupArguments(Arguments& arguments);
+    //! The major version number.
+    const int         VERSION_MAJOR = 2;
+    //! The minor version number.
+    const int         VERSION_MINOR = 0;
+    //! The revision version number.
+    const int         VERSION_REVIS = 0;
+    //! The build version number.
+    const int         VERSION_BUILD = 0;
+    //! Any extra information about the version.
+    const std::string VERSION_EXTRA = "alpha2";
 }
 
 #endif

@@ -25,60 +25,41 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Arguments.h - argument handling for the console port.                       *
+ * HelpItem.h - header for the HelpItem class.                                 *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
-
-#include <map>
+#ifndef RPN_HELPITEM_H
+#define RPN_HELPITEM_H
 #include <string>
-#include <vector>
-#include "../typedefs.h"
 
 namespace RPN
 {
-    class Argument
+    class HelpItem
     {
-        unsigned nargs;
-        bool     continueProgram;
-        void     (*f)(std::vector<std::string>&, Calculator&);
+        std::string brief;
+        std::string description;
 
     public:
-        Argument()
-            : nargs(0), continueProgram(true), f(NULL)
+        HelpItem(std::string& brief, std::string& description)
+            : brief(brief), description(description)
         {
         }
 
-        Argument(unsigned nargs, bool continueProgram,
-                 void (*f)(std::vector<std::string>&, Calculator&))
-            : nargs(nargs), continueProgram(continueProgram), f(f)
+        HelpItem(const char* brief, const char* description)
+            : brief(brief), description(description)
         {
         }
 
-        bool ContinueProgram() const
+        const std::string& Brief() const
         {
-            return continueProgram;
+            return brief;
         }
 
-        unsigned NumArgs() const
+        const std::string& Description() const
         {
-            return nargs;
-        }
-
-        void Perform(std::vector<std::string>& args, Calculator& calc) const
-        {
-            if(f) f(args, calc);
+            return description;
         }
     };
-
-    typedef std::map<std::string, Argument> Arguments;
-
-    std::vector<std::string> vectorize(char **argv, int argc);
-    bool processArguments(const std::vector<std::string>& args,
-                          const Arguments& arguments,
-                          Calculator& calculator);
-    void setupArguments(Arguments& arguments);
 }
 
 #endif

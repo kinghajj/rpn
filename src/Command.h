@@ -25,60 +25,42 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Arguments.h - argument handling for the console port.                       *
+ * Command.h - header for the Command class.                                   *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
+#ifndef RPN_COMMAND_H
+#define RPN_COMMAND_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include "../typedefs.h"
+#include "typedefs.h"
 
 namespace RPN
 {
-    class Argument
+    //! Holds information on a command, such as what its function is and how
+    //! many arguments it takes.
+    class Command
     {
-        unsigned nargs;
-        bool     continueProgram;
-        void     (*f)(std::vector<std::string>&, Calculator&);
+        CommandPtr command_ptr;
+        unsigned num_args;
 
     public:
-        Argument()
-            : nargs(0), continueProgram(true), f(NULL)
+
+        //! Constructs a command with a function pointer and number of
+        //arguments.
+        Command(CommandPtr command_ptr = NULL, unsigned int num_args = 0)
+            : command_ptr(command_ptr), num_args(num_args)
         {
         }
 
-        Argument(unsigned nargs, bool continueProgram,
-                 void (*f)(std::vector<std::string>&, Calculator&))
-            : nargs(nargs), continueProgram(continueProgram), f(f)
-        {
-        }
+        //! Returns the number of arguments the function requires.
+        unsigned NumArgs() const { return num_args; }
 
-        bool ContinueProgram() const
+        //! Performs the command on a calculator with the given functions.
+        void Perform(Calculator& calc, std::vector<std::string> args) const
         {
-            return continueProgram;
-        }
-
-        unsigned NumArgs() const
-        {
-            return nargs;
-        }
-
-        void Perform(std::vector<std::string>& args, Calculator& calc) const
-        {
-            if(f) f(args, calc);
+            if(command_ptr)
+                CALL_MEMBER_FN(calc, command_ptr)(args);
         }
     };
-
-    typedef std::map<std::string, Argument> Arguments;
-
-    std::vector<std::string> vectorize(char **argv, int argc);
-    bool processArguments(const std::vector<std::string>& args,
-                          const Arguments& arguments,
-                          Calculator& calculator);
-    void setupArguments(Arguments& arguments);
 }
 
 #endif

@@ -38,50 +38,56 @@ extern "C" {
 #include <fat.h>
 }
 
-const int BUFFER_SIZE = 64;
+#include <string>
 
-struct InputBuffer
+namespace RPN
 {
-    int pos;
-    char buf[BUFFER_SIZE];
-};
 
-class Port
-{
-    static void InitPads()
+    const int BUFFER_SIZE = 64;
+
+    struct InputBuffer
     {
-        // Initialise the attached controllers.
-        WPAD_Init();
-        // Allow the WPAD to use the accelerator ? (needed for libosk)
-        WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
-    }
+        int pos;
+        char buf[BUFFER_SIZE];
+    };
 
-    static void InitConsole();
-
-public:
-
-    static bool CanRun()
+    class Port
     {
-        return true;
-    }
+        static void InitPads()
+        {
+            // Initialise the attached controllers.
+            WPAD_Init();
+            // Allow the WPAD to use the accelerator ? (needed for libosk)
+            WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
+        }
 
-    static std::string GetLine();
+        static void InitConsole();
 
-    static void Post()
-    {
-    }
+    public:
 
-    static void Print(const char* str)
-    {
-        printf(str);
-    }
+        static bool CanRun()
+        {
+            return true;
+        }
 
-    static void Setup()
-    {
-        InitConsole();
-        InitPads();
-    }
-};
+        static std::string GetLine();
+
+        static void Post()
+        {
+        }
+
+        static void Print(const char* str)
+        {
+            printf(str);
+        }
+
+        static void Setup()
+        {
+            InitConsole();
+            InitPads();
+        }
+    };
+}
 
 #endif
 #endif

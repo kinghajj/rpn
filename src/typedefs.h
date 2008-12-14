@@ -25,60 +25,56 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Arguments.h - argument handling for the console port.                       *
+ * typedefs.h - header for typedefs or forward declarations.                   *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
+#ifndef RPN_TYPEDEFS_H
+#define RPN_TYPEDEFS_H
 
+#include <list>
 #include <map>
 #include <string>
-#include <vector>
-#include "../typedefs.h"
 
 namespace RPN
 {
-    class Argument
-    {
-        unsigned nargs;
-        bool     continueProgram;
-        void     (*f)(std::vector<std::string>&, Calculator&);
+    ////////////////////////////////////////////////////////////////////////////
+    // FORWARD DECLARATIONS                                                   //
+    ////////////////////////////////////////////////////////////////////////////
 
-    public:
-        Argument()
-            : nargs(0), continueProgram(true), f(NULL)
-        {
-        }
+    class Calculator;
+    class Command;
+    class HelpItem;
 
-        Argument(unsigned nargs, bool continueProgram,
-                 void (*f)(std::vector<std::string>&, Calculator&))
-            : nargs(nargs), continueProgram(continueProgram), f(f)
-        {
-        }
+    ////////////////////////////////////////////////////////////////////////////
+    // TYPEDEFS                                                               //
+    ////////////////////////////////////////////////////////////////////////////
 
-        bool ContinueProgram() const
-        {
-            return continueProgram;
-        }
-
-        unsigned NumArgs() const
-        {
-            return nargs;
-        }
-
-        void Perform(std::vector<std::string>& args, Calculator& calc) const
-        {
-            if(f) f(args, calc);
-        }
-    };
-
-    typedef std::map<std::string, Argument> Arguments;
-
-    std::vector<std::string> vectorize(char **argv, int argc);
-    bool processArguments(const std::vector<std::string>& args,
-                          const Arguments& arguments,
-                          Calculator& calculator);
-    void setupArguments(Arguments& arguments);
+#ifdef RPN_DOUBLE
+    //! The type operated on by the calculator.
+    typedef double Value;
+#elif  RPN_LONG_DOUBLE
+    //! The type operated on by the calculator.
+    typedef long double Value;
+#else
+#error Please choose either RPN_DOUBLE or RPN_LONG_DOUBLE.
+#endif
+    //! The type of an operator function.
+    typedef Value (*Operator)(Value a, Value b);
+    //! The type of a collection of commands.
+    typedef std::map<std::string, Command>   Commands;
+    //! The type of a collection of operators.
+    typedef std::map<std::string, Operator>  Operators;
+    //! The type of a collection of variables.
+    typedef std::map<std::string, Value>     Variables;
+    //! The type of the stack used by the calculator.
+    typedef std::list<Value>                 Stack;
+    //! The type of the history stack used by the calculator.
+    typedef std::list<Stack>                 History;
+    //! The type of a command member function. All commands must be members
+    //! of the Calculator class.
+    typedef void (Calculator::*CommandPtr)(std::vector<std::string>&);
+    //! A list of help items.
+    typedef std::list<HelpItem> HelpItems;
 }
 
 #endif

@@ -25,60 +25,49 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * Arguments.h - argument handling for the console port.                       *
+ * funcs.h - various useful functions that don't fit anywhere else.            *
  ******************************************************************************/
 
-#ifndef RPN_CONSOLE_ARGUMENT
-#define RPN_CONSOLE_ARGUMENT
+#ifndef RPN_FUNCS_H
+#define RPN_FUNCS_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include "../typedefs.h"
+#include "typedefs.h"
+#include "HelpItem.h"
+#include <sstream>
+
+//! Calls an objects member function via pointer.
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember)) 
 
 namespace RPN
 {
-    class Argument
+    //! Returns a default, empty History stack.
+    History   defaultHistory();
+    //! Returns a map of the default operators.
+    Operators defaultOperators();
+    //! Returns a map of the default variables.
+    Variables defaultVariables();
+    //! Returns a list of the default help items.
+    HelpItems defaultHelpItems();
+    //! Portably prints a list of help items.
+    void printHelpItems(const HelpItems& items);
+
+    //! A portable way to print things.
+    template <class T>
+    void Print(const T& item)
     {
-        unsigned nargs;
-        bool     continueProgram;
-        void     (*f)(std::vector<std::string>&, Calculator&);
+        std::ostringstream oss;
+        oss << item;
+        Port::Print(oss.str().c_str());
+    }
 
-    public:
-        Argument()
-            : nargs(0), continueProgram(true), f(NULL)
-        {
-        }
-
-        Argument(unsigned nargs, bool continueProgram,
-                 void (*f)(std::vector<std::string>&, Calculator&))
-            : nargs(nargs), continueProgram(continueProgram), f(f)
-        {
-        }
-
-        bool ContinueProgram() const
-        {
-            return continueProgram;
-        }
-
-        unsigned NumArgs() const
-        {
-            return nargs;
-        }
-
-        void Perform(std::vector<std::string>& args, Calculator& calc) const
-        {
-            if(f) f(args, calc);
-        }
-    };
-
-    typedef std::map<std::string, Argument> Arguments;
-
-    std::vector<std::string> vectorize(char **argv, int argc);
-    bool processArguments(const std::vector<std::string>& args,
-                          const Arguments& arguments,
-                          Calculator& calculator);
-    void setupArguments(Arguments& arguments);
+    //! A portable way to print things in detail.
+    template <class T>
+    void PrintDetailed(const T& item)
+    {
+        std::ostringstream oss;
+        oss << std::fixed << item;
+        Port::Print(oss.str().c_str());
+    }
 }
 
 #endif
