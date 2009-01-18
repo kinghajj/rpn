@@ -47,14 +47,13 @@ void Calculator::Eval(string s)
         tok != tokens.end() && status == Continue;
         ++tok)
     {
-        Commands::iterator foundCommand    = commands.find(*tok);
+        Commands::iterator  foundCommand   = commands.find(*tok);
         Operators::iterator foundOperator  = operators.find(*tok);
         Variables::iterator foundVariable  = variables.find(*tok);
-        istringstream iss(*tok);
         Value val;
 
         // if the token is a number, push it.
-        if(iss >> val)
+        if(istringstream(*tok) >> val)
             CurrentStack().push_front(val);
 
         // if the token is a command, perform it.
