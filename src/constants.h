@@ -43,8 +43,6 @@ namespace RPN
     const int         VERSION_REVIS = 0;
     //! The build version number.
     const int         VERSION_BUILD = 0;
-    //! Any extra information about the version.
-    const std::string VERSION_EXTRA = "alpha2";
 }
 
 #endif
