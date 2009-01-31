@@ -32,6 +32,7 @@
 #ifndef _CONSOLE_PORT_H_
 #define _CONSOLE_PORT_H_
 
+#include <cstdarg>
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -59,9 +60,13 @@ namespace RPN
         {
         }
 
-        static void Print(const char* str)
+        static void Print(const char* str, ...)
         {
-            printf(str);
+            va_list args;
+
+            va_start(args, str);
+            vprintf(str, args);
+            va_end(args);
         }
 
         static void Setup()

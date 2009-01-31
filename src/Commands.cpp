@@ -169,16 +169,16 @@ void Calculator::printVariablesDetailed(vector<string>& args)
 
 void Calculator::printVersion(vector<string>& args)
 {
-    Print("RPN ");
-    Print(VERSION_MAJOR);
-    Print('.');
-    Print(VERSION_MINOR);
-    Print('.');
-    Print(VERSION_REVIS);
-    Print('.');
-    Print(VERSION_BUILD);
-    Print(' ');
-    Print(VERSION_EXTRA);
+    Port::Print("RPN %i.%i.%i.%i", VERSION_MAJOR, VERSION_MINOR,
+                                   VERSION_REVIS, VERSION_BUILD);
+    Port::Print(" (%s) ", VERSION_EXTRA.c_str());
+
+#ifdef __GNUC__
+    Port::Print("(GCC %i.%i.%i on %s at %s)", __GNUC__,
+	                                          __GNUC_MINOR__,
+	                                          __GNUC_PATCHLEVEL__,
+	                                          __DATE__, __TIME__);
+#endif
     Print("\nBy Sam Fredrickson <kinghajj@gmail.com>\n");
 }
 

@@ -39,6 +39,8 @@ extern "C" {
 #include <pspkernel.h>
 }
 
+#include <cstdarg>
+#include <cstdio>
 #include <map>
 #include <string>
 
@@ -97,6 +99,8 @@ namespace RPN
          */
         static char GetCharacter();
 
+        static char output_buffer[1024];
+
     public:
 
         static bool CanRun()
@@ -111,9 +115,15 @@ namespace RPN
             sceKernelExitGame();
         }
 
-        static void Print(const char* str)
+        static void Print(const char* str, ...)
         {
-            pspDebugScreenPrintf(str);
+            va_list args;
+
+            va_start(args, str);
+            vsprintf(output_buffer, str, args);
+            pspDebugScreenPrintf(output_buffer);
+            va_end(args);
+            //pspDebugScreenPrintf(str);
         }
 
         static void Setup();
