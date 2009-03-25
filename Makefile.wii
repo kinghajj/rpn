@@ -28,7 +28,8 @@ INCLUDES	:=  -I/home/samuel/Wii_Homebrew/devkitpro/devkitPPC/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-DEFINES = -DRPN_WII -DRPN_DOUBLE
+GIT_BUILD = $(shell git describe)
+DEFINES = -DRPN_WII -DRPN_DOUBLE -DGIT_BUILD="\"$(GIT_BUILD)\""
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE) $(DEFINES) $(INCLUDES)
 CXXFLAGS = $(CFLAGS)
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
