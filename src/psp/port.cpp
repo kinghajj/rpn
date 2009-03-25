@@ -35,6 +35,8 @@ using namespace std;
 
 #define kprintf pspDebugScreenPrintf
 
+char Port::output_buffer[1024];
+
 map<int, Port::CharPair> Port::keyMap;
 int  Port::enter         = PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER;
 int  Port::cancel        = PSP_CTRL_LTRIGGER;

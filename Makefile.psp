@@ -4,6 +4,7 @@
 CP = cp
 
 VERSION = $(shell cat VERSION)
+GIT_BUILD = $(shell git describe)
 TARGET = bin/psp/psprpn
 PSP_EBOOT = bin/psp/EBOOT.PBP
 PSP_EBOOT_SFO = bin/psp/PARAM.SFO
@@ -23,7 +24,7 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	@$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 # The -G0 flag fixes some oddity in the MIPS architecture. 
-CFLAGS = -O2 -G0 -Wall -DRPN_PSP -DRPN_DOUBLE
+CFLAGS = -O2 -G0 -Wall -DRPN_PSP -DRPN_DOUBLE -DGIT_BUILD="\"$(GIT_BUILD)\""
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
