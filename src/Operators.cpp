@@ -89,22 +89,28 @@ static Value _or(Value a, Value b)
     return (long)a | (long)b;
 }
 
+static Value _log(Value b, Value e)
+{
+    return log(e) / log(b);
+}
+
 #endif
 
 Operators RPN::defaultOperators()
 {
     Operators ret;
 
-    ret["+"]  = addition;
-    ret["-"]  = subtraction;
-    ret["*"]  = multiplication;
-    ret["/"]  = division;
-    ret["**"] = power;
-    ret["="]  = equals;
-    ret["%"]  = modulo;
-    ret["^"]  = _xor;
-    ret["&"]  = _and;
-    ret["|"]  = _or;
+    ret["+"]   = addition;
+    ret["-"]   = subtraction;
+    ret["*"]   = multiplication;
+    ret["/"]   = division;
+    ret["**"]  = power;
+    ret["="]   = equals;
+    ret["%"]   = modulo;
+    ret["^"]   = _xor;
+    ret["&"]   = _and;
+    ret["|"]   = _or;
+    ret["log"] = _log;
 
     return ret;
 }
