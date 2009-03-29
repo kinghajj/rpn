@@ -87,7 +87,8 @@ void Calculator::exit(vector<string>& args)
 
 void Calculator::pop(vector<string>& args)
 {
-    CurrentStack().pop_front();
+    if(history.size() && CurrentStack().size())
+        CurrentStack().pop_front();
 }
 
 void Calculator::popHistory(vector<string>& args)
