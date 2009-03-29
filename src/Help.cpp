@@ -49,7 +49,7 @@ HelpItems RPN::defaultHelpItems()
 {
     HelpItems items;
 
-    items.push_back(HelpItem("+, -, *, /, **, sqrt, =",
+    items.push_back(HelpItem("+, -, *, /, **, sqrt, log, =",
                              "The basic math operators."));
     items.push_back(HelpItem("%, ^, &, |",
                              "Modulo and bitwise operators."));
