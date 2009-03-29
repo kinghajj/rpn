@@ -72,11 +72,10 @@ static void printValueDetailed(Value v)
 
 void Calculator::dup(vector<string>& args)
 {
-    if(history.size() && history.front().size())
+    if(history.size() && CurrentStack().size())
     {
-        Stack& stack(history.front());
-        Value dup = stack.front();
-        stack.push_front(dup);
+        Stack& stack(CurrentStack());
+        stack.push_front(stack.front());
     }
 }
 
@@ -128,7 +127,7 @@ void Calculator::printStack(vector<string>& args)
 {
     if(HasStack())
     {
-        printAnyList(history.front(), printValue);
+        printAnyList(CurrentStack(), printValue);
         Print('\n');
     }
 }
@@ -137,7 +136,7 @@ void Calculator::printStackDetailed(vector<string>& args)
 {
     if(HasStack())
     {
-        printAnyList(history.front(), printValueDetailed);
+        printAnyList(CurrentStack(), printValueDetailed);
         Print('\n');
     }
 }
@@ -186,37 +185,34 @@ void Calculator::printVersion(vector<string>& args)
 void Calculator::pushHistory(vector<string>& args)
 {
     if(history.size())
-    {
-        Stack copy = history.front();
-        history.push_front(copy);
-    }
+        history.push_front(CurrentStack());
 }
 
 void Calculator::sqrtTop(vector<string>& args)
 {
-    if(history.size() && history.front().size())
+    if(history.size() && CurrentStack().size())
     {
-        Value top = history.front().front();
-        history.front().pop_front();
+        Value top = CurrentStack().front();
+        CurrentStack().pop_front();
 #ifdef RPN_DOUBLE
-        history.front().push_front(sqrt(top));
+        CurrentStack().push_front(sqrt(top));
 #elif  RPN_LONG_DOUBLE
-        history.front().push_front(sqrtl(top));
+        CurrentStack().push_front(sqrtl(top));
 #endif
     }
 }
 
 void Calculator::swap(vector<string>& args)
 {
-    if(history.size() && history.front().size() > 1)
+    if(history.size() && CurrentStack().size() > 1)
     {
         Value a, b;
-        a = history.front().front();
-        history.front().pop_front();
-        b = history.front().front();
-        history.front().pop_front();
-        history.front().push_front(a);
-        history.front().push_front(b);
+        a = CurrentStack().front();
+        CurrentStack().pop_front();
+        b = CurrentStack().front();
+        CurrentStack().pop_front();
+        CurrentStack().push_front(a);
+        CurrentStack().push_front(b);
     }
 }
 

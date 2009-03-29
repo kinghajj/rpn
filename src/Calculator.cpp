@@ -63,8 +63,7 @@ void Calculator::Eval(string s)
             vector<string> args;
             args.reserve(command.NumArgs());
 
-            // collect a list of tokens that will be the arguments to the
-            // command.
+            // collect a the tokens that will be the arguments to the command.
             while(tok != tokens.end() && args.size() != command.NumArgs())
                 args.push_back(*++tok);
 
