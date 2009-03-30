@@ -59,8 +59,8 @@ HelpItems RPN::defaultHelpItems()
     items.push_back(HelpItem("phd", "Prints the history stack in detail."));
     items.push_back(HelpItem("ps",  "Prints the stack."));
     items.push_back(HelpItem("psd", "Prints the stack in detail."));
-    items.push_back(HelpItem("ph",  "Prints the variable map."));
-    items.push_back(HelpItem("phd", "Prints the variable map in detail."));
+    items.push_back(HelpItem("pv",  "Prints the variable map."));
+    items.push_back(HelpItem("pvd", "Prints the variable map in detail."));
     items.push_back(HelpItem("x",   "Exits the program."));
 
     return items;
