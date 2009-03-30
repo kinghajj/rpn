@@ -29,7 +29,6 @@
  ******************************************************************************/
 
 #include "../rpn.h"
-#include "port.h"
 using namespace RPN;
 using namespace std;
 

@@ -31,8 +31,6 @@
 #ifndef RPN_CONSTANTS_H
 #define RPN_CONSTANTS_H
 
-#include <string>
-
 namespace RPN
 {
     //! The major version number.

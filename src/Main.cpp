@@ -29,7 +29,6 @@
  ******************************************************************************/
 
 #include "rpn.h"
-#include <vector>
 using namespace std;
 using namespace RPN;
 
