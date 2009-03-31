@@ -54,12 +54,11 @@ int main(int argc, char *argv[])
     if(run)
         while(calculator.IsRunning() && Port::CanRun())
         {
-            string s;
+            //string s;
             Print('[');
             calculator.Display();
             Print("]> ");
-            s = Port::GetLine();
-            calculator.Eval(s);
+            calculator.Eval(Port::GetLine());
         }
 
     Port::Post();

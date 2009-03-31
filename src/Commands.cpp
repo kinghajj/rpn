@@ -72,7 +72,7 @@ static void printValueDetailed(Value v)
 
 void Calculator::dup(vector<string>& args)
 {
-    if(history.size() && CurrentStack().size())
+    if(HasStack() && StackSize() > 0)
     {
         Stack& stack(CurrentStack());
         stack.push_front(stack.front());
@@ -86,7 +86,7 @@ void Calculator::exit(vector<string>& args)
 
 void Calculator::pop(vector<string>& args)
 {
-    if(history.size() && CurrentStack().size())
+    if(HasStack() && StackSize() > 0)
         CurrentStack().pop_front();
 }
 
@@ -184,13 +184,13 @@ void Calculator::printVersion(vector<string>& args)
 
 void Calculator::pushHistory(vector<string>& args)
 {
-    if(history.size())
+    if(HasStack())
         history.push_front(CurrentStack());
 }
 
 void Calculator::sqrtTop(vector<string>& args)
 {
-    if(history.size() && CurrentStack().size())
+    if(HasStack() && StackSize() > 0)
     {
         Value top = CurrentStack().front();
         CurrentStack().pop_front();
@@ -204,7 +204,7 @@ void Calculator::sqrtTop(vector<string>& args)
 
 void Calculator::swap(vector<string>& args)
 {
-    if(history.size() && CurrentStack().size() > 1)
+    if(HasStack() && StackSize() > 1)
     {
         Value a, b;
         a = CurrentStack().front();
