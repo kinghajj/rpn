@@ -38,7 +38,7 @@ namespace RPN
     //! The minor version number.
     const int         VERSION_MINOR = 0;
     //! The revision version number.
-    const int         VERSION_REVIS = 0;
+    const int         VERSION_REVIS = 1;
     //! The build version number.
     const int         VERSION_BUILD = 0;
 }
