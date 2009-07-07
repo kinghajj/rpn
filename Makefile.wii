@@ -22,7 +22,7 @@ TARGET		:=	bin/wii/rpn
 BUILD		:=	wiiobj
 SOURCES		:=	src
 DATA		:=	data
-INCLUDES	:=  -I/home/samuel/Wii_Homebrew/devkitpro/devkitPPC/include
+INCLUDES	:=  -I/opt/devkitpro/devkitPPC/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
