@@ -2,3 +2,8 @@
 bin/*
 doc
 wiiobj
+*.ncb
+*.suo
+*.user
+Debug
+Release
