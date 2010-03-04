@@ -7,3 +7,5 @@ wiiobj
 *.user
 Debug
 Release
+.tup
+rpn

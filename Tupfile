@@ -1,0 +1,6 @@
+include_rules
+
+objs = src/*.o
+objs += src/console/*.o
+
+: $(objs) |> !ld |> rpn
