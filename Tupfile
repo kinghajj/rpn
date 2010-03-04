@@ -3,4 +3,6 @@ include_rules
 objs = src/*.o
 objs += src/console/*.o
 
-: $(objs) |> !ld |> rpn
+LDFLAGS += -s -lm
+
+: $(objs) |> ^ LINK rpn^ version=`git describe`; echo "namespace RPN { const char *getVersion() { return \"$version\"; } }" | $(CC) -x c++ -c - $(CFLAGS) -o rpn-version.o; $(CC) %f rpn-version.o -o rpn $(CFLAGS) $(LDFLAGS) |> rpn rpn-version.o

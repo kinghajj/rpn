@@ -171,7 +171,7 @@ void Calculator::printVersion(vector<string>&)
 {
     Port::Print("RPN %i.%i.%i.%i", VERSION_MAJOR, VERSION_MINOR,
                                    VERSION_REVIS, VERSION_BUILD);
-    Port::Print(" (%s) ", GIT_BUILD);
+    Port::Print(" (%s) ", getVersion());
 
 #ifdef __GNUC__
     Port::Print("(GCC %i.%i.%i on %s at %s)", __GNUC__,

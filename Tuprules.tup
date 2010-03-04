@@ -1,15 +1,12 @@
 CC = g++
 
 CFLAGS += -O2
-CFLAGS += -W
 CFLAGS += -Wall
 CFLAGS += -Weffc++
+CFLAGS += -pedantic
 CFLAGS += -Isrc
 CFLAGS += -DRPN_CONSOLE
 CFLAGS += -DRPN_LONG_DOUBLE
-CFLAGS += -DGIT_BUILD=2.0
 
-!cc = |> ^ CC %f^ $(CC) -c %f -o %o $(CFLAGS) $(CFLAGS_%f) |>
+!cc = |> ^ %f^ $(CC) -c %f -o %o $(CFLAGS) $(CFLAGS_%f) |>
 !ld = |> ^ LINK %o^ $(CC) %f -o %o $(LDFLAGS) $(LDFLAGS_%o) |>
-!ar = |> ^ AR %o^ ar crs %o %f |>
-!dot = |> ^ DOT %f^ dot -Efontname="Luxi Sans" -Nfontname="Luxi Sans" -Efontsize=10 -Nfontsize=10 -Tpng %f > %o |>
