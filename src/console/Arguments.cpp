@@ -39,12 +39,12 @@ static void argumentEvaluate(vector<string>& args, Calculator& calculator)
     Print('\n');
 }
 
-static void argumentHelp(vector<string>& args, Calculator& calculator)
+static void argumentHelp(vector<string>&, Calculator& calculator)
 {
     calculator.Eval("help");
 }
 
-static void argumentVersion(vector<string>& args, Calculator& calculator)
+static void argumentVersion(vector<string>&, Calculator& calculator)
 {
     calculator.Eval("ver");
 }

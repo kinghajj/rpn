@@ -70,7 +70,7 @@ static void printValueDetailed(Value v)
     printAnythingDetailed(v);
 }
 
-void Calculator::dup(vector<string>& args)
+void Calculator::dup(vector<string>&)
 {
     if(HasStack() && StackSize() > 0)
     {
@@ -79,29 +79,29 @@ void Calculator::dup(vector<string>& args)
     }
 }
 
-void Calculator::exit(vector<string>& args)
+void Calculator::exit(vector<string>&)
 {
     status = Stop;
 }
 
-void Calculator::pop(vector<string>& args)
+void Calculator::pop(vector<string>&)
 {
     if(HasStack() && StackSize() > 0)
         CurrentStack().pop_front();
 }
 
-void Calculator::popHistory(vector<string>& args)
+void Calculator::popHistory(vector<string>&)
 {
     if(history.size() > 1)
         history.pop_front();
 }
 
-void Calculator::printHelp(vector<string>& args)
+void Calculator::printHelp(vector<string>&)
 {
     printHelpItems(helpItems);
 }
 
-void Calculator::printHistory(vector<string>& args)
+void Calculator::printHistory(vector<string>&)
 {
     Print('[');
     BOOST_FOREACH(Stack& item, history)
@@ -112,7 +112,7 @@ void Calculator::printHistory(vector<string>& args)
     Print("]\n");
 }
 
-void Calculator::printHistoryDetailed(vector<string>& args)
+void Calculator::printHistoryDetailed(vector<string>&)
 {
     Print('[');
     BOOST_FOREACH(Stack& item, history)
@@ -123,7 +123,7 @@ void Calculator::printHistoryDetailed(vector<string>& args)
     Print("]\n");
 }
 
-void Calculator::printStack(vector<string>& args)
+void Calculator::printStack(vector<string>&)
 {
     if(HasStack())
     {
@@ -132,7 +132,7 @@ void Calculator::printStack(vector<string>& args)
     }
 }
 
-void Calculator::printStackDetailed(vector<string>& args)
+void Calculator::printStackDetailed(vector<string>&)
 {
     if(HasStack())
     {
@@ -141,7 +141,7 @@ void Calculator::printStackDetailed(vector<string>& args)
     }
 }
 
-void Calculator::printVariables(vector<string>& args)
+void Calculator::printVariables(vector<string>&)
 {
     Print("[ ");
     BOOST_FOREACH(Variables::value_type& v, variables)
@@ -154,7 +154,7 @@ void Calculator::printVariables(vector<string>& args)
     Print("]\n");
 }
 
-void Calculator::printVariablesDetailed(vector<string>& args)
+void Calculator::printVariablesDetailed(vector<string>&)
 {
     Print("[ ");
     BOOST_FOREACH(Variables::value_type& v, variables)
@@ -167,7 +167,7 @@ void Calculator::printVariablesDetailed(vector<string>& args)
     Print("]\n");
 }
 
-void Calculator::printVersion(vector<string>& args)
+void Calculator::printVersion(vector<string>&)
 {
     Port::Print("RPN %i.%i.%i.%i", VERSION_MAJOR, VERSION_MINOR,
                                    VERSION_REVIS, VERSION_BUILD);
@@ -182,13 +182,13 @@ void Calculator::printVersion(vector<string>& args)
     Print("\nBy Sam Fredrickson <kinghajj@gmail.com>\n");
 }
 
-void Calculator::pushHistory(vector<string>& args)
+void Calculator::pushHistory(vector<string>&)
 {
     if(HasStack())
         history.push_front(CurrentStack());
 }
 
-void Calculator::sqrtTop(vector<string>& args)
+void Calculator::sqrtTop(vector<string>&)
 {
     if(HasStack() && StackSize() > 0)
     {
@@ -202,7 +202,7 @@ void Calculator::sqrtTop(vector<string>& args)
     }
 }
 
-void Calculator::swap(vector<string>& args)
+void Calculator::swap(vector<string>&)
 {
     if(HasStack() && StackSize() > 1)
     {
