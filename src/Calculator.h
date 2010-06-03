@@ -84,24 +84,25 @@ namespace RPN
         //! Swaps the top two items of the stack.
         void swap                  (std::vector<std::string>&);
         //! Unsets a previously set variable.
-        void unset         (std::vector<std::string>&);
+        void unset                 (std::vector<std::string>&);
 
         //! Returns true if there is at least one stack.
         bool HasStack() const { return history.size() != 0; }
 
         //! Returns a reference to the current stack.
         Stack& CurrentStack() { return history.front(); }
+        const Stack& CurrentStack() const { return history.front(); }
 
         //! Returns the current stack's size.
         size_t StackSize() const
         {
-            return HasStack() ? history.front().size() : 0;
+            return HasStack() ? CurrentStack().size() : 0;
         }
 
         //! Returns the topmost item of the current stack.
         Value TopmostItem() const
         {
-            return HasStack() && StackSize() > 0 ? history.front().front() : 0;
+            return HasStack() && StackSize() > 0 ? CurrentStack().front() : 0;
         }
 
     public:
@@ -124,7 +125,7 @@ namespace RPN
         bool IsRunning() const { return status == Continue; }
 
         //! Returns a map of the default commands.
-        Commands  defaultCommands();
+        Commands defaultCommands();
 
         //! Displays the top item of the stack.
         void Display() const;

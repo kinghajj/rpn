@@ -34,13 +34,13 @@
 namespace RPN
 {
     //! The major version number.
-    const int         VERSION_MAJOR = 2;
+    const int VERSION_MAJOR = 2;
     //! The minor version number.
-    const int         VERSION_MINOR = 0;
+    const int VERSION_MINOR = 0;
     //! The revision version number.
-    const int         VERSION_REVIS = 1;
+    const int VERSION_REVIS = 1;
     //! The build version number.
-    const int         VERSION_BUILD = 0;
+    const int VERSION_BUILD = 0;
 }
 
 #endif

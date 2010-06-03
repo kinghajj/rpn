@@ -43,7 +43,7 @@ namespace RPN
     //! Returns a C string of the version of the program.
     const char *getVersion();
     //! Returns a default, empty History stack.
-    History   defaultHistory();
+    History defaultHistory();
     //! Returns a map of the default operators.
     Operators defaultOperators();
     //! Returns a map of the default variables.
