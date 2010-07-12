@@ -66,6 +66,8 @@ namespace RPN
         void printHelp             (std::vector<std::string>&);
         //! Copies the top stack and pushes it onto the history.
         void pushHistory           (std::vector<std::string>&);
+        //! The generic method to print the history.
+        void printHistoryGeneric   (void (*)(Value));
         //! The command to print the history.
         void printHistory          (std::vector<std::string>&);
         //! The command to print the history in detail.
@@ -74,6 +76,8 @@ namespace RPN
         void printStack            (std::vector<std::string>&);
         //! The command to print the stack in detail.
         void printStackDetailed    (std::vector<std::string>&);
+        //! The generic method to print the variables.
+        void printVariablesGeneric (void (*)(Value));
         //! The command to print the variables.
         void printVariables        (std::vector<std::string>&);
         //! The command to print the variables in detail.

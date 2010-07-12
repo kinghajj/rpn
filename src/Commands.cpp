@@ -101,26 +101,25 @@ void Calculator::printHelp(vector<string>&)
     printHelpItems(helpItems);
 }
 
-void Calculator::printHistory(vector<string>&)
+void Calculator::printHistoryGeneric(void (*printer)(Value))
 {
     Print('[');
     BOOST_FOREACH(Stack& item, history)
     {
-        printAnyList(item, printValue);
+        printAnyList(item, printer);
         Print(", ");
     }
     Print("]\n");
 }
 
+void Calculator::printHistory(vector<string>&)
+{
+    printHistoryGeneric(printValue);
+}
+
 void Calculator::printHistoryDetailed(vector<string>&)
 {
-    Print('[');
-    BOOST_FOREACH(Stack& item, history)
-    {
-        printAnyList(item, printValueDetailed);
-        Print(", ");
-    }
-    Print("]\n");
+    printHistoryGeneric(printValueDetailed);
 }
 
 void Calculator::printStack(vector<string>&)
@@ -141,30 +140,27 @@ void Calculator::printStackDetailed(vector<string>&)
     }
 }
 
-void Calculator::printVariables(vector<string>&)
+void Calculator::printVariablesGeneric(void (*printer)(Value))
 {
     Print("[ ");
     BOOST_FOREACH(Variables::value_type& v, variables)
     {
         Print(v.first);
         Print(" = ");
-        Print(v.second);
+        printer(v.second);
         Print(", ");
     }
     Print("]\n");
 }
 
+void Calculator::printVariables(vector<string>&)
+{
+    printVariablesGeneric(printValue);
+}
+
 void Calculator::printVariablesDetailed(vector<string>&)
 {
-    Print("[ ");
-    BOOST_FOREACH(Variables::value_type& v, variables)
-    {
-        Print(v.first);
-        Print(" = ");
-        PrintDetailed(v.second);
-        Print(", ");
-    }
-    Print("]\n");
+    printVariablesGeneric(printValueDetailed);
 }
 
 void Calculator::printVersion(vector<string>&)
@@ -192,12 +188,13 @@ void Calculator::sqrtTop(vector<string>&)
 {
     if(HasStack() && StackSize() > 0)
     {
-        Value top = CurrentStack().front();
-        CurrentStack().pop_front();
+        Stack& stack = CurrentStack();
+        Value top = stack.front();
+        stack.pop_front();
 #ifdef RPN_DOUBLE
-        CurrentStack().push_front(sqrt(top));
+        stack.push_front(sqrt(top));
 #elif  RPN_LONG_DOUBLE
-        CurrentStack().push_front(sqrtl(top));
+        stack.push_front(sqrtl(top));
 #endif
     }
 }
@@ -206,13 +203,14 @@ void Calculator::swap(vector<string>&)
 {
     if(HasStack() && StackSize() > 1)
     {
+        Stack& stack = CurrentStack();
         Value a, b;
-        a = CurrentStack().front();
-        CurrentStack().pop_front();
-        b = CurrentStack().front();
-        CurrentStack().pop_front();
-        CurrentStack().push_front(a);
-        CurrentStack().push_front(b);
+        a = stack.front();
+        stack.pop_front();
+        b = stack.front();
+        stack.pop_front();
+        stack.push_front(a);
+        stack.push_front(b);
     }
 }
 
